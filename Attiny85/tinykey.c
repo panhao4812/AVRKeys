@@ -18,7 +18,7 @@ uint8_t keymask[ROWS][COLS] = {{0x10,0x10}};
 uint8_t usb_macro_send(){
 	ledmacro^=macroreport;
 	if(macroreport&MACRO3){
-		keyPrintWordEEP(addPrint+6);
+		keyPrintWordEEP(addPrint);
 		//exe program upload 6 bytes once 
 		return 1;
 	}

@@ -55,7 +55,8 @@ void keyPrintWordEEP(uint16_t address_t);
 #define add4 add3+(ROWS*COLS) //15
 #define add5 add4+(ROWS*COLS) //17
 #define addRGB add5+(ROWS*COLS) //19
-#define addPrint addRGB+(WS2812_COUNT*3) //25
+#define addRGBType addRGB+(WS2812_COUNT*3)//19+2*3=25
+#define addPrint addRGB+(WS2812_COUNT*3)+6 //25+6=31
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
 void ResetMatrix(uint8_t mask,uint16_t address);
