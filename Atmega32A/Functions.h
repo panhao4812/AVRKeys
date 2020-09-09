@@ -75,12 +75,13 @@ void Reset_LED();
 void LED();
 
 #define add1 10
-#define add2 add1+ROWS //15
-#define add3 add2+COLS //30
+#define add2 add1+ROWS //10+5=15
+#define add3 add2+COLS //15+15=30
 #define add4 add3+(ROWS*COLS) //30+15*5=105
-#define add5 add4+(ROWS*COLS) //105+75=180
-#define addRGB add5+(ROWS*COLS) //180+75=255
-#define addPrint addRGB+(WS2812_COUNT*3) //255+12*3=291
+#define add5 add4+(ROWS*COLS) //105+15*5=180
+#define addRGB add5+(ROWS*COLS) //180+15*5=255
+#define addRGBType addRGB+(WS2812_COUNT*3)//255+12*3=291
+#define addPrint addRGB+(WS2812_COUNT*3)+6 //291+6=297
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
 void ResetMatrix(uint8_t mask,uint16_t address);

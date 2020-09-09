@@ -182,6 +182,18 @@ void releaseAllkeyboardkeys(){
 	}
 	keyboard_buffer.keyboard_modifier_keys=0;
 }
+uint8_t IsBufferClear(){
+uint8_t i;
+	if(mouse_buffer.mouse_keys!=0)return 1;
+	if(mouse_buffer.system_keys!=0)return 1;
+	if(mouse_buffer.consumer_keys!=0)return 1;
+	for ( i=0; i < 6; i++) {
+		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
+	}
+	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
+	if(macrobuffer!=0)return 1;
+	return 0;
+}
 void ResetMatrix(uint8_t mask,uint16_t address){
 	uint8_t j=0;
 	for (int r = 0; r < ROWS; r++) {
@@ -210,18 +222,20 @@ void ResetMatrixFormEEP(){
 	uint16_t address_hexakeys0=eeprom_read_word((uint16_t *)4);
 	uint16_t address_hexaKeys1=eeprom_read_word((uint16_t *)6);
 	uint16_t address_keymask=eeprom_read_word((uint16_t *)8);
-	uint8_t j;
+	uint16_t j;
 	///////////////////////////////////
 	if(address_row!=add1){return;}
 	if(address_col!=add2){return;}
 	if(address_hexakeys0!=add3){return;}
 	if(address_hexaKeys1!=add4){return;}
 	if(address_keymask!=add5){return;}
-	for( j=0;j<ROWS;j++){rowPins[j]=eeprom_read_byte((uint8_t *)((uint16_t)j+address_row));}
-	for( j=0;j<COLS;j++){colPins[j]=eeprom_read_byte((uint8_t *)((uint16_t)j+address_col));}
+	for( j=0;j<ROWS;j++){rowPins[j]=eeprom_read_byte((uint8_t *)(j+address_row));}
+	for( j=0;j<COLS;j++){colPins[j]=eeprom_read_byte((uint8_t *)(j+address_col));}
 	ResetMatrix(0,address_hexakeys0);
 	ResetMatrix(1,address_hexaKeys1);
 	ResetMatrix(2,address_keymask);
+	for( j=0;j<(WS2812_COUNT * 3);j++){WS2812fix[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
+	RGB_Type=eeprom_read_byte((uint8_t *)addRGBType);
 }
 void usbFunctionWriteOut(uchar *data, uchar len){
 	if(len==8){
@@ -258,7 +272,7 @@ void usbFunctionWriteOut(uchar *data, uchar len){
 		}
 	}
 }
-#ifdef _AVR_ATmega644PA_H_
+#ifdef _AVR_ATMEGA32A_H_INCLUDED
 void pinMode(uint8_t IO,uint8_t value){
 	switch(IO){
 		case 0: if(value){DDRA|= (1<<0);}else{DDRA &= ~(1<<0);}break;

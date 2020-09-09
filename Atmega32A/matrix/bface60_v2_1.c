@@ -184,7 +184,7 @@ void Reset_LED(){
 uint8_t usb_macro_send(){
 	ledmacro^=macroreport;
 	if(macroreport&MACRO3){
-		keyPrintWordEEP(addPrint+6);
+		keyPrintWordEEP(addPrint);
 		return 1;
 	}
 	return 0;
