@@ -1,4 +1,6 @@
 #include "usbdevice.h"
+uint8_t vusb_idle_rate = 0;
+usbRequest_t* rq ;
 void clearTimers(void) {
 	// timer0, timer1 reset;
 	TIMSK&=~(1<<TOIE0);  // disable TCNT0 overflow
@@ -18,7 +20,6 @@ void setUsbOff(void) {
 	PORTD &= ~(1 << 5);
 	#endif
 }
-uint8_t vusb_idle_rate = 0;
 void usb_init(){
 clearTimers();
 setUsbOn();
@@ -57,7 +58,6 @@ void ClearRaw(){
 	memset( &raw_report_in, 0,sizeof(raw_report_in));
 	memset(&raw_report_out, 0,sizeof(raw_report_out));
 }
-usbRequest_t* rq ;
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {
 	rq = (usbRequest_t *)((void *)data);

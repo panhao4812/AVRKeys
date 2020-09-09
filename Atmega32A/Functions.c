@@ -6,6 +6,7 @@ static uint8_t kbuf_head = 0;
 static uint8_t kbuf_tail = 0;
 uint8_t i1=0;
 uint8_t i2=0;
+/////////////////////////////////////////////////////////
  void vusb_transfer_keyboard()
 {
 	if (usbConfiguration && usbInterruptIsReady()) {
@@ -194,6 +195,7 @@ uint8_t i;
 	if(macrobuffer!=0)return 1;
 	return 0;
 }
+////////////////////////HID report////////////////////////
 void ResetMatrix(uint8_t mask,uint16_t address){
 	uint8_t j=0;
 	for (int r = 0; r < ROWS; r++) {
@@ -272,6 +274,7 @@ void usbFunctionWriteOut(uchar *data, uchar len){
 		}
 	}
 }
+/////////////////////////IO////////////////////////////////////////
 #if (defined _AVR_ATmega644PA_H_) || (defined _AVR_ATMEGA32A_H_INCLUDED) 
 void pinMode(uint8_t IO,uint8_t value){
 	switch(IO){

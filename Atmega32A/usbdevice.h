@@ -194,7 +194,7 @@ extern const PROGMEM uint8_t  RawReport[];
 #define SYSTEM_POWER_DOWN       0x81
 #define SYSTEM_SLEEP            0x82
 #define SYSTEM_WAKE_UP          0x83
-
+/////////////////////////////////////////////
 uint8_t macroreport;
 uint8_t macrobuffer;
 static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
@@ -210,7 +210,7 @@ uint8_t usb_macro_send();
 #define MACRO5 0x20
 #define MACRO6 0x40
 #define MACRO7 0x80
-
+/////////////////////////////////////////////////
 typedef struct {
     uint8_t report_id;
 	uint8_t buttons;
@@ -237,7 +237,6 @@ typedef  union  {
 	uint16_t      word[RAW_EPSIZE/2];
 	uint8_t       bytes[RAW_EPSIZE];
 }report_raw_t;
-
 typedef struct {
 	uint8_t mouse_keys;
 	int8_t x;

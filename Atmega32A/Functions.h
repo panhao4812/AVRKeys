@@ -31,17 +31,7 @@
 #define WS2812_MASK		(1<<1)
 #define WS2812_SAVE		1
 #define Maxdelay 0x1000
-////////
-#define LOW 0
-#define HIGH 1
-#define INPUT 0
-#define OUTPUT 1
-#define LSB(n) (n & 255)
-#define MSB(n) ((n >> 8) & 255)
-
-void pinMode(uint8_t IO,uint8_t value);
-void digitalWrite(uint8_t IO,uint8_t value);
-uint8_t digitalRead(uint8_t IO);
+////////////////////////////////////
 void usb_update();
 uint8_t usb_keyboard_send();
 uint8_t usb_keyboard_send2();
@@ -57,9 +47,9 @@ void pressconsumerkey(uint8_t key);
 void releaseAllmousekeys();
 void releaseAllkeyboardkeys();
 uint8_t IsBufferClear();
+//////////////////////////////////////
 #define _delay_after 0x06
 #define _delay_before 0x03
-
 uint8_t keymask[ROWS][COLS];
 uint8_t hexaKeys1[ROWS][COLS];
 uint8_t hexaKeys0[ROWS][COLS];
@@ -73,7 +63,9 @@ void Close_LED();
 void init_LED();
 void Reset_LED();
 void LED();
-
+void BfaceMod();
+void keyPrintWordEEP(uint16_t address_t);
+/////////////////////////////////////////////
 #define add1 10
 #define add2 add1+ROWS //10+5=15
 #define add3 add2+COLS //15+15=30
@@ -86,6 +78,14 @@ uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
 void ResetMatrix(uint8_t mask,uint16_t address);
 void ResetMatrixFormEEP();
-void BfaceMod();
-void keyPrintWordEEP(uint16_t address_t);
+//////////////////////////////////////////////////////
+#define LOW 0
+#define HIGH 1
+#define INPUT 0
+#define OUTPUT 1
+#define LSB(n) (n & 255)
+#define MSB(n) ((n >> 8) & 255)
+void pinMode(uint8_t IO,uint8_t value);
+void digitalWrite(uint8_t IO,uint8_t value);
+uint8_t digitalRead(uint8_t IO);
 #endif /* FUNCTIONS_H_ */
