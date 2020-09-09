@@ -191,11 +191,15 @@ uint8_t usb_macro_send(){
 }
 void LED(){
 	for ( i=0; i<ledcount; i++){
-		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){ digitalWrite(ledPins[i],HIGH);}
-		else{ digitalWrite(ledPins[i],LOW);}
+		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
+		digitalWrite(ledPins[i],HIGH);}
+		else{
+		digitalWrite(ledPins[i],LOW);}
 	}
-	if(ledmacro & (1<<0)){digitalWrite(fullled,HIGH);}
-	else{digitalWrite(fullled,LOW);}
+	if(ledmacro & (1<<0)){
+	digitalWrite(fullled,HIGH);}
+	else{
+	digitalWrite(fullled,LOW);}
 	if(delayval>=Maxdelay){
 		if(ledmacro & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
@@ -211,143 +215,149 @@ void LED(){
 					WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);
 				}
 			}
-			}else{WS2812Clear();}
+			}else{
+		WS2812Clear();}
+		delayval--;
+		WS2812Send2();
+		}else{
+		if(delayval){
 			delayval--;
-			WS2812Send2();
-			}else{if(delayval){delayval--;}else {delayval=Maxdelay;}}
+			}else {
+			delayval=Maxdelay;
 		}
-		/////////////////////////////////////////////////////////////////////
-		void BfaceMod(){
-			for (r = 0; r < ROWS; r++) {
-				pinMode(rowPins[r],OUTPUT);
-				digitalWrite(rowPins[r],LOW);
-				//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
-				//_delay_us(1);
-				for (c = 0; c < COLS; c++) {
-					if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
-					else {keymask[r][c]|= 0x88;delay_after=_delay_after;}
-					if(keymask[r][c]==0xEE )FN=0x0F;
-				}
-				init_rows();
-			}
-			releaseAllkeyboardkeys();
-			releaseAllmousekeys();
-			macrobuffer=0;
-			for (r = 0; r < ROWS; r++) {
-				for (c = 0; c < COLS; c++) {
-					switch(keymask[r][c]&FN){
-						case 0x90:
-						presskey(hexaKeys0[r][c]);
-						break;
-						case 0xA0:
-						pressModifierKeys(hexaKeys0[r][c]);
-						break;
-						case 0xB0:
-						pressmousekey(hexaKeys0[r][c]);
-						break;
-						case 0xC0:
-						presssystemkey(hexaKeys0[r][c]);
-						break;
-						case 0xD0:
-						pressconsumerkey(hexaKeys0[r][c]);
-						break;
-						case 0xF0:
-						pressmacrokey(hexaKeys0[r][c]);
-						break;
-						case 0x09:
-						presskey(hexaKeys1[r][c]);
-						break;
-						case 0x0A:
-						pressModifierKeys(hexaKeys1[r][c]);
-						break;
-						case 0x0B:
-						pressmousekey(hexaKeys1[r][c]);
-						break;
-						case 0x0C:
-						presssystemkey(hexaKeys1[r][c]);
-						break;
-						case 0x0D:
-						pressconsumerkey(hexaKeys1[r][c]);
-						break;
-						case 0x0F:
-						pressmacrokey(hexaKeys1[r][c]);
-						break;
-					}
-				}
-			}
-			if(!IsBufferClear())FN=0xF0;//Fix FN key state error
-			if(usb_macro_send_required())delay_before=_delay_before;
-			if(usb_keyboard_send_required())delay_before=_delay_before;
-			if(usb_mouse_send_required())delay_before=_delay_before;
-			if(delay_after==_delay_after && delay_before==1)
-			{usb_macro_send();usb_keyboard_send2();usb_mouse_send();}
-			if(delay_after==1)
-			{usb_macro_send();usb_keyboard_send2();usb_mouse_send();}
-			if(delay_after>0)delay_after-=1;
-			if(delay_before>0)delay_before-=1;
+	}
+}
+void BfaceMod(){
+	for (r = 0; r < ROWS; r++) {
+		pinMode(rowPins[r],OUTPUT);
+		digitalWrite(rowPins[r],LOW);
+		//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
+		//_delay_us(1);
+		for (c = 0; c < COLS; c++) {
+			if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
+			else {keymask[r][c]|= 0x88;delay_after=_delay_after;}
+			if(keymask[r][c]==0xEE )FN=0x0F;
 		}
-		int init_main(void) {
-			init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
-			_delay_ms(1000);
-			//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
-			usb_init();
-			////////////////////////////////////////////////
-			init_cols();
-			init_rows();
-			while (1) {
-				keyboard_buffer.enable_pressing=1;
-				releaseAllkeyboardkeys();
-				releaseAllmousekeys();
-				ResetMatrixFormEEP();
-				Reset_LED();
-				FN=0xF0;
-				_delay_ms(500);
-				usb_keyboard_send2();
-				while (1) {
-					usb_update();
-					if(keyboard_buffer.enable_pressing==2){
-						break;
-					}
-					else if(keyboard_buffer.enable_pressing==1){
-						BfaceMod();
-						if (usbConfiguration && usbInterruptIsReady()){
-							if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
-						}
-					}
-				}
-			}
-			return 0;
-		}
-		//
-		/*
-		///////////////////测试SOF用/////////////////////////////
-		int init_main(void) {
-		usb_init();
-		init_cols();
 		init_rows();
-		while (1) {
-		init_SOF();
-		init_LED();
+	}
+	releaseAllkeyboardkeys();
+	releaseAllmousekeys();
+	macrobuffer=0;
+	for (r = 0; r < ROWS; r++) {
+		for (c = 0; c < COLS; c++) {
+			switch(keymask[r][c]&FN){
+				case 0x90:
+				presskey(hexaKeys0[r][c]);
+				break;
+				case 0xA0:
+				pressModifierKeys(hexaKeys0[r][c]);
+				break;
+				case 0xB0:
+				pressmousekey(hexaKeys0[r][c]);
+				break;
+				case 0xC0:
+				presssystemkey(hexaKeys0[r][c]);
+				break;
+				case 0xD0:
+				pressconsumerkey(hexaKeys0[r][c]);
+				break;
+				case 0xF0:
+				pressmacrokey(hexaKeys0[r][c]);
+				break;
+				case 0x09:
+				presskey(hexaKeys1[r][c]);
+				break;
+				case 0x0A:
+				pressModifierKeys(hexaKeys1[r][c]);
+				break;
+				case 0x0B:
+				pressmousekey(hexaKeys1[r][c]);
+				break;
+				case 0x0C:
+				presssystemkey(hexaKeys1[r][c]);
+				break;
+				case 0x0D:
+				pressconsumerkey(hexaKeys1[r][c]);
+				break;
+				case 0x0F:
+				pressmacrokey(hexaKeys1[r][c]);
+				break;
+			}
+		}
+	}
+	if(!IsBufferClear())FN=0xF0;//Fix FN key state error
+	if(usb_macro_send_required())delay_before=_delay_before;
+	if(usb_keyboard_send_required())delay_before=_delay_before;
+	if(usb_mouse_send_required())delay_before=_delay_before;
+	if(delay_after==_delay_after && delay_before==1)
+	{usb_macro_send();usb_keyboard_send2();usb_mouse_send();}
+	if(delay_after==1)
+	{usb_macro_send();usb_keyboard_send2();usb_mouse_send();}
+	if(delay_after>0)delay_after-=1;
+	if(delay_before>0)delay_before-=1;
+}
+int init_main(void) {
+	init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+	_delay_ms(1000);
+	//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
+	usb_init();
+	////////////////////////////////////////////////
+	init_cols();
+	init_rows();
+	while (1) {
 		keyboard_buffer.enable_pressing=1;
 		releaseAllkeyboardkeys();
 		releaseAllmousekeys();
 		ResetMatrixFormEEP();
+		Reset_LED();
+		FN=0xF0;
 		_delay_ms(500);
 		usb_keyboard_send2();
 		while (1) {
-		usbPoll();
-		SOF();//挂起特性
-		if(keyboard_buffer.enable_pressing==2){
-		break;
+			usb_update();
+			if(keyboard_buffer.enable_pressing==2){
+				break;
+			}
+			else if(keyboard_buffer.enable_pressing==1){
+				BfaceMod();
+				if (usbConfiguration && usbInterruptIsReady()){
+					if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
+				}
+			}
 		}
-		else if(keyboard_buffer.enable_pressing==1){
-		if( suspended==0){	FaceUMode();vusb_transfer_keyboard();}
-		if (usbConfiguration && usbInterruptIsReady()){
-		if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
-		}
-		}
-		}
-		}
-		return 0;
-		}
-		//*/
+	}
+	return 0;
+}
+//
+/*
+///////////////////测试SOF用/////////////////////////////
+int init_main(void) {
+usb_init();
+init_cols();
+init_rows();
+while (1) {
+init_SOF();
+init_LED();
+keyboard_buffer.enable_pressing=1;
+releaseAllkeyboardkeys();
+releaseAllmousekeys();
+ResetMatrixFormEEP();
+_delay_ms(500);
+usb_keyboard_send2();
+while (1) {
+usbPoll();
+SOF();//挂起特性
+if(keyboard_buffer.enable_pressing==2){
+break;
+}
+else if(keyboard_buffer.enable_pressing==1){
+if( suspended==0){	FaceUMode();vusb_transfer_keyboard();}
+if (usbConfiguration && usbInterruptIsReady()){
+if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
+}
+}
+}
+}
+return 0;
+}
+//*/
