@@ -8,10 +8,6 @@ main.c
 
 matrix\bface60_v2_1.c
 
-matrix\minila.c
-
-matrix\ps2avrU.c
-
 usbdevice.c
 
 usbdrv\oddebug.c

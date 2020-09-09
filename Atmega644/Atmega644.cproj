@@ -133,12 +133,6 @@
     <Compile Include="matrix\bface60_v2_1.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="matrix\minila.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="matrix\ps2avrU.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="usbdevice.c">
       <SubType>compile</SubType>
     </Compile>

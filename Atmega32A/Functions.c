@@ -272,7 +272,7 @@ void usbFunctionWriteOut(uchar *data, uchar len){
 		}
 	}
 }
-#ifdef _AVR_ATMEGA32A_H_INCLUDED
+#if (defined _AVR_ATmega644PA_H_) || (defined _AVR_ATMEGA32A_H_INCLUDED) 
 void pinMode(uint8_t IO,uint8_t value){
 	switch(IO){
 		case 0: if(value){DDRA|= (1<<0);}else{DDRA &= ~(1<<0);}break;

@@ -42,8 +42,6 @@ C_SRCS +=  \
 ../Functions.c \
 ../main.c \
 ../matrix/bface60_v2_1.c \
-../matrix/minila.c \
-../matrix/ps2avrU.c \
 ../usbdevice.c \
 ../usbdrv/oddebug.c \
 ../usbdrv/usbdrv.c \
@@ -61,8 +59,6 @@ OBJS +=  \
 Functions.o \
 main.o \
 matrix/bface60_v2_1.o \
-matrix/minila.o \
-matrix/ps2avrU.o \
 usbdevice.o \
 usbdrv/oddebug.o \
 usbdrv/usbdrv.o \
@@ -73,8 +69,6 @@ OBJS_AS_ARGS +=  \
 Functions.o \
 main.o \
 matrix/bface60_v2_1.o \
-matrix/minila.o \
-matrix/ps2avrU.o \
 usbdevice.o \
 usbdrv/oddebug.o \
 usbdrv/usbdrv.o \
@@ -85,8 +79,6 @@ C_DEPS +=  \
 Functions.d \
 main.d \
 matrix/bface60_v2_1.d \
-matrix/minila.d \
-matrix/ps2avrU.d \
 usbdevice.d \
 usbdrv/oddebug.d \
 usbdrv/usbdrv.d \
@@ -97,8 +89,6 @@ C_DEPS_AS_ARGS +=  \
 Functions.d \
 main.d \
 matrix/bface60_v2_1.d \
-matrix/minila.d \
-matrix/ps2avrU.d \
 usbdevice.d \
 usbdrv/oddebug.d \
 usbdrv/usbdrv.d \
@@ -134,20 +124,6 @@ LINKER_SCRIPT_DEP+=
 	
 
 matrix/bface60_v2_1.o: ../matrix/bface60_v2_1.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=20000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega644pa -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega644pa" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-matrix/minila.o: ../matrix/minila.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=20000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega644pa -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega644pa" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-matrix/ps2avrU.o: ../matrix/ps2avrU.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=20000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega644pa -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega644pa" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
