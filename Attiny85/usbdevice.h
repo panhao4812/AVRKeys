@@ -8,19 +8,21 @@
 #include <string.h>
 #include "usbdrv/usbdrv.h"
 #define KEY_CODE_NUMBER 2 // KEY_CODE_NUMBER<8
+#define MOUSE_ENABLE  1
+#define RAW_ENABLE    1
 #define ENDPOINT0_SIZE		8
 
 #define KEYBOARD_INTERFACE	0
 #define KEYBOARD_ENDPOINT	1
-#define KEYBOARD_SIZE		8
+#define KEYBOARD_SIZE		ENDPOINT0_SIZE
 
-#define MOUSE_INTERFACE KEYBOARD_INTERFACE+1
-#define MOUSE_ENDPOINT	KEYBOARD_ENDPOINT+1
-#define MOUSE_SIZE		8
+#define MOUSE_INTERFACE KEYBOARD_INTERFACE+MOUSE_ENABLE
+#define MOUSE_ENDPOINT	KEYBOARD_ENDPOINT+MOUSE_ENABLE
+#define MOUSE_SIZE		ENDPOINT0_SIZE
 
-#define RAW_INTERFACE	 MOUSE_INTERFACE+1
-#define RAW_ENDPOINT_OUT MOUSE_ENDPOINT+1
-#define RAW_EPSIZE       8
+#define RAW_INTERFACE	 MOUSE_INTERFACE+RAW_ENABLE
+#define RAW_ENDPOINT_OUT MOUSE_ENDPOINT+RAW_ENABLE
+#define RAW_EPSIZE       ENDPOINT0_SIZE
 
 extern const PROGMEM uint8_t KeyboardReport[];
 extern const PROGMEM uint8_t MouseReport[];
@@ -181,13 +183,6 @@ extern const PROGMEM uint8_t  RawReport[];
 #define AC_REFRESH             0x27// 0x0227
 #define AC_BOOKMARKS           0x2A// 0x022A
 #define AC_MINIMIZE            0x06// 0x0206
-////////////////////////////////////////////////////////
-uint8_t macroreport;
-uint8_t macrobuffer;
-static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
-void pressmacrokey(uint8_t key);
-uint8_t usb_macro_send_required();
-uint8_t usb_macro_send();
 #define MACRO0 0x01//full led
 #define MACRO1 0x02//rgb led
 #define MACRO2 0x04//esc ~
@@ -196,11 +191,11 @@ uint8_t usb_macro_send();
 #define MACRO5 0x20//ctrl+X
 #define MACRO6 0x40//ctrl+C
 #define MACRO7 0x80//ctrl+V
-////////////////////////////////////////////////
 typedef struct {
 	uint8_t modifier;
 	uint8_t keycode[KEY_CODE_NUMBER];
 }__attribute__ ((packed))  report_keyboard_t;
+///////////////////////////////////
 typedef struct {
     uint8_t report_id;
 	uint8_t buttons;
@@ -241,13 +236,47 @@ typedef struct {
 }__attribute__ ((packed))  buffer_keyboard_t;
 report_keyboard_t keyboard_report;
 buffer_keyboard_t keyboard_buffer;
+#if MOUSE_ENABLE
 report_mouse_t mouse_report;
 buffer_mouse_t mouse_buffer;
+#endif
+#if RAW_ENABLE
 #define maxEEP (uint16_t)511
 report_raw_t raw_report_out;
+#endif
+
 void usb_init();
+void usb_update();
 void ClearKeyboard();
 void ClearMouse();
 void ClearRaw();			// initialize everything
+uint8_t usb_keyboard_send();
+uint8_t usb_mouse_send();
+uint8_t usb_keyboard_send_required();
+uint8_t usb_mouse_send_required();
+
+void keyPrintCtl(uint8_t data);
+void keyPrintChar(usbWord_t data);
+void keyPrintChinese(uint8_t data[5]);
+void keyPrintEnglish(uint8_t data);
+void keyPrintWord(char * word);
+void keyPrintWordFlash(void);
+void keyPrintWordEEP(uint16_t address_t);
+void MousePrintMousekey(uint8_t data);
+
+uint8_t presskey(uint8_t key);
+void pressModifierKeys(uint8_t key);
+void releaseAllkeyboardkeys();
+void pressmousekey(uint8_t key);
+void presssystemkey(uint8_t key);
+void pressconsumerkey(uint8_t key);
+void releaseAllmousekeys();
+
+uint8_t macroreport;
+uint8_t macrobuffer;
+static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
+void pressmacrokey(uint8_t key);
+uint8_t usb_macro_send_required();
+uint8_t usb_macro_send();
 extern const  uint8_t  ascii_to_scan_code_table[] PROGMEM;
 #endif /* USBKEYBOARD_H_ */

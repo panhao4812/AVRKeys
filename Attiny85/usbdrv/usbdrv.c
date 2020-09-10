@@ -250,8 +250,8 @@ PROGMEM const char usbDescriptorDevice[] = {    /* USB device descriptor */
 PROGMEM const char usbDescriptorConfiguration[] = {    /* USB configuration descriptor */
     9,
     0x02,
-    9+9+9+7+(25*1)+(25*1),0x00, //9+(9+9+7)+(9+9+7+7)
-    1+1+1, /* number of interfaces in this configuration */
+    9+9+9+7+(25*MOUSE_ENABLE)+(25*RAW_ENABLE),0x00, //9+(9+9+7)+(9+9+7+7)
+    1+MOUSE_ENABLE+RAW_ENABLE, /* number of interfaces in this configuration */
     1,          /* index of this configuration */
     0,          /* configuration name string index */
     0xA0,
