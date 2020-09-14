@@ -1,5 +1,5 @@
 #include "usb_keyboard.h"
-
+#include "Keycode.h"
 /**************************************************************************
 *
 *  Variables - these are the only non-stack RAM usage

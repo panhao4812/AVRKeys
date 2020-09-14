@@ -3,7 +3,7 @@
 
 #include <avr/io.h>
 #include "usbdevice.h"
-
+#include "Keycode.h"
 //#define ps2avrU
 //#define bface60_v2_1
 #define minila
@@ -25,29 +25,15 @@
 #define COLS  15
 #define WS2812_COUNT	0
 #endif
-//ws2812
+//////////////ws2812////////////////////
 #define WS2812_PORT		PORTC
 #define WS2812_DDR		DDRC
 #define WS2812_MASK		(1<<1)
 #define WS2812_SAVE		1
 #define Maxdelay 0x1000
-////////////////////////////////////
-void usb_update();
-uint8_t usb_keyboard_send();
-uint8_t usb_keyboard_send2();
-uint8_t usb_mouse_send();
-uint8_t usb_keyboard_send_required();
-uint8_t usb_mouse_send_required();
- void vusb_transfer_keyboard();
-void pressModifierKeys(uint8_t key);
-uint8_t presskey(uint8_t key);
-void pressmousekey(uint8_t key);
-void presssystemkey(uint8_t key);
-void pressconsumerkey(uint8_t key);
-void releaseAllmousekeys();
-void releaseAllkeyboardkeys();
-uint8_t IsBufferClear();
-//////////////////////////////////////
+uint8_t WS2812fix[(WS2812_COUNT * 3)];
+uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
+////////////////matrix////////////////////
 #define _delay_after 0x06
 #define _delay_before 0x03
 uint8_t keymask[ROWS][COLS];
@@ -65,7 +51,7 @@ void Reset_LED();
 void LED();
 void BfaceMod();
 void keyPrintWordEEP(uint16_t address_t);
-/////////////////////////////////////////////
+///////////////////eeprom//////////////////////////
 #define add1 10
 #define add2 add1+ROWS //10+5=15
 #define add3 add2+COLS //15+15=30
@@ -74,11 +60,9 @@ void keyPrintWordEEP(uint16_t address_t);
 #define addRGB add5+(ROWS*COLS) //180+15*5=255
 #define addRGBType addRGB+(WS2812_COUNT*3)//255+12*3=291
 #define addPrint addRGB+(WS2812_COUNT*3)+6 //291+6=297
-uint8_t WS2812fix[(WS2812_COUNT * 3)];
-uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
 void ResetMatrix(uint8_t mask,uint16_t address);
 void ResetMatrixFormEEP();
-//////////////////////////////////////////////////////
+//////////////////////////IO////////////////////////////
 #define LOW 0
 #define HIGH 1
 #define INPUT 0
@@ -88,4 +72,21 @@ void ResetMatrixFormEEP();
 void pinMode(uint8_t IO,uint8_t value);
 void digitalWrite(uint8_t IO,uint8_t value);
 uint8_t digitalRead(uint8_t IO);
+/////////////////////////usb/////////////////////////
+void usb_update();
+uint8_t usb_keyboard_send();
+uint8_t usb_keyboard_send2();
+uint8_t usb_mouse_send();
+uint8_t usb_keyboard_send_required();
+uint8_t usb_mouse_send_required();
+void vusb_transfer_keyboard();
+void pressModifierKeys(uint8_t key);
+uint8_t presskey(uint8_t key);
+void pressmousekey(uint8_t key);
+void presssystemkey(uint8_t key);
+void pressconsumerkey(uint8_t key);
+void releaseAllmousekeys();
+void releaseAllkeyboardkeys();
+uint8_t IsBufferClear();
+//////////////////////////////////////
 #endif /* FUNCTIONS_H_ */

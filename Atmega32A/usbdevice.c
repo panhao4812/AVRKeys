@@ -1,4 +1,5 @@
 #include "usbdevice.h"
+#include "Keycode.h"
 uint8_t vusb_idle_rate = 0;
 usbRequest_t* rq ;
 void clearTimers(void) {
