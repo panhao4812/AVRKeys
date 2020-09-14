@@ -25,38 +25,14 @@
 #define RAW_ENDPOINT_IN	 MOUSE_ENDPOINT+1
 #define RAW_ENDPOINT_OUT MOUSE_ENDPOINT+2
 #define RAW_EPSIZE  8
-///////////////////////////////////////////////////
-void usb_init();			// initialize everything
-uint8_t usb_configured();		// is the USB port configured
-void releaseAllkeyboardkeys();
-uint8_t releasekey(uint8_t key);
-uint8_t presskey(uint8_t key);
-void pressModifierKeys(uint8_t key);
-void releaseModifierKeys(uint8_t key);
-volatile uint8_t EnableRecv;//eep change
-void ClearKeyboard();
-void ClearMouse();
-void ClearRaw();
-void releaseAllmousekeys();
-void releasemousekey(uint8_t key);
-void pressmousekey(uint8_t key);
-void releasesystemkey(uint8_t key);
-void presssystemkey(uint8_t key);
-void releaseconsumerkey(uint8_t key);
-void pressconsumerkey(uint8_t key);
-uint8_t usb_keyboard_send_required();		// initialize everything
-uint8_t usb_keyboard_send();
-uint8_t usb_mouse_send_required();
-uint8_t usb_mouse_send();
-uint8_t usb_recv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
-uint8_t usb_send(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
-void EVENT_USB_Device_StartOfFrame();
-void keyPrintWordEEP(uint16_t address);
-void keyPrintChinese(uint8_t data[5]);
-void keyPrintEnglish(uint8_t data);
-void keyPrintChar(uint16_t wrapdata);
-void eepwrite();
-uint8_t IsBufferClear();
+
+////////////////////////macro////////////////////////
+uint8_t macroreport;
+uint8_t macrobuffer;
+static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
+void pressmacrokey(uint8_t key);
+uint8_t usb_macro_send_required();
+uint8_t usb_macro_send();
 ////////////////////struct////////////////////////
 typedef struct  {
 	uint8_t bLength;
@@ -131,14 +107,34 @@ report_raw_t raw_report_out;
 report_keyboard_t keyboard_report;
 report_keyboard_t print_keyboard_report;
 buffer_keyboard_t keyboard_buffer;
-
-////////////////////////macro////////////////////////
-uint8_t macroreport;
-uint8_t macrobuffer;
-static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
-void pressmacrokey(uint8_t key);
-uint8_t usb_macro_send_required();
-uint8_t usb_macro_send();
+//////////////////////////usb/////////////////////////
+void usb_init();			// initialize everything
+uint8_t usb_configured();		// is the USB port configured
+void releaseAllkeyboardkeys();
+uint8_t releasekey(uint8_t key);
+uint8_t presskey(uint8_t key);
+void pressModifierKeys(uint8_t key);
+void releaseModifierKeys(uint8_t key);
+volatile uint8_t EnableRecv;//eep change
+void ClearKeyboard();
+void ClearMouse();
+void ClearRaw();
+void releaseAllmousekeys();
+void releasemousekey(uint8_t key);
+void pressmousekey(uint8_t key);
+void releasesystemkey(uint8_t key);
+void presssystemkey(uint8_t key);
+void releaseconsumerkey(uint8_t key);
+void pressconsumerkey(uint8_t key);
+uint8_t usb_keyboard_send_required();		// initialize everything
+uint8_t usb_keyboard_send();
+uint8_t usb_mouse_send_required();
+uint8_t usb_mouse_send();
+uint8_t usb_recv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
+uint8_t usb_send(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
+void EVENT_USB_Device_StartOfFrame();
+void eepwrite();
+uint8_t IsBufferClear();
 ////////////////////hardware///////////////////////////
 #define usb_debug_putchar(c)
 #define usb_debug_flush_output()

@@ -1,8 +1,72 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 #include "usb_keyboard.h"
+#include "Keycode.h"
 
-//////////////////////////////////////////////////////
+#define  xd60
+//#define CNY
+//#define  xd75
+#if defined(xd60)
+#define ROWS  5
+#define COLS  14
+#define VENDOR_ID		0x32C4//0x16C0
+#define PRODUCT_ID		0x0160//0x047C
+#define WS2812_COUNT	12
+#elif defined(CNY)
+#define ROWS  5
+#define COLS  14
+#define VENDOR_ID		0x32C4//0x16C0
+#define PRODUCT_ID		0x0260//0x047C
+#define WS2812_COUNT	6
+#elif defined(xd75)
+#define ROWS  5
+#define COLS  15
+#define VENDOR_ID		0x32C4//0x16C0
+#define PRODUCT_ID		0x0375//0x047C
+#define WS2812_COUNT	6
+#else
+#define ROWS  5
+#define COLS  14
+#define VENDOR_ID		0x32C4//0x16C0
+#define PRODUCT_ID		0x0060//0x047C
+#define WS2812_COUNT	6
+#endif
+////////ws2812///////////
+#define WS2812_PORT		PORTF
+#define WS2812_DDR		DDRF
+#define WS2812_MASK		(1<<6)
+#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define Maxdelay 0x0100
+uint8_t WS2812fix[(WS2812_COUNT * 3)];
+uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
+//////////////////////matrix/////////////////////////
+#define _delay_after 0x08
+#define _delay_before 0x03
+extern  uint8_t hexaKeys0[ROWS][COLS] ;
+extern  uint8_t hexaKeys1[ROWS][COLS];
+extern  uint8_t keymask[ROWS][COLS];
+extern  uint8_t rowPins[ROWS];
+extern  uint8_t colPins[COLS];
+int init_main(void);
+void init_cols();
+void init_rows();
+void QMKMode();
+void init_LED();
+void Open_LED();
+void Close_LED();
+void LED();
+void keyPrintWordEEP(uint16_t address);
+//////////////////////eeprom//////////////////////////
+#define add1 10
+#define add2 add1+ROWS //15 15
+#define add3 add2+COLS //30 29
+#define add4 add3+(ROWS*COLS) //30+15*5=105 99
+#define add5 add4+(ROWS*COLS) //105+75=180 169
+#define addRGB add5+(ROWS*COLS) //180+75=255 239
+#define addRGBType addRGB+(WS2812_COUNT*3)//
+#define addPrint addRGB+(WS2812_COUNT*3)+6 //
+void ResetMatrixFormEEP();
+//////////////////////IO////////////////////////////////
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 #define CPU_16MHz       0x00
 #define CPU_8MHz        0x01
@@ -13,50 +77,13 @@
 #define CPU_250kHz      0x06
 #define CPU_125kHz      0x07
 #define CPU_62kHz       0x08
-
 #define LOW 0
 #define HIGH 1
 #define INPUT 0
 #define OUTPUT 1
-
 void pinMode(uint8_t IO,uint8_t value);
 void digitalWrite(uint8_t IO,uint8_t value);
 uint8_t digitalRead(uint8_t IO);
 void closeJtag();
-//////////////////////override//////////////////////////
-uint8_t FN;
-uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
-
-extern  uint8_t hexaKeys0[ROWS][COLS] ;
-extern  uint8_t hexaKeys1[ROWS][COLS];
-extern  uint8_t keymask[ROWS][COLS];
-extern  uint8_t rowPins[ROWS];
-extern  uint8_t colPins[COLS];
-
-
-#define _delay_after 0x08
-#define _delay_before 0x03
-#define add1 10
-#define add2 add1+ROWS //15 15
-#define add3 add2+COLS //30 29
-#define add4 add3+(ROWS*COLS) //30+15*5=105 99
-#define add5 add4+(ROWS*COLS) //105+75=180 169
-#define addRGB add5+(ROWS*COLS) //180+75=255 239
-#define addPrint addRGB+(WS2812_COUNT*3) //255+6*3=273 275
-int init_main(void);
-void init_cols();
-void init_rows();
-
-void pokerMode();
-void XD60Mode();
-void XD75Mode();
-void eepwrite();
-void ResetMatrixFormEEP();
-uint8_t IsBufferClear();
-void init_LED();
-void Open_LED();
-void Close_LED();
-void LED();
-
-////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 #endif /* */

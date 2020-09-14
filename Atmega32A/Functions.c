@@ -6,7 +6,25 @@ static uint8_t kbuf_head = 0;
 static uint8_t kbuf_tail = 0;
 uint8_t i1=0;
 uint8_t i2=0;
-/////////////////////////////////////////////////////////
+void ClearMouse(){
+	memset(&print_mouse_report, 0, sizeof(mouse_report));
+	memset(&mouse_report, 0, sizeof(mouse_report));
+	memset(&mouse_buffer,0,sizeof(mouse_buffer));
+	mouse_report.mouse.report_id= REPORT_ID_MOUSE;
+	mouse_report.system_keys.report_id= REPORT_ID_SYSTEM;
+	mouse_report.consumer_keys.report_id= REPORT_ID_CONSUMER;
+}
+void ClearKeyboard(){
+	memset( &print_keyboard_report, 0,sizeof(keyboard_report));
+	memset( &keyboard_report, 0,sizeof(keyboard_report));
+	memset( &keyboard_buffer, 0,sizeof(keyboard_buffer));
+	keyboard_buffer.enable_pressing=1;
+}
+void ClearRaw(){
+	memset( &raw_report_in, 0,sizeof(raw_report_in));
+	memset(&raw_report_out, 0,sizeof(raw_report_out));
+}
+///////////////////////usb repport//////////////////////////////////
  void vusb_transfer_keyboard()
 {
 	if (usbConfiguration && usbInterruptIsReady()) {
@@ -120,7 +138,19 @@ usbPoll();
 vusb_transfer_keyboard();
 #endif
 }
-///////////////////////////////////////////////////////////////////////
+uint8_t IsBufferClear(){
+	uint8_t i;
+	if(mouse_buffer.mouse_keys!=0)return 1;
+	if(mouse_buffer.system_keys!=0)return 1;
+	if(mouse_buffer.consumer_keys!=0)return 1;
+	for ( i=0; i < 6; i++) {
+		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
+	}
+	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
+	if(macrobuffer!=0)return 1;
+	return 0;
+}
+/////////////////////keys action//////////////////////////////////////////////////
 uint8_t presskey(uint8_t key){
 	uint8_t i;
 	for ( i=0; i < 6; i++) {
@@ -182,18 +212,6 @@ void releaseAllkeyboardkeys(){
 		keyboard_buffer.keyboard_keys[i] = 0;
 	}
 	keyboard_buffer.keyboard_modifier_keys=0;
-}
-uint8_t IsBufferClear(){
-uint8_t i;
-	if(mouse_buffer.mouse_keys!=0)return 1;
-	if(mouse_buffer.system_keys!=0)return 1;
-	if(mouse_buffer.consumer_keys!=0)return 1;
-	for ( i=0; i < 6; i++) {
-		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
-	}
-	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
-	if(macrobuffer!=0)return 1;
-	return 0;
 }
 ////////////////////////HID report////////////////////////
 void ResetMatrix(uint8_t mask,uint16_t address){
@@ -397,7 +415,7 @@ uint8_t digitalRead(uint8_t IO){
 	return value;
 }
 #endif
-////////////////////////print//////////////////////
+////////////////////////keyprint//////////////////////
 void pressmacrokey(uint8_t key){
 	if(key==MACRO2){
 		if(keyboard_report.modifier){

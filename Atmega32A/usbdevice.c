@@ -47,24 +47,7 @@ uint8_t i = 0;
 	CLKPR = 0x80, CLKPR = 0;
 	#endif
 }
-void ClearMouse(){
-	memset(&print_mouse_report, 0, sizeof(mouse_report));
-	memset(&mouse_report, 0, sizeof(mouse_report));
-	memset(&mouse_buffer,0,sizeof(mouse_buffer));
-	mouse_report.mouse.report_id= REPORT_ID_MOUSE;
-	mouse_report.system_keys.report_id= REPORT_ID_SYSTEM;
-	mouse_report.consumer_keys.report_id= REPORT_ID_CONSUMER;
-}
-void ClearKeyboard(){
-	memset( &print_keyboard_report, 0,sizeof(keyboard_report));
-	memset( &keyboard_report, 0,sizeof(keyboard_report));
-	memset( &keyboard_buffer, 0,sizeof(keyboard_buffer));
-	keyboard_buffer.enable_pressing=1;
-}
-void ClearRaw(){
-	memset( &raw_report_in, 0,sizeof(raw_report_in));
-	memset(&raw_report_out, 0,sizeof(raw_report_out));
-}
+
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {
 	rq = (usbRequest_t *)((void *)data);

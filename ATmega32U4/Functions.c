@@ -1,90 +1,6 @@
 #include "Functions.h"
-uint8_t IsBufferClear(){
-	uint8_t i;
-	if(mouse_buffer.mouse_keys!=0)return 1;
-	if(mouse_buffer.system_keys!=0)return 1;
-	if(mouse_buffer.consumer_keys!=0)return 1;
-	for ( i=0; i < 6; i++) {
-		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
-	}
-	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
-	if(macrobuffer!=0)return 1;
-	return 0;
-}
-void ResetMatrix(uint8_t mask,uint16_t address){
-	uint8_t j=0;
-	for (int r = 0; r < ROWS; r++) {
-		for (int c = 0; c < COLS; c++) {
-			switch (mask){
-				case 0:
-				hexaKeys0[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
-				break;
-				case 1:
-				hexaKeys1[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
-				break;
-				case 2:
-				keymask[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
-				break;
-			}
-			j++;
-		}
-	}
-}
-void ResetMatrixFormEEP(){
-	uint16_t address_row=eeprom_read_word((uint16_t *)0);
-	uint16_t address_col=eeprom_read_word((uint16_t *)2);
-	uint16_t address_hexakeys0=eeprom_read_word((uint16_t *)4);
-	uint16_t address_hexaKeys1=eeprom_read_word((uint16_t *)6);
-	uint16_t address_keymask=eeprom_read_word((uint16_t *)8);
-	uint16_t j;
-	///////////////////////////////////
-	if(address_row!=add1){return;}
-	if(address_col!=add2){return;}
-	if(address_hexakeys0!=add3){return;}
-	if(address_hexaKeys1!=add4){return;}
-	if(address_keymask!=add5){return;}
-	for( j=0;j<ROWS;j++){rowPins[j]=eeprom_read_byte((uint8_t *)(j+address_row));}
-	for( j=0;j<COLS;j++){colPins[j]=eeprom_read_byte((uint8_t *)(j+address_col));}
-	ResetMatrix(0,address_hexakeys0);
-	ResetMatrix(1,address_hexaKeys1);
-	ResetMatrix(2,address_keymask);
-	for( j=0;j<(WS2812_COUNT * 3);j++){WS2812fix[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
-	RGB_Type=eeprom_read_byte((uint8_t *)addPrint);
-	RGB_Type&=0x11;
-}
-void eepwrite(){
-	//	address,word1,word2,word3
-	if (EnableRecv==0){
-		uint16_t address=raw_report_out.word[0];
-		if(address==0xF1FF && keyboard_buffer.enable_pressing==1 ){
-			keyboard_buffer.enable_pressing=0;
-		}
-		else if(address==0xF2FF && keyboard_buffer.enable_pressing==0 ){
-			Close_LED();
-			keyboard_buffer.enable_pressing=2;
-		}
-		else{
-			if(keyboard_buffer.enable_pressing==0){
-				Open_LED();
-				if(address<(maxEEP-1)){
-					eeprom_busy_wait();
-					eeprom_write_word ((uint16_t *)address,raw_report_out.word[1]);
-				}
-				if((address+2)<(maxEEP-1)){
-					eeprom_busy_wait();
-					eeprom_write_word ((uint16_t *)(address+2),raw_report_out.word[2]);
-				}
-				if((address+4)<(maxEEP-1)){
-					eeprom_busy_wait();
-					eeprom_write_word ((uint16_t *)(address+4),raw_report_out.word[3]);
-				}
-				Close_LED();
-			}
-		}
-		memset(&raw_report_out, 0,sizeof(raw_report_out));
-		EnableRecv=1;
-	}
-}
+
+/////////////////////////////////
 void ClearMouse(){
 	memset(&print_mouse_report, 0, sizeof(mouse_report));
 	memset(&mouse_report, 0, sizeof(mouse_report));
@@ -113,91 +29,7 @@ void ClearRaw(){
 	memset( &raw_report_in, 0,sizeof(raw_report_in));
 	memset(&raw_report_out, 0,sizeof(raw_report_out));
 }
-void presssystemkey(uint8_t key){
-	mouse_buffer.system_keys=0x0000|key;
-}
-void pressconsumerkey(uint8_t key){
-	uint8_t mask_t=key&0xF0;
-	switch(mask_t){
-		case 0xB0:
-		mouse_buffer.consumer_keys=0x0000|key;
-		break;
-		case 0xC0:
-		mouse_buffer.consumer_keys=0x0000|key;
-		break;
-		case 0xE0:
-		mouse_buffer.consumer_keys=0x0000|key;
-		break;
-		case 0x80:
-		mouse_buffer.consumer_keys=0x0100|key;
-		break;
-		case 0x90:
-		mouse_buffer.consumer_keys=0x0100|key;
-		break;
-		case 0x20:
-		mouse_buffer.consumer_keys=0x0200|key;
-		break;
-		case 0x00:
-		mouse_buffer.consumer_keys=0x0200|key;
-		break;	
-	}
-}
-void pressmousekey(uint8_t key){
-	mouse_buffer.mouse_keys|=key;
-}
-void releasemousekey(uint8_t key){
-	mouse_buffer.mouse_keys&=~key;
-}
-void releaseAllmousekeys(){
-	mouse_buffer.mouse_keys=0x00;
-	mouse_buffer.system_keys=0x0000;
-	mouse_buffer.consumer_keys=0x0000;
-}
-uint8_t releasekey(uint8_t key)
-{
-	uint8_t i;
-	uint8_t send_required=0;
-	for ( i=0; i < 6; i++) {
-		if (keyboard_buffer.keyboard_keys[i] == key) {
-			keyboard_buffer.keyboard_keys[i] = 0;
-			send_required=1;
-			break;
-		}
-	}
-	return send_required;
-}
-void releaseAllkeyboardkeys()
-{
-	uint8_t i;
-	for ( i=0; i < 6; i++) {
-		keyboard_buffer.keyboard_keys[i] = 0;
-	}
-	keyboard_buffer.keyboard_modifier_keys=0;
-}
-uint8_t presskey(uint8_t key)
-{
-	uint8_t i;
-	for ( i=0; i < 6; i++) {
-		if (keyboard_buffer.keyboard_keys[i] == key) {
-			return 1;
-		}
-	}
-	for ( i=0; i < 6; i++) {
-		if (keyboard_buffer.keyboard_keys[i] == 0) {
-			keyboard_buffer.keyboard_keys[i] = key;
-			return 1;
-		}
-	}
-	return 0;
-}
-void pressModifierKeys(uint8_t key)
-{
-	keyboard_buffer.keyboard_modifier_keys|=key;
-}
-void releaseModifierKeys(uint8_t key)
-{
-	keyboard_buffer.keyboard_modifier_keys&=~key;
-}
+////////////////usb repport///////////////
 uint8_t usb_keyboard_send_required(){
 	uint8_t send_required_t=0;
 	if(keyboard_report.modifier!=keyboard_buffer.keyboard_modifier_keys)
@@ -290,6 +122,180 @@ uint8_t usb_mouse_send(){
 	SREG = intr_state;
 	return 0;
 }
+uint8_t IsBufferClear(){
+	uint8_t i;
+	if(mouse_buffer.mouse_keys!=0)return 1;
+	if(mouse_buffer.system_keys!=0)return 1;
+	if(mouse_buffer.consumer_keys!=0)return 1;
+	for ( i=0; i < 6; i++) {
+		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
+	}
+	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
+	if(macrobuffer!=0)return 1;
+	return 0;
+}
+///////////////keys action///////////////////
+uint8_t presskey(uint8_t key)
+{
+	uint8_t i;
+	for ( i=0; i < 6; i++) {
+		if (keyboard_buffer.keyboard_keys[i] == key) {
+			return 1;
+		}
+	}
+	for ( i=0; i < 6; i++) {
+		if (keyboard_buffer.keyboard_keys[i] == 0) {
+			keyboard_buffer.keyboard_keys[i] = key;
+			return 1;
+		}
+	}
+	return 0;
+}
+void pressModifierKeys(uint8_t key)
+{
+	keyboard_buffer.keyboard_modifier_keys|=key;
+}
+void pressmousekey(uint8_t key){
+	mouse_buffer.mouse_keys|=key;
+}
+void presssystemkey(uint8_t key){
+	mouse_buffer.system_keys=0x0000|key;
+}
+void pressconsumerkey(uint8_t key){
+	uint8_t mask_t=key&0xF0;
+	switch(mask_t){
+		case 0xB0:
+		mouse_buffer.consumer_keys=0x0000|key;
+		break;
+		case 0xC0:
+		mouse_buffer.consumer_keys=0x0000|key;
+		break;
+		case 0xE0:
+		mouse_buffer.consumer_keys=0x0000|key;
+		break;
+		case 0x80:
+		mouse_buffer.consumer_keys=0x0100|key;
+		break;
+		case 0x90:
+		mouse_buffer.consumer_keys=0x0100|key;
+		break;
+		case 0x20:
+		mouse_buffer.consumer_keys=0x0200|key;
+		break;
+		case 0x00:
+		mouse_buffer.consumer_keys=0x0200|key;
+		break;
+	}
+}
+uint8_t releasekey(uint8_t key)
+{
+	uint8_t i;
+	uint8_t send_required=0;
+	for ( i=0; i < 6; i++) {
+		if (keyboard_buffer.keyboard_keys[i] == key) {
+			keyboard_buffer.keyboard_keys[i] = 0;
+			send_required=1;
+			break;
+		}
+	}
+	return send_required;
+}
+void releaseModifierKeys(uint8_t key)
+{
+	keyboard_buffer.keyboard_modifier_keys&=~key;
+}
+void releasemousekey(uint8_t key){
+	mouse_buffer.mouse_keys&=~key;
+}
+void releaseAllmousekeys(){
+	mouse_buffer.mouse_keys=0x00;
+	mouse_buffer.system_keys=0x0000;
+	mouse_buffer.consumer_keys=0x0000;
+}
+void releaseAllkeyboardkeys()
+{
+	uint8_t i;
+	for ( i=0; i < 6; i++) {
+		keyboard_buffer.keyboard_keys[i] = 0;
+	}
+	keyboard_buffer.keyboard_modifier_keys=0;
+}
+////////////////////HID report///////////////////
+void ResetMatrix(uint8_t mask,uint16_t address){
+	uint8_t j=0;
+	for (int r = 0; r < ROWS; r++) {
+		for (int c = 0; c < COLS; c++) {
+			switch (mask){
+				case 0:
+				hexaKeys0[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
+				break;
+				case 1:
+				hexaKeys1[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
+				break;
+				case 2:
+				keymask[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
+				break;
+			}
+			j++;
+		}
+	}
+}
+void ResetMatrixFormEEP(){
+	uint16_t address_row=eeprom_read_word((uint16_t *)0);
+	uint16_t address_col=eeprom_read_word((uint16_t *)2);
+	uint16_t address_hexakeys0=eeprom_read_word((uint16_t *)4);
+	uint16_t address_hexaKeys1=eeprom_read_word((uint16_t *)6);
+	uint16_t address_keymask=eeprom_read_word((uint16_t *)8);
+	uint16_t j;
+	///////////////////////////////////
+	if(address_row!=add1){return;}
+	if(address_col!=add2){return;}
+	if(address_hexakeys0!=add3){return;}
+	if(address_hexaKeys1!=add4){return;}
+	if(address_keymask!=add5){return;}
+	for( j=0;j<ROWS;j++){rowPins[j]=eeprom_read_byte((uint8_t *)(j+address_row));}
+	for( j=0;j<COLS;j++){colPins[j]=eeprom_read_byte((uint8_t *)(j+address_col));}
+	ResetMatrix(0,address_hexakeys0);
+	ResetMatrix(1,address_hexaKeys1);
+	ResetMatrix(2,address_keymask);
+	for( j=0;j<(WS2812_COUNT * 3);j++){WS2812fix[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
+	RGB_Type=eeprom_read_byte((uint8_t *)addPrint);
+	RGB_Type&=0x11;
+}
+void eepwrite(){
+	//	address,word1,word2,word3
+	if (EnableRecv==0){
+		uint16_t address=raw_report_out.word[0];
+		if(address==0xF1FF && keyboard_buffer.enable_pressing==1 ){
+			keyboard_buffer.enable_pressing=0;
+		}
+		else if(address==0xF2FF && keyboard_buffer.enable_pressing==0 ){
+			Close_LED();
+			keyboard_buffer.enable_pressing=2;
+		}
+		else{
+			if(keyboard_buffer.enable_pressing==0){
+				Open_LED();
+				if(address<(maxEEP-1)){
+					eeprom_busy_wait();
+					eeprom_write_word ((uint16_t *)address,raw_report_out.word[1]);
+				}
+				if((address+2)<(maxEEP-1)){
+					eeprom_busy_wait();
+					eeprom_write_word ((uint16_t *)(address+2),raw_report_out.word[2]);
+				}
+				if((address+4)<(maxEEP-1)){
+					eeprom_busy_wait();
+					eeprom_write_word ((uint16_t *)(address+4),raw_report_out.word[3]);
+				}
+				Close_LED();
+			}
+		}
+		memset(&raw_report_out, 0,sizeof(raw_report_out));
+		EnableRecv=1;
+	}
+}
+//////////////////IO///////////////////////
 #if defined(__AVR_ATmega32U4__)
 void closeJtag(){
 	MCUCR = (1<<JTD);
@@ -405,15 +411,6 @@ uint8_t usb_macro_send_required(){
 		return 1;}
 		return 0;
 }
-void keyPrintWordEEP(uint16_t address_t){
-	uint16_t len=eeprom_read_word((uint16_t *)address_t);
-	for(uint16_t i=0;i<len;i++){
-		uint16_t address=address_t+i*2+2;
-		if(address>maxEEP)break;
-		uint16_t data = eeprom_read_word((uint16_t *)address);
-		keyPrintChar(data);
-	}
-}
 void keyPrintChinese(uint8_t data[5]){
 	memset(print_keyboard_report.keycode,0,6);
 	print_keyboard_report.modifier = 0x40;
@@ -456,5 +453,27 @@ void keyPrintChar(uint16_t wrapdata){
 		datachinese[1]=out%10;out=out/10;
 		datachinese[0]=out;
 		keyPrintChinese(datachinese);
+	}
+}
+void keyPrintWord(char * word){
+	uint8_t i=0;
+	uint8_t len=strlen(word);
+	for(i=0;i<len;i++){
+		while(1){
+			if(usbConfiguration && usbInterruptIsReady()){
+				uint8_t data = pgm_read_byte_near(ascii_to_scan_code_table + word[i]);
+				keyPrintEnglish(data);
+				break;
+			}usbPoll();
+		}
+	}
+}
+void keyPrintWordEEP(uint16_t address_t){
+	uint16_t len=eeprom_read_word((uint16_t *)address_t);
+	for(uint16_t i=0;i<len;i++){
+		uint16_t address=address_t+i*2+2;
+		if(address>maxEEP)break;
+		uint16_t data = eeprom_read_word((uint16_t *)address);
+		keyPrintChar(data);
 	}
 }

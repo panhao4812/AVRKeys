@@ -6,11 +6,15 @@ Functions.c
 
 main.c
 
-Matrix\Matrix_CNY.c
+Matrix\CNY.c
 
-Matrix\Matrix_XD60_V3.c
+Matrix\staryu.c
 
-Matrix\Matric_XD75.c
+Matrix\xd004.c
+
+Matrix\XD60_V3.c
+
+Matrix\XD75_Re.c
 
 usb_keyboard.c
 

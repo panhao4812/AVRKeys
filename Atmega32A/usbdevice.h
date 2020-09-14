@@ -10,12 +10,6 @@
 #include <avr/wdt.h>
 #include "usbdrv/usbdrv.h"
 #include "usbdrv/usbconfig.h"
-//理论上还可以适配Atmega324 搜索_AVR_ATmega644PA_H_来修改添加
-#if defined _AVR_ATmega644PA_H_
-#define maxEEP (uint16_t)0x0800 //2k
-#elif defined _AVR_ATMEGA32A_H_INCLUDED
-#define maxEEP (uint16_t)0x0400 //1k
-#endif
 
 #define ENDPOINT0_SIZE		8
 
@@ -100,14 +94,31 @@ report_raw_t raw_report_out;
 report_keyboard_t print_keyboard_report;
 report_keyboard_t keyboard_report;
 buffer_keyboard_t keyboard_buffer;
-//////////////////////////////////////////////////////////
+//////////////////////////usb////////////////////////////////
 void usb_init();
 void ClearKeyboard();
 void ClearMouse();
-void ClearRaw();			
+void ClearRaw();
+void usb_update();
+uint8_t usb_keyboard_send();
+uint8_t usb_keyboard_send2();
+uint8_t usb_mouse_send();
+uint8_t usb_keyboard_send_required();
+uint8_t usb_mouse_send_required();
+void vusb_transfer_keyboard();
+void pressModifierKeys(uint8_t key);
+uint8_t presskey(uint8_t key);
+void pressmousekey(uint8_t key);
+void presssystemkey(uint8_t key);
+void pressconsumerkey(uint8_t key);
+void releaseAllmousekeys();
+void releaseAllkeyboardkeys();
+uint8_t IsBufferClear();
+///////////////SOF//////////////			
 uint16_t suspendedTimeCount;
 uint8_t suspended;
 void init_SOF();
 void SOF();
+/////////////////ascii////////////////////
 extern const  uint8_t  ascii_to_scan_code_table[] PROGMEM;
 #endif
