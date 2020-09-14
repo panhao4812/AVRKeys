@@ -301,7 +301,7 @@ int init_main(void) {
 	_delay_ms(1000);
 	//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
 	usb_init();
-	while (!usbConfiguration){_delay_ms(300);}
+	//while (!usbConfiguration){_delay_ms(300);}
 	////////////////////////////////////////////////
 	init_cols();
 	init_rows();

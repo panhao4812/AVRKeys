@@ -20,20 +20,20 @@ F_CPU = 16000000
 FUSEH = 0xD0
 FUSEL = 0x0F
 # Fuse high byte:
-# 0xc0 = 1 1 0 0   0 0 0 0 <-- BOOTRST (boot reset vector at 0x1800)
-#        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0
-#        | | | |   | +-------- BOOTSZ1
-#        | | | |   + --------- EESAVE (preserve EEPROM over chip erase)
-#        | | | +-------------- CKOPT (full output swing)
-#        | | +---------------- SPIEN (allow serial programming)
-#        | +------------------ WDTON (WDT not always on)
-#        +-------------------- RSTDISBL (reset pin is enabled)
+# 0xc0 = 1 1 0 0   0 0 0 0 <-- BOOTRST (boot reset vector at 0x1800 启用bootloader)
+#        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0 BootLoader地址
+#        | | | |   | +-------- BOOTSZ1 BootLoader地址
+#        | | | |   + --------- EESAVE (preserve EEPROM over chip erase 擦除flash的时候是否顺带擦掉eeprom)
+#        | | | +-------------- CKOPT (full output swing 晶振全速和半速)
+#        | | +---------------- SPIEN (allow serial programming SPI下载)
+#        | +------------------ WDTON (WDT not always on 看门狗)
+#        +-------------------- RSTDISBL (reset pin is enabled 启用reset) OCDEN(On-chip Debug):片上调试
 # Fuse low byte:
 # 0x9f = 1 0 0 1   1 1 1 1
 #        ^ ^ \ /   \--+--/
-#        | |  |       +------- CKSEL 3..0 (external >8M crystal)
+#        | |  |       +------- CKSEL 3..0 (external >8M crystal 时钟源)
 #        | |  +--------------- SUT 1..0 (crystal osc, BOD enabled)
-#        | +------------------ BODEN (BrownOut Detector enabled)
+#        | +------------------ BODEN (BrownOut Detector enabled bod是掉电检测)
 #        +-------------------- BODLEVEL (2.7V)
 
 ###############################################################################

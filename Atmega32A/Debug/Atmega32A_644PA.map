@@ -350,7 +350,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x2bdc
+.text           0x00000000     0x2bb4
  *(.vectors)
  .vectors       0x00000000       0x54 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/crtatmega32a.o
                 0x00000000                __vector_default
@@ -573,69 +573,69 @@ END GROUP
                 0x0000208c      0x36a matrix/bface60_v2_1.o
                 0x0000208c                BfaceMod
  .text.init_main
-                0x000023f6       0xea matrix/bface60_v2_1.o
+                0x000023f6       0xc8 matrix/bface60_v2_1.o
                 0x000023f6                init_main
  .text.usb_init
-                0x000024e0       0x4a usbdevice.o
-                0x000024e0                usb_init
+                0x000024be       0x4a usbdevice.o
+                0x000024be                usb_init
  .text.usbFunctionSetup
-                0x0000252a       0x76 usbdevice.o
-                0x0000252a                usbFunctionSetup
+                0x00002508       0x76 usbdevice.o
+                0x00002508                usbFunctionSetup
  .text.usbFunctionWrite
-                0x000025a0       0x18 usbdevice.o
-                0x000025a0                usbFunctionWrite
+                0x0000257e       0x18 usbdevice.o
+                0x0000257e                usbFunctionWrite
  .text.usbFunctionDescriptor
-                0x000025b8       0xb6 usbdrv/usbdrv.o
-                0x000025b8                usbFunctionDescriptor
+                0x00002596       0xb6 usbdrv/usbdrv.o
+                0x00002596                usbFunctionDescriptor
  .text.usbSetInterrupt
-                0x0000266e       0x4c usbdrv/usbdrv.o
-                0x0000266e                usbSetInterrupt
+                0x0000264c       0x4c usbdrv/usbdrv.o
+                0x0000264c                usbSetInterrupt
  .text.usbSetInterrupt3
-                0x000026ba       0x4c usbdrv/usbdrv.o
-                0x000026ba                usbSetInterrupt3
- .text.usbPoll  0x00002706      0x3b6 usbdrv/usbdrv.o
-                0x00002706                usbPoll
- .text.usbInit  0x00002abc       0x26 usbdrv/usbdrv.o
-                0x00002abc                usbInit
+                0x00002698       0x4c usbdrv/usbdrv.o
+                0x00002698                usbSetInterrupt3
+ .text.usbPoll  0x000026e4      0x3b6 usbdrv/usbdrv.o
+                0x000026e4                usbPoll
+ .text.usbInit  0x00002a9a       0x26 usbdrv/usbdrv.o
+                0x00002a9a                usbInit
  .text.WS2812Setup
-                0x00002ae2        0x4 ws2812.o
-                0x00002ae2                WS2812Setup
+                0x00002ac0        0x4 ws2812.o
+                0x00002ac0                WS2812Setup
  .text.WS2812Clear
-                0x00002ae6       0x10 ws2812.o
-                0x00002ae6                WS2812Clear
+                0x00002ac4       0x10 ws2812.o
+                0x00002ac4                WS2812Clear
  .text.WS2812SetRGB
-                0x00002af6       0x18 ws2812.o
-                0x00002af6                WS2812SetRGB
+                0x00002ad4       0x18 ws2812.o
+                0x00002ad4                WS2812SetRGB
  .text.WS2812Send2
-                0x00002b0e       0x40 ws2812.o
-                0x00002b0e                WS2812Send2
- .text.libgcc   0x00002b4e        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
-                0x00002b4e                __tablejump2__
+                0x00002aec       0x3a ws2812.o
+                0x00002aec                WS2812Send2
+ .text.libgcc   0x00002b26        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+                0x00002b26                __tablejump2__
  .text.libgcc.mul
-                0x00002b5a       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
-                0x00002b5a                __umulhisi3
+                0x00002b32       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                0x00002b32                __umulhisi3
  .text.avr-libc
-                0x00002b78       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_byte.o)
-                0x00002b78                eeprom_read_byte
+                0x00002b50       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_byte.o)
+                0x00002b50                eeprom_read_byte
  .text.avr-libc
-                0x00002b88        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_word.o)
-                0x00002b88                eeprom_read_word
+                0x00002b60        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_word.o)
+                0x00002b60                eeprom_read_word
  .text.avr-libc
-                0x00002b94        0xa c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eewr_word.o)
-                0x00002b94                eeprom_write_word
+                0x00002b6c        0xa c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eewr_word.o)
+                0x00002b6c                eeprom_write_word
  .text.avr-libc
-                0x00002b9e       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_block.o)
-                0x00002b9e                eeprom_read_block
-                0x00002ba2                eeprom_read_blraw
+                0x00002b76       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eerd_block.o)
+                0x00002b76                eeprom_read_block
+                0x00002b7a                eeprom_read_blraw
  .text.avr-libc
-                0x00002bbe       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eewr_byte.o)
-                0x00002bbe                eeprom_write_byte
-                0x00002bc0                eeprom_write_r18
-                0x00002bd8                . = ALIGN (0x2)
+                0x00002b96       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libatmega32a.a(eewr_byte.o)
+                0x00002b96                eeprom_write_byte
+                0x00002b98                eeprom_write_r18
+                0x00002bb0                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00002bd8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00002bd8                _exit
-                0x00002bd8                exit
+ .fini9         0x00002bb0        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00002bb0                _exit
+                0x00002bb0                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -654,11 +654,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00002bd8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00002bb0        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00002bdc                _etext = .
+                0x00002bb4                _etext = .
 
-.data           0x00800060      0x134 load address 0x00002bdc
+.data           0x00800060      0x134 load address 0x00002bb4
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -754,8 +754,8 @@ END GROUP
                 0x0080040a                usbRxBuf
                 0x00800420                usbTxStatus3
                 0x0080042c                PROVIDE (__bss_end, .)
-                0x00002bdc                __data_load_start = LOADADDR (.data)
-                0x00002d10                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00002bb4                __data_load_start = LOADADDR (.data)
+                0x00002ce8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080042c        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -851,16 +851,16 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x51a0
+.debug_info     0x00000000     0x5166
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/crtatmega32a.o
  .debug_info    0x000004e6     0x1bb7 Functions.o
  .debug_info    0x0000209d      0x4bf main.o
- .debug_info    0x0000255c      0xe35 matrix/bface60_v2_1.o
- .debug_info    0x00003391      0x6fe usbdevice.o
- .debug_info    0x00003a8f      0xead usbdrv/usbdrv.o
- .debug_info    0x0000493c       0x7c usbdrv/usbdrvasm.o
- .debug_info    0x000049b8      0x7e8 ws2812.o
+ .debug_info    0x0000255c      0xdfb matrix/bface60_v2_1.o
+ .debug_info    0x00003357      0x6fe usbdevice.o
+ .debug_info    0x00003a55      0xead usbdrv/usbdrv.o
+ .debug_info    0x00004902       0x7c usbdrv/usbdrvasm.o
+ .debug_info    0x0000497e      0x7e8 ws2812.o
 
 .debug_abbrev   0x00000000     0x14b2
  *(.debug_abbrev)
@@ -873,16 +873,16 @@ END GROUP
  .debug_abbrev  0x000012b0       0x14 usbdrv/usbdrvasm.o
  .debug_abbrev  0x000012c4      0x1ee ws2812.o
 
-.debug_line     0x00000000     0x2ff2
+.debug_line     0x00000000     0x2fda
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/crtatmega32a.o
  .debug_line    0x0000001a     0x138a Functions.o
  .debug_line    0x000013a4       0xbd main.o
- .debug_line    0x00001461      0x708 matrix/bface60_v2_1.o
- .debug_line    0x00001b69      0x2d0 usbdevice.o
- .debug_line    0x00001e39      0x617 usbdrv/usbdrv.o
- .debug_line    0x00002450      0x778 usbdrv/usbdrvasm.o
- .debug_line    0x00002bc8      0x42a ws2812.o
+ .debug_line    0x00001461      0x6f0 matrix/bface60_v2_1.o
+ .debug_line    0x00001b51      0x2d0 usbdevice.o
+ .debug_line    0x00001e21      0x617 usbdrv/usbdrv.o
+ .debug_line    0x00002438      0x778 usbdrv/usbdrvasm.o
+ .debug_line    0x00002bb0      0x42a ws2812.o
 
 .debug_frame    0x00000000      0x644
  *(.debug_frame)
@@ -909,13 +909,13 @@ END GROUP
  .debug_str     0x00000d6a       0x6d ws2812.o
                                 0x4a6 (size before relaxing)
 
-.debug_loc      0x00000000     0x34c2
+.debug_loc      0x00000000     0x347a
  *(.debug_loc)
  .debug_loc     0x00000000     0x1b44 Functions.o
- .debug_loc     0x00001b44      0x24e matrix/bface60_v2_1.o
- .debug_loc     0x00001d92       0xb1 usbdevice.o
- .debug_loc     0x00001e43      0xfda usbdrv/usbdrv.o
- .debug_loc     0x00002e1d      0x6a5 ws2812.o
+ .debug_loc     0x00001b44      0x206 matrix/bface60_v2_1.o
+ .debug_loc     0x00001d4a       0xb1 usbdevice.o
+ .debug_loc     0x00001dfb      0xfda usbdrv/usbdrv.o
+ .debug_loc     0x00002dd5      0x6a5 ws2812.o
 
 .debug_macinfo
  *(.debug_macinfo)

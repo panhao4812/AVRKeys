@@ -40,9 +40,7 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../Functions.c \
 ../main.c \
-../Matrix/CNY.c \
-../Matrix/staryu.c \
-../Matrix/xd004.c \
+../Matrix/XD004.c \
 ../Matrix/XD60_V3.c \
 ../usb_keyboard.c \
 ../ws2812.c
@@ -57,9 +55,7 @@ ASM_SRCS +=
 OBJS +=  \
 Functions.o \
 main.o \
-Matrix/CNY.o \
-Matrix/staryu.o \
-Matrix/xd004.o \
+Matrix/XD004.o \
 Matrix/XD60_V3.o \
 usb_keyboard.o \
 ws2812.o
@@ -67,9 +63,7 @@ ws2812.o
 OBJS_AS_ARGS +=  \
 Functions.o \
 main.o \
-Matrix/CNY.o \
-Matrix/staryu.o \
-Matrix/xd004.o \
+Matrix/XD004.o \
 Matrix/XD60_V3.o \
 usb_keyboard.o \
 ws2812.o
@@ -77,9 +71,7 @@ ws2812.o
 C_DEPS +=  \
 Functions.d \
 main.d \
-Matrix/CNY.d \
-Matrix/staryu.d \
-Matrix/xd004.d \
+Matrix/XD004.d \
 Matrix/XD60_V3.d \
 usb_keyboard.d \
 ws2812.d
@@ -87,9 +79,7 @@ ws2812.d
 C_DEPS_AS_ARGS +=  \
 Functions.d \
 main.d \
-Matrix/CNY.d \
-Matrix/staryu.d \
-Matrix/xd004.d \
+Matrix/XD004.d \
 Matrix/XD60_V3.d \
 usb_keyboard.d \
 ws2812.d
@@ -122,21 +112,7 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
-Matrix/CNY.o: ../Matrix/CNY.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32u4 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega32u4" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-Matrix/staryu.o: ../Matrix/staryu.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32u4 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega32u4" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-Matrix/xd004.o: ../Matrix/xd004.c
+Matrix/XD004.o: ../Matrix/XD004.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000L  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32u4 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega32u4" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
