@@ -6,10 +6,16 @@
 #include <avr/eeprom.h>
 #include <util/delay.h>
 #include <string.h>
-#include <avr/iom32a.h>
+#include <avr/io.h>
 #include <avr/wdt.h>
 #include "usbdrv/usbdrv.h"
 #include "usbdrv/usbconfig.h"
+//理论上还可以适配Atmega324 搜索_AVR_ATmega644PA_H_来修改添加
+#if defined _AVR_ATmega644PA_H_
+#define maxEEP (uint16_t)0x0800 //2k
+#elif defined _AVR_ATMEGA32A_H_INCLUDED
+#define maxEEP (uint16_t)0x0400 //1k
+#endif
 
 #define ENDPOINT0_SIZE		8
 
@@ -89,7 +95,6 @@ typedef struct {
 report_mouse_t print_mouse_report;
 report_mouse_t mouse_report;
 buffer_mouse_t mouse_buffer;
-#define maxEEP (uint16_t)0x0400
 report_raw_t raw_report_in;
 report_raw_t raw_report_out;
 report_keyboard_t print_keyboard_report;

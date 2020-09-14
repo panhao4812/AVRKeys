@@ -1,6 +1,7 @@
+
 #ifndef __usbconfig_h_included__
 #define __usbconfig_h_included__
-
+#include <avr/io.h>
 /*
 General Description:
 This file is an example configuration (with inline documentation) for the USB
@@ -33,7 +34,11 @@ section at the end of this file).
  * interrupt, the USB interrupt will also be triggered at Start-Of-Frame
  * markers every millisecond.]
  */
+ #if defined _AVR_ATMEGA32A_H_INCLUDED
 #define USB_CFG_CLOCK_KHZ       16000
+ #elif defined _AVR_ATmega644PA_H_
+#define USB_CFG_CLOCK_KHZ       20000
+ #endif
 /* Clock rate of the AVR in kHz. Legal values are 12000, 12800, 15000, 16000,
  * 16500, 18000 and 20000. The 12.8 MHz and 16.5 MHz versions of the code
  * require no crystal, they tolerate +/- 1% deviation from the nominal
@@ -209,8 +214,14 @@ section at the end of this file).
  */
 
 /* -------------------------- Device Description --------------------------- */
+#if defined _AVR_ATMEGA32A_H_INCLUDED
 #define VENDOR_ID       0x32A0
 #define PRODUCT_ID      0x0160
+#elif defined _AVR_ATmega644PA_H_
+#define VENDOR_ID       0x644A
+#define PRODUCT_ID      0x0260
+#endif
+
 #define DEVICE_VER      0x0001
 #define USB_CFG_VENDOR_ID      (VENDOR_ID  & 0xFF), ((VENDOR_ID  >> 8) & 0xFF)
 #define USB_CFG_DEVICE_ID      (PRODUCT_ID & 0xFF), ((PRODUCT_ID >> 8) & 0xFF)
@@ -227,7 +238,9 @@ section at the end of this file).
  * obdev's free shared VID/PID pair. See the file USB-IDs-for-free.txt for
  * details.
  */
+ //自行改名
 #define USB_CFG_DEVICE_NAME    'v','u','s','b','_','k','e','y','_','9','6'
+
 #define USB_CFG_DEVICE_NAME_LEN 11
 /* Same as above for the device name. If you don't want a device name, undefine
  * the macros. See the file USB-IDs-for-free.txt before you assign a name if

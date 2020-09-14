@@ -3,11 +3,17 @@
 uint8_t vusb_idle_rate = 0;
 usbRequest_t* rq ;
 void clearTimers(void) {
-	// timer0, timer1 reset;
-	TIMSK&=~(1<<TOIE0);  // disable TCNT0 overflow
-	TIMSK&=~(1<<TOIE1);  // disable TCNT1 overflow
-	// timer2 reset
-	TIMSK&=~(1<<TOIE2);  // disable TCNT2 overflow
+#if defined _AVR_ATmega644PA_H_
+TIMSK0&=~(1<<TOIE0);  // disable TCNT0 overflow
+TIMSK1&=~(1<<TOIE1);  // disable TCNT1 overflow
+TIMSK2&=~(1<<TOIE2);  // disable TCNT2 overflow
+#elif defined _AVR_ATMEGA32A_H_INCLUDED
+// timer0, timer1 reset;
+TIMSK&=~(1<<TOIE0);  // disable TCNT0 overflow
+TIMSK&=~(1<<TOIE1);  // disable TCNT1 overflow
+// timer2 reset
+TIMSK&=~(1<<TOIE2);  // disable TCNT2 overflow
+#endif
 }
 void setUsbOn(void) {
 	#ifndef DISABLED_TR_SWITCH
