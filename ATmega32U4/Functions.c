@@ -1,34 +1,5 @@
 #include "Functions.h"
 
-/////////////////////////////////
-void ClearMouse(){
-	memset(&print_mouse_report, 0, sizeof(mouse_report));
-	memset(&mouse_report, 0, sizeof(mouse_report));
-	memset(&mouse_buffer,0,sizeof(mouse_buffer));
-	mouse_report.mouse.report_id= REPORT_ID_MOUSE;
-	mouse_report.system_keys.report_id= REPORT_ID_SYSTEM;
-	mouse_report.consumer_keys.report_id= REPORT_ID_CONSUMER;
-	mouse_buffer.mouse_protocol=1;
-}
-void ClearKeyboard(){
-	memset( &print_keyboard_report, 0,sizeof(keyboard_report));
-	memset( &keyboard_report, 0,sizeof(keyboard_report));
-	memset( &keyboard_buffer, 0,sizeof(keyboard_buffer));
-	keyboard_buffer.enable_pressing=1;
-	// protocol setting from the host.  We use exactly the same reportMOUSE_ENABLE
-	// either way, so this variable only stores the setting since we
-	// are required to be able to report which setting is in use.
-	keyboard_buffer.keyboard_protocol=1;
-	// the idle configuration, how often we send the report to the
-	// host (ms * 4) even when it hasn't changed
-	keyboard_buffer.keyboard_idle_config=125;
-	// count until idle timeout
-	keyboard_buffer.keyboard_idle_count=0;
-}
-void ClearRaw(){
-	memset( &raw_report_in, 0,sizeof(raw_report_in));
-	memset(&raw_report_out, 0,sizeof(raw_report_out));
-}
 ////////////////usb repport///////////////
 uint8_t usb_keyboard_send_required(){
 	uint8_t send_required_t=0;
@@ -133,6 +104,34 @@ uint8_t IsBufferClear(){
 	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
 	if(macrobuffer!=0)return 1;
 	return 0;
+}
+void ClearMouse(){
+	memset(&print_mouse_report, 0, sizeof(mouse_report));
+	memset(&mouse_report, 0, sizeof(mouse_report));
+	memset(&mouse_buffer,0,sizeof(mouse_buffer));
+	mouse_report.mouse.report_id= REPORT_ID_MOUSE;
+	mouse_report.system_keys.report_id= REPORT_ID_SYSTEM;
+	mouse_report.consumer_keys.report_id= REPORT_ID_CONSUMER;
+	mouse_buffer.mouse_protocol=1;
+}
+void ClearKeyboard(){
+	memset( &print_keyboard_report, 0,sizeof(keyboard_report));
+	memset( &keyboard_report, 0,sizeof(keyboard_report));
+	memset( &keyboard_buffer, 0,sizeof(keyboard_buffer));
+	keyboard_buffer.enable_pressing=1;
+	// protocol setting from the host.  We use exactly the same reportMOUSE_ENABLE
+	// either way, so this variable only stores the setting since we
+	// are required to be able to report which setting is in use.
+	keyboard_buffer.keyboard_protocol=1;
+	// the idle configuration, how often we send the report to the
+	// host (ms * 4) even when it hasn't changed
+	keyboard_buffer.keyboard_idle_config=125;
+	// count until idle timeout
+	keyboard_buffer.keyboard_idle_count=0;
+}
+void ClearRaw(){
+	memset( &raw_report_in, 0,sizeof(raw_report_in));
+	memset(&raw_report_out, 0,sizeof(raw_report_out));
 }
 ///////////////keys action///////////////////
 uint8_t presskey(uint8_t key)
@@ -453,19 +452,6 @@ void keyPrintChar(uint16_t wrapdata){
 		datachinese[1]=out%10;out=out/10;
 		datachinese[0]=out;
 		keyPrintChinese(datachinese);
-	}
-}
-void keyPrintWord(char * word){
-	uint8_t i=0;
-	uint8_t len=strlen(word);
-	for(i=0;i<len;i++){
-		while(1){
-			if(usbConfiguration && usbInterruptIsReady()){
-				uint8_t data = pgm_read_byte_near(ascii_to_scan_code_table + word[i]);
-				keyPrintEnglish(data);
-				break;
-			}usbPoll();
-		}
 	}
 }
 void keyPrintWordEEP(uint16_t address_t){

@@ -47,7 +47,6 @@ uint8_t i = 0;
 	CLKPR = 0x80, CLKPR = 0;
 	#endif
 }
-
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {
 	rq = (usbRequest_t *)((void *)data);

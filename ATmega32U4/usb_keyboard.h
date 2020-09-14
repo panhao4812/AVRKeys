@@ -8,6 +8,61 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <avr/eeprom.h>
+#define  xd60
+//#define  xd75
+//#define  staryu
+//#define  xd004
+#if defined(xd60)
+#define ROWS  5
+#define COLS  14
+#define PRODUCT_ID		0x0160
+#define WS2812_COUNT	12
+#elif defined(xd75)
+#define ROWS  5
+#define COLS  15
+#define PRODUCT_ID		0x0375
+#define WS2812_COUNT	6
+#elif defined(xd004)
+#define ROWS  1
+#define COLS  4
+#define PRODUCT_ID		0x0204
+#define WS2812_COUNT	2
+#elif defined(staryu)
+#define ROWS  1
+#define COLS  5
+#define PRODUCT_ID		0x0105
+#define WS2812_COUNT	1
+#endif
+///////////////////////////////////////////////
+#if defined(__AVR_ATmega32U2__)
+#define VENDOR_ID		0x32C2//芯片类型
+#define address_end (uint16_t)0x7000 // 0x3800*2
+#define maxEEP (uint16_t)0x01FF // (eeprom 1k-1)
+#elif defined(__AVR_ATmega16U2__)
+#define VENDOR_ID		0x16C2
+#define address_end (uint16_t)0x3000 // 0x1800*2
+#define maxEEP (uint16_t)0x03FF // (eeprom 1k-1)
+#elif defined(__AVR_ATmega8U2__)
+#define VENDOR_ID		0x08C2
+#elif defined(__AVR_AT90USB162__)
+#define VENDOR_ID		0xC162
+#elif defined(__AVR_AT90USB82__)
+#define VENDOR_ID		0xC082
+#elif defined(__AVR_ATmega32U4__)
+#define VENDOR_ID		0x32C4
+#elif defined(__AVR_ATMEGA32A__)
+#define VENDOR_ID		0x32A0
+#elif defined(__AVR_ATMEGA64A__)
+#define VENDOR_ID		0x64A0
+#elif defined(__AVR_ATMEGA328P__)
+#define VENDOR_ID		0x328B
+#elif defined(__AVR_ATMEGA8A__)
+#define VENDOR_ID		0x08A0
+#elif defined(__AVR_ATMEGA48A__)
+#define VENDOR_ID		0x48A0
+#elif defined(__AVR_ATMEGA88A__)
+#define VENDOR_ID		0x88A0
+#endif
 //////////////////////////////////////////////////////
 #define SUPPORT_ENDPOINT_HALT //是否立即中断ep
 

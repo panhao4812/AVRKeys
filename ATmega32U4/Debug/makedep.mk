@@ -14,8 +14,6 @@ Matrix\xd004.c
 
 Matrix\XD60_V3.c
 
-Matrix\XD75_Re.c
-
 usb_keyboard.c
 
 ws2812.c

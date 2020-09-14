@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include <stdlib.h>
 #include "avr/pgmspace.h"
-#include "usb_keyboard.h"
+#include "Functions.h"
 
 #define nop() __asm__ __volatile__ ("nop")
 //ÄÚÇ¶»ã±àÖ¸Áînop ÑÓÊ± 0.25us

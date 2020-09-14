@@ -134,19 +134,10 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Matrix\CNY.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Matrix\staryu.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Matrix\xd004.c">
+    <Compile Include="Matrix\XD004.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Matrix\XD60_V3.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Matrix\XD75_Re.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="usb_keyboard.c">

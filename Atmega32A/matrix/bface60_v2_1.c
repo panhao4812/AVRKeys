@@ -1,5 +1,6 @@
 #include "../Functions.h"
 #include "../ws2812.h"
+#if (defined ps2avrU)||(defined bface60_v2_1)||(defined minila)
 #if defined ps2avrU
 //ledfull D4
 //led D0 D4 D1
@@ -132,12 +133,11 @@ uint8_t keymask[ROWS][COLS] = {
 };
 #endif
 /////////////////////////////////////////////////////////////////////
-uint8_t i,FN;
 uint16_t delayval;
-uint8_t ledmacro=0;//记录led状态
-uint8_t r,c;
+uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
+uint8_t ledmacro=0;//记录led状态
 void init_cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
@@ -181,14 +181,6 @@ void Reset_LED(){
 	WS2812Clear();
 	WS2812Send2();
 }
-uint8_t usb_macro_send(){
-	ledmacro^=macroreport;
-	if(macroreport&MACRO3){
-		keyPrintWordEEP(addPrint);
-		return 1;
-	}
-	return 0;
-}
 void LED(){
 	for ( i=0; i<ledcount; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
@@ -226,6 +218,14 @@ void LED(){
 			delayval=Maxdelay;
 		}
 	}
+}
+uint8_t usb_macro_send(){
+	ledmacro^=macroreport;
+	if(macroreport&MACRO3){
+		keyPrintWordEEP(addPrint);
+		return 1;
+	}
+	return 0;
 }
 void BfaceMod(){
 	for (r = 0; r < ROWS; r++) {
@@ -301,6 +301,7 @@ int init_main(void) {
 	_delay_ms(1000);
 	//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
 	usb_init();
+	while (!usbConfiguration){_delay_ms(300);}
 	////////////////////////////////////////////////
 	init_cols();
 	init_rows();
@@ -328,7 +329,8 @@ int init_main(void) {
 	}
 	return 0;
 }
-//
+#endif
+
 /*
 ///////////////////测试SOF用/////////////////////////////
 int init_main(void) {

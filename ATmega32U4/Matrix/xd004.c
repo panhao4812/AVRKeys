@@ -1,22 +1,16 @@
 #include "../functions.h"
 #include "../ws2812.h"
 
-/////////////////////////Test4////////////////////////////////
-//use flash instead of eeprom to save data
-///////////////////////////////////////////////////////////////
+#if (defined xd004 )||  (defined staryu )
+#if defined xd004
 #ifdef xd004
-uint8_t i,FN;
-uint8_t ledmacro=0;//记录led状态
-uint16_t delayval;//rgb速率
-uint8_t r,c;
-uint8_t delay_after=0;//backswing
-uint8_t delay_before=0;//windup
 //SW d3 d0 c4 b4
 //LED d5 d2 b7 b5
 //RGB C6
+#define ledcount 4
 uint8_t colPins[COLS]={19,16,12,4};
-uint8_t ledPins[COLS]={21,18,7,5};
 uint8_t rowPins[ROWS]={0xFF};
+uint8_t ledPins[ledcount]={21,18,7,5};
 uint8_t hexaKeys0[ROWS][COLS]={
 	{KEY_1,KEY_2,KEY_3,KEY_FN}
 };
@@ -26,6 +20,32 @@ uint8_t hexaKeys1[ROWS][COLS]={
 uint8_t keymask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
+////////////////////////////////////////////////////
+#elif defined staryu
+//SW D0 D1 D2 D3 D4
+//LED C2 C7 D5 D6 B0
+//RGB C6
+#define ledcount 5
+uint8_t colPins[COLS]={16,17,18,19,20};
+uint8_t rowPins[ROWS]={0xFF};
+uint8_t ledPins[ledcount]={10,15,21,22,0};
+uint8_t hexaKeys0[ROWS][COLS]={
+	{KEY_UP,KEY_FN,KEY_RIGHT,KEY_DOWN,KEY_LEFT}
+};
+uint8_t hexaKeys1[ROWS][COLS]={
+	{MACRO0,KEY_FN,MACRO4,MACRO5,MACRO1}
+};
+uint8_t keymask[ROWS][COLS]={
+	{0x17,0x66,0x17,0x17,0x17}
+};
+#endif
+/////////////////////////////////////////////////////////////////////////continue
+uint16_t delayval;//rgb速率
+uint8_t r,c,i,FN;
+uint8_t delay_after=0;//backswing
+uint8_t delay_before=0;//windup
+uint8_t ledmacro=0;//记录led状态
+
 void init_cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
@@ -35,13 +55,13 @@ void init_cols(){
 void init_rows(){
 }
 void Open_LED(){
-	for ( i=0; i<COLS; i++){
-		digitalWrite(ledPins[i],LOW);
+	for ( i=0; i<ledcount; i++){
+		digitalWrite(ledPins[i],HIGH);
 	}
 }
 void Close_LED(){
-	for ( i=0; i<COLS; i++){
-		digitalWrite(ledPins[i],HIGH);
+	for ( i=0; i<ledcount; i++){
+		digitalWrite(ledPins[i],LOW);
 	}
 }
 void init_LED(){
@@ -54,7 +74,24 @@ void init_LED(){
 	WS2812Clear();
 	WS2812Send();
 }
-
+void init_LED(){
+	WS2812Setup();
+	WS2812Clear();
+	WS2812Send2();
+	for ( i=0; i<ledcount; i++){
+		pinMode(ledPins[i],OUTPUT);
+		digitalWrite(ledPins[i],HIGH);
+	}
+	delayval=Maxdelay;
+}
+void Reset_LED(){
+	for ( i=0; i<ledcount; i++){
+		digitalWrite(ledPins[i],HIGH);
+	}
+	ledmacro=0;if((RGB_Type&0xF0)==0x10)ledmacro=0x02;
+	WS2812Clear();
+	WS2812Send2();
+}
 uint8_t usb_macro_send(){
 	ledmacro^=macroreport;
 	if(macroreport&MACRO3){
@@ -101,7 +138,7 @@ void LED(){
 			WS2812Send2();
 			}else{if(delayval){delayval--;}else {delayval=Maxdelay;}}
 		}
-		void xd004Mode(){
+		void QMKMode(){
 			for (r = 0; r < ROWS; r++) {
 				for (c = 0; c < COLS; c++) {
 					if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
@@ -193,7 +230,7 @@ void LED(){
 						break;
 					}
 					else if(keyboard_buffer.enable_pressing==1){
-						xd004Mode();
+						QMKMode();
 						LED();
 					}
 				}

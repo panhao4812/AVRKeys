@@ -3,45 +3,25 @@
 #include "usb_keyboard.h"
 #include "Keycode.h"
 
-#define  xd60
-//#define CNY
-//#define  xd75
-#if defined(xd60)
-#define ROWS  5
-#define COLS  14
-#define VENDOR_ID		0x32C4//0x16C0
-#define PRODUCT_ID		0x0160//0x047C
-#define WS2812_COUNT	12
-#elif defined(CNY)
-#define ROWS  5
-#define COLS  14
-#define VENDOR_ID		0x32C4//0x16C0
-#define PRODUCT_ID		0x0260//0x047C
-#define WS2812_COUNT	6
-#elif defined(xd75)
-#define ROWS  5
-#define COLS  15
-#define VENDOR_ID		0x32C4//0x16C0
-#define PRODUCT_ID		0x0375//0x047C
-#define WS2812_COUNT	6
-#else
-#define ROWS  5
-#define COLS  14
-#define VENDOR_ID		0x32C4//0x16C0
-#define PRODUCT_ID		0x0060//0x047C
-#define WS2812_COUNT	6
-#endif
-////////ws2812///////////
+///////////////////////ws2812//////////////////////////
+#if (defined xd60 )||(defined xd75 )
 #define WS2812_PORT		PORTF
 #define WS2812_DDR		DDRF
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define Maxdelay 0x0100
+#elif (defined xd004 )||(defined staryu )
+#define WS2812_PORT		PORTC
+#define WS2812_DDR		DDRC
+#define WS2812_MASK		(1<<6)
+#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define Maxdelay 0x0200
+#endif
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix£¬1 Rainbow
 //////////////////////matrix/////////////////////////
 #define _delay_after 0x08
-#define _delay_before 0x03
+#define _delay_before 0x04
 extern  uint8_t hexaKeys0[ROWS][COLS] ;
 extern  uint8_t hexaKeys1[ROWS][COLS];
 extern  uint8_t keymask[ROWS][COLS];
