@@ -76,8 +76,6 @@ void WS2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue)
 	WS2812Buffer[2+led*3] = blue / WS2812_SAVE;
 }
 
-//4.2
-//11.3
 void WS2812Send()
 {cli();
 	for(uint16_t c = 0; c < (WS2812_COUNT * 3); c++)

@@ -6,7 +6,6 @@
 #include "avr/pgmspace.h"
 #include "usb_keyboard.h"
 
-
 #define nop() __asm__ __volatile__ ("nop")
 //ƒ⁄«∂ª„±‡÷∏¡Ónop —” ± 0.25us
 uint8_t WS2812Buffer[(WS2812_COUNT * 3)];
@@ -21,7 +20,7 @@ void WS2812Send2(void);
 extern const  uint8_t Rcolors[WS2812ColorCount] PROGMEM;
 extern const  uint8_t Gcolors[WS2812ColorCount] PROGMEM;
 extern const  uint8_t Bcolors[WS2812ColorCount] PROGMEM;
-/////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 #define w_zeropulse   350
 #define w_onepulse    900
 #define w_totalperiod 1250
@@ -139,5 +138,4 @@ static inline void ledcontrol_led_sendbyte
 	: "r"(data), "I"(_SFR_IO_ADDR(WS2812_PORT)), "r"(maskhi),
 	"r"(masklo));
 }
-
 #endif
