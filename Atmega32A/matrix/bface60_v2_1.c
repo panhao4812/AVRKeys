@@ -188,10 +188,12 @@ void LED(){
 		else{
 		digitalWrite(ledPins[i],LOW);}
 	}
+	///////////////////////full led///////////////
 	if(ledmacro & (1<<0)){
 	digitalWrite(fullled,HIGH);}
 	else{
 	digitalWrite(fullled,LOW);}
+	/////////////////////////RGB///////////////////////
 	if(delayval>=Maxdelay){
 		if(ledmacro & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
@@ -298,10 +300,10 @@ void BfaceMod(){
 }
 int init_main(void) {
 	init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
-	_delay_ms(1000);
+	_delay_ms(500);
 	//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
 	usb_init();
-	//while (!usbConfiguration){_delay_ms(300);}
+	_delay_ms(500);
 	////////////////////////////////////////////////
 	init_cols();
 	init_rows();

@@ -131,10 +131,12 @@ void LED(){
 		else{
 		digitalWrite(ledPins[i],LOW);}
 	}
+	////////////////////////////////
 	if(ledmacro & (1<<0)){
 	digitalWrite(fullled,HIGH);}
 	else{
 	digitalWrite(fullled,LOW);}
+	////////////////////////////////
 	if(delayval>=Maxdelay){
 		if(ledmacro & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
@@ -259,6 +261,7 @@ int init_main(void) {
 		releaseAllmousekeys();
 		ResetMatrixFormEEP();
 		Reset_LED();
+		FN=0xF0;
 		_delay_ms(500);
 		usb_send(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
 		while (1) {
@@ -268,7 +271,7 @@ int init_main(void) {
 			}
 			else if(keyboard_buffer.enable_pressing==1){
 				QMKMode();
-				if(usb_configured()&&delay_before==0) LED();
+				if(delay_before==0) LED();
 			}
 		}
 	}

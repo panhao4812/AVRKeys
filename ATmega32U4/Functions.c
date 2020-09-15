@@ -5,17 +5,17 @@ uint8_t usb_keyboard_send_required(){
 	uint8_t send_required_t=0;
 	if(keyboard_report.modifier!=keyboard_buffer.keyboard_modifier_keys)
 	{keyboard_report.modifier = keyboard_buffer.keyboard_modifier_keys;send_required_t=1;}
-	if(keyboard_report.keycode[0]!=keyboard_buffer.keyboard_keys[0])
+	else if(keyboard_report.keycode[0]!=keyboard_buffer.keyboard_keys[0])
 	{keyboard_report.keycode[0]=keyboard_buffer.keyboard_keys[0];send_required_t=1;}
-	if(keyboard_report.keycode[1]!=keyboard_buffer.keyboard_keys[1])
+	else if(keyboard_report.keycode[1]!=keyboard_buffer.keyboard_keys[1])
 	{keyboard_report.keycode[1]=keyboard_buffer.keyboard_keys[1];send_required_t=1;}
-	if(keyboard_report.keycode[2]!=keyboard_buffer.keyboard_keys[2])
+	else if(keyboard_report.keycode[2]!=keyboard_buffer.keyboard_keys[2])
 	{keyboard_report.keycode[2]=keyboard_buffer.keyboard_keys[2];send_required_t=1;}
-	if(keyboard_report.keycode[3]!=keyboard_buffer.keyboard_keys[3])
+	else if(keyboard_report.keycode[3]!=keyboard_buffer.keyboard_keys[3])
 	{keyboard_report.keycode[3]=keyboard_buffer.keyboard_keys[3];send_required_t=1;}
-	if(keyboard_report.keycode[4]!=keyboard_buffer.keyboard_keys[4])
+	else if(keyboard_report.keycode[4]!=keyboard_buffer.keyboard_keys[4])
 	{keyboard_report.keycode[4]=keyboard_buffer.keyboard_keys[4];send_required_t=1;}
-	if(keyboard_report.keycode[5]!=keyboard_buffer.keyboard_keys[5])
+	else if(keyboard_report.keycode[5]!=keyboard_buffer.keyboard_keys[5])
 	{keyboard_report.keycode[5]=keyboard_buffer.keyboard_keys[5];send_required_t=1;}
 	if(send_required_t)keyboard_buffer.Send_Required=send_required_t;
 	return send_required_t;
@@ -294,6 +294,18 @@ void eepwrite(){
 		EnableRecv=1;
 	}
 }
+#ifdef address_end
+void keyPrintWordFlash(uint16_t address_t){
+	uint16_t len=pgm_read_word_near((uint16_t *)address_t);
+	if(len<1)return;
+	for(uint16_t i=0;i<len;i++){
+		uint16_t address=address_t+i*2+2;
+		if(address>address_end)break;
+		uint16_t data = pgm_read_word_near((uint16_t*)address);
+		keyPrintChar(data);
+	}
+}
+#endif
 //////////////////IO///////////////////////
 #if defined(__AVR_ATmega32U4__)
 void closeJtag(){
@@ -386,6 +398,95 @@ uint8_t digitalRead(uint8_t IO){
 		case 22:  value= PIND& (1<<4);break;
 		case 23:  value= PIND& (1<<5);break;
 		case 24:  value= PINE& (1<<6);break;
+	}
+	return value;
+}
+#elif (defined(__AVR_AT90USB82__) || defined(__AVR_AT90USB162__) || \
+defined(__AVR_ATmega8U2__) || defined(__AVR_ATmega16U2__) || \
+defined(__AVR_ATmega32U2__))
+void pinMode(uint8_t IO,uint8_t value){
+	switch(IO){
+		case 0: if(value){DDRB|= (1<<0);}else{DDRB &= ~(1<<0);}break;
+		case 1: if(value){DDRB|= (1<<1);}else{DDRB &= ~(1<<1);}break;
+		case 2: if(value){DDRB|= (1<<2);}else{DDRB &= ~(1<<2);}break;
+		case 3: if(value){DDRB|= (1<<3);}else{DDRB &= ~(1<<3);}break;
+		case 4: if(value){DDRB|= (1<<4);}else{DDRB &= ~(1<<4);}break;
+		case 5: if(value){DDRB|= (1<<5);}else{DDRB &= ~(1<<5);}break;
+		case 6: if(value){DDRB|= (1<<6);}else{DDRB &= ~(1<<6);}break;
+		case 7: if(value){DDRB|= (1<<7);}else{DDRB &= ~(1<<7);}break;
+		case 8: if(value){DDRC|= (1<<0);}else{DDRC &= ~(1<<0);}break;
+		case 9: if(value){DDRC|= (1<<1);}else{DDRC &= ~(1<<1);}break;
+		case 10: if(value){DDRC|= (1<<2);}else{DDRC &= ~(1<<2);}break;
+		case 11: if(value){DDRC|= (1<<3);}else{DDRC &= ~(1<<3);}break;
+		case 12: if(value){DDRC|= (1<<4);}else{DDRC &= ~(1<<4);}break;
+		case 13: if(value){DDRC|= (1<<5);}else{DDRC &= ~(1<<5);}break;
+		case 14: if(value){DDRC|= (1<<6);}else{DDRC &= ~(1<<6);}break;
+		case 15: if(value){DDRC|= (1<<7);}else{DDRC &= ~(1<<7);}break;
+		case 16: if(value){DDRD|= (1<<0);}else{DDRD &= ~(1<<0);}break;
+		case 17: if(value){DDRD|= (1<<1);}else{DDRD &= ~(1<<1);}break;
+		case 18: if(value){DDRD|= (1<<2);}else{DDRD &= ~(1<<2);}break;
+		case 19: if(value){DDRD|= (1<<3);}else{DDRD &= ~(1<<3);}break;
+		case 20: if(value){DDRD|= (1<<4);}else{DDRD &= ~(1<<4);}break;
+		case 21: if(value){DDRD|= (1<<5);}else{DDRD &= ~(1<<5);}break;
+		case 22: if(value){DDRD|= (1<<6);}else{DDRD &= ~(1<<6);}break;
+		case 23: if(value){DDRD|= (1<<7);}else{DDRD &= ~(1<<7);}break;
+	}
+}
+void digitalWrite(uint8_t IO,uint8_t value){
+	switch(IO){
+		case 0: if(value){PORTB |= (1<<0);}else{PORTB &= ~(1<<0);}break;
+		case 1: if(value){PORTB |= (1<<1);}else{PORTB &= ~(1<<1);}break;
+		case 2: if(value){PORTB |= (1<<2);}else{PORTB &= ~(1<<2);}break;
+		case 3: if(value){PORTB |= (1<<3);}else{PORTB &= ~(1<<3);}break;
+		case 4: if(value){PORTB |= (1<<4);}else{PORTB &= ~(1<<4);}break;
+		case 5: if(value){PORTB |= (1<<5);}else{PORTB &= ~(1<<5);}break;
+		case 6: if(value){PORTB |= (1<<6);}else{PORTB &= ~(1<<6);}break;
+		case 7: if(value){PORTB |= (1<<7);}else{PORTB &= ~(1<<7);}break;
+		case 8: if(value){PORTC |= (1<<0);}else{PORTC &= ~(1<<0);}break;
+		case 9: if(value){PORTC |= (1<<1);}else{PORTC &= ~(1<<1);}break;
+		case 10: if(value){PORTC |= (1<<2);}else{PORTC &= ~(1<<2);}break;
+		case 11: if(value){PORTC |= (1<<3);}else{PORTC &= ~(1<<3);}break;
+		case 12: if(value){PORTC |= (1<<4);}else{PORTC &= ~(1<<4);}break;
+		case 13: if(value){PORTC |= (1<<5);}else{PORTC &= ~(1<<5);}break;
+		case 14: if(value){PORTC |= (1<<6);}else{PORTC &= ~(1<<6);}break;
+		case 15: if(value){PORTC |= (1<<7);}else{PORTC &= ~(1<<7);}break;
+		case 16: if(value){PORTD |= (1<<0);}else{PORTD &= ~(1<<0);}break;
+		case 17: if(value){PORTD |= (1<<1);}else{PORTD &= ~(1<<1);}break;
+		case 18: if(value){PORTD |= (1<<2);}else{PORTD &= ~(1<<2);}break;
+		case 19: if(value){PORTD |= (1<<3);}else{PORTD &= ~(1<<3);}break;
+		case 20: if(value){PORTD |= (1<<4);}else{PORTD &= ~(1<<4);}break;
+		case 21: if(value){PORTD |= (1<<5);}else{PORTD &= ~(1<<5);}break;
+		case 22: if(value){PORTD |= (1<<6);}else{PORTD &= ~(1<<6);}break;
+		case 23: if(value){PORTD |= (1<<7);}else{PORTD &= ~(1<<7);}break;
+	}
+}
+uint8_t digitalRead(uint8_t IO){
+	uint8_t value=0;
+	switch(IO){
+		case 0:  value= PINB & (1<<0) ;break;
+		case 1:  value= PINB & (1<<1) ;break;
+		case 2:  value= PINB & (1<<2) ;break;
+		case 3:  value= PINB & (1<<3) ;break;
+		case 4:  value= PINB & (1<<4) ;break;
+		case 5:  value= PINB & (1<<5) ;break;
+		case 6:  value= PINB & (1<<6) ;break;
+		case 7:  value= PINB & (1<<7) ;break;
+		case 8:  value= PINC & (1<<0) ;break;
+		case 9:  value= PINC & (1<<1) ;break;
+		case 10:  value= PINC & (1<<2) ;break;
+		case 11:  value= PINC & (1<<3) ;break;
+		case 12:  value= PINC & (1<<4) ;break;
+		case 13:  value= PINC & (1<<5) ;break;
+		case 14:  value= PINC & (1<<6) ;break;
+		case 15:  value= PINC & (1<<7) ;break;
+		case 16:  value= PIND & (1<<0) ;break;
+		case 17:  value= PIND & (1<<1) ;break;
+		case 18:  value= PIND & (1<<2) ;break;
+		case 19:  value= PIND & (1<<3) ;break;
+		case 20:  value= PIND & (1<<4) ;break;
+		case 21:  value= PIND & (1<<5) ;break;
+		case 22:  value= PIND & (1<<6) ;break;
+		case 23:  value= PIND & (1<<7) ;break;
 	}
 	return value;
 }

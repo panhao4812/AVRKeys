@@ -61,19 +61,19 @@ uint8_t usb_keyboard_send_required(){
 	uint8_t send_required_t=0;
 	if(keyboard_report.modifier!=keyboard_buffer.keyboard_modifier_keys)
 	{keyboard_report.modifier = keyboard_buffer.keyboard_modifier_keys;send_required_t=1;}
-	if(keyboard_report.keycode[0]!=keyboard_buffer.keyboard_keys[0])
+	else if(keyboard_report.keycode[0]!=keyboard_buffer.keyboard_keys[0])
 	{keyboard_report.keycode[0]=keyboard_buffer.keyboard_keys[0];send_required_t=1;}
-	if(keyboard_report.keycode[1]!=keyboard_buffer.keyboard_keys[1])
+	else if(keyboard_report.keycode[1]!=keyboard_buffer.keyboard_keys[1])
 	{keyboard_report.keycode[1]=keyboard_buffer.keyboard_keys[1];send_required_t=1;}
-	if(keyboard_report.keycode[2]!=keyboard_buffer.keyboard_keys[2])
+	else if(keyboard_report.keycode[2]!=keyboard_buffer.keyboard_keys[2])
 	{keyboard_report.keycode[2]=keyboard_buffer.keyboard_keys[2];send_required_t=1;}
-	if(keyboard_report.keycode[3]!=keyboard_buffer.keyboard_keys[3])
+	else if(keyboard_report.keycode[3]!=keyboard_buffer.keyboard_keys[3])
 	{keyboard_report.keycode[3]=keyboard_buffer.keyboard_keys[3];send_required_t=1;}
-	if(keyboard_report.keycode[4]!=keyboard_buffer.keyboard_keys[4])
+	else if(keyboard_report.keycode[4]!=keyboard_buffer.keyboard_keys[4])
 	{keyboard_report.keycode[4]=keyboard_buffer.keyboard_keys[4];send_required_t=1;}
-	if(keyboard_report.keycode[5]!=keyboard_buffer.keyboard_keys[5])
+	else if(keyboard_report.keycode[5]!=keyboard_buffer.keyboard_keys[5])
 	{keyboard_report.keycode[5]=keyboard_buffer.keyboard_keys[5];send_required_t=1;}
-	if(send_required_t)keyboard_buffer.Send_Required=send_required_t;
+    if(send_required_t)keyboard_buffer.Send_Required=send_required_t;
 	return send_required_t;
 }
 uint8_t usb_mouse_send(){

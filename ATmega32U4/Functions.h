@@ -36,6 +36,7 @@ void Open_LED();
 void Close_LED();
 void LED();
 void keyPrintWordEEP(uint16_t address);
+void keyPrintWordFlash(uint16_t address_t);
 //////////////////////eeprom//////////////////////////
 #define add1 10
 #define add2 add1+ROWS //15 15
