@@ -19,6 +19,7 @@ BOOTLOADER_ADDRESS = 0x7000
 F_CPU = 16000000
 FUSEH = 0xD0
 FUSEL = 0x0F
+
 # Fuse high byte:
 # 0xc0 = 1 1 0 0   0 0 0 0 <-- BOOTRST (boot reset vector at 0x1800 启用bootloader)
 #        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0 BootLoader地址
@@ -36,6 +37,8 @@ FUSEL = 0x0F
 #        | +------------------ BODEN (BrownOut Detector enabled bod是掉电检测)
 #        +-------------------- BODLEVEL (2.7V)
 
+#Press Q(bface60) or X(bface96),and then Connect USB to start bootloader
+#Use tinytools to upload hex file
 ###############################################################################
 
 AVRDUDE = avrdude -c stk500v2 -P avrdoper -p $(DEVICE)

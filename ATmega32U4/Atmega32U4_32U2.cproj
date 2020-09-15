@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>Atmega32U4_GH60RevB_Test1</AssemblyName>
-    <Name>Atmega32U4_16U4</Name>
+    <Name>Atmega32U4_32U2</Name>
     <RootNamespace>Atmega32U4_GH60RevB_Test1</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
