@@ -8,7 +8,9 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <avr/eeprom.h>
-#define  xd60
+
+#define CXT64
+//#define  xd60
 //#define  xd75
 //#define  staryu
 //#define  xd004
@@ -32,6 +34,11 @@
 #define COLS  5
 #define PRODUCT_ID		0x0105
 #define WS2812_COUNT	1
+#elif defined(CXT64)
+#define ROWS  5
+#define COLS  15
+#define PRODUCT_ID		0xD064
+#define WS2812_COUNT	64
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)

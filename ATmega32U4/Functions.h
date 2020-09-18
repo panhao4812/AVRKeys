@@ -16,9 +16,17 @@
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define Maxdelay 0x0200
+#elif (defined CXT64 )
+#define WS2812_PORT		PORTD
+#define WS2812_DDR		DDRD
+#define WS2812_MASK		(1<<7)
+#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define Maxdelay 0x0100
 #endif
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
-uint8_t RGB_Type;// bit1-> 0 off 1 on ;bit0-> 0 fix，1 Rainbow
+uint8_t RGB_Type;
+//bit4->第1组 0 off, 1 on
+//bit0-3->第1组 0 fix WS2812fix[]，1 Rainbow cindex[]，print
 //////////////////////matrix/////////////////////////
 #define _delay_after 0x08
 #define _delay_before 0x04
