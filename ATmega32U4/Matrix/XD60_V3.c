@@ -247,7 +247,7 @@ int init_main(void) {
 	while (1) {//÷ÿ∆Ù
 		EnableRecv=1;
 		keyboard_buffer.enable_pressing=1;
-		RGB_Type=0x11;///set default on & rainbow
+		RGB_Type=0x01;///set default on & rainbow
 		releaseAllkeyboardkeys();
 		releaseAllmousekeys();
 		ResetMatrixFormEEP();

@@ -300,6 +300,7 @@ int init_main(void) {
 	init_rows();
 	while (1) {
 		keyboard_buffer.enable_pressing=1;
+		RGB_Type=0x01;
 		releaseAllkeyboardkeys();
 		releaseAllmousekeys();
 		ResetMatrixFormEEP();

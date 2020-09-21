@@ -21,7 +21,7 @@
 #define WS2812_DDR		DDRD
 #define WS2812_MASK		(1<<7)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define Maxdelay 0x0100
+#define Maxdelay 0x0010
 #endif
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;

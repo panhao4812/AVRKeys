@@ -16,18 +16,18 @@ uint8_t colPins[COLS]={16,17,18,19,20,21,24,0,1,2,3,5,6,7,8};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
 uint8_t ledPins[ledcount]={23};
 uint16_t cindex[WS2812_COUNT]={
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00, 
-0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
+	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00
 };
 uint8_t hexaKeys0[ROWS][COLS] = {
-		{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE},
-		{KEY_TAB,0x00,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH},
-		{KEY_CAPS_LOCK,0x00,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,KEY_ENTER,0x00},
-		{0x00,KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,KEY_RIGHT_SHIFT,KEY_UP,KEY_RIGHT_CTRL},
-		{KEY_LEFT_CTRL,KEY_FN,0x00,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_FN,KEY_FN,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
+	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE},
+	{KEY_TAB,0x00,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH},
+	{KEY_CAPS_LOCK,0x00,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,KEY_ENTER,0x00},
+	{0x00,KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,KEY_RIGHT_SHIFT,KEY_UP,KEY_RIGHT_CTRL},
+	{KEY_LEFT_CTRL,KEY_FN,0x00,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_FN,KEY_FN,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
 };
 uint8_t hexaKeys1[ROWS][COLS] = {
 	{KEY_TILDE,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12,0x00, KEY_DELETE},
@@ -105,37 +105,58 @@ void LED(){
 	if(ledmacro & (1<<5)){}//full led on
 	else{}//full led off
 	////////////////rgb////////////////
-	if(delayval>=Maxdelay){
-		if(ledmacro & (1<<4)){
+	if(ledmacro & (1<<4)){
+		/////////////////rianbow/////////////////////
+		if((ledmacro&0x0F)==0x01 && delayval>=Maxdelay*16){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((ledmacro&0x0F)==0x01){
-					if(cindex[i]>=WS2812ColorCount) cindex[i]=0;
-					uint8_t r=pgm_read_byte(Rcolors+cindex[i]);
-					uint8_t g=pgm_read_byte(Gcolors+cindex[i]);
-					uint8_t b=pgm_read_byte(Bcolors+cindex[i]);
-					WS2812SetRGB(i,r,g,b);
-					cindex[i]++;
-				}
-				else if((ledmacro&0x0F)==0x00){
-					WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);//default
-				}
-				else if((ledmacro&0x0F)==0x02){
-					
+				if(cindex[i]>=WS2812ColorCount) cindex[i]=0;
+				uint8_t r=pgm_read_byte(Rcolors+cindex[i]);
+				uint8_t g=pgm_read_byte(Gcolors+cindex[i]);
+				uint8_t b=pgm_read_byte(Bcolors+cindex[i]);
+				WS2812SetRGB(i,r,g,b);
+				cindex[i]++;
+			}
+		}
+		/////////////////fix/////////////////////
+		else if((ledmacro&0x0F)==0x00 && delayval>=Maxdelay*16){
+			for(uint8_t i=0;i<WS2812_COUNT;i++){
+				WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);//default
+			}
+		}
+		/////////////////print/////////////////////
+		else if((ledmacro&0x0F)==0x02 && !(delayval % Maxdelay)){
+			uint8_t wsi=0;
+			//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
+			for (r = 0; r < ROWS; r++) {
+				for (c = 0; c < COLS; c++) {
+					if(wsi<WS2812_COUNT ){
+						if(keymask[r][c] & 0x88){
+							WS2812SetRGB(wsi,WS2812fix[wsi*3],WS2812fix[wsi*3+1],WS2812fix[wsi*3+2]);
+						}
+						else{
+							WS2812SetRGB(wsi,0,0,0);
+						}
+						wsi++;
+					}
 				}
 			}
-			}else{
-		WS2812Clear();}
+		}
+		}else{
+		/////////////////////closed///////////////////
+		WS2812Clear();
+	}
+	///////////////////clock/////////////////
+	if(delayval>=Maxdelay*16){
 		delayval--;
 		WS2812Send2();
 		}else{
 		if(delayval){
 			delayval--;
 			}else {
-			delayval=Maxdelay;
+			delayval=Maxdelay*16;
 		}
 	}
 }
-
 /////////////////////////////////////////////////////////////////////
 void QMKMode(){
 	for (r = 0; r < ROWS; r++) {
@@ -220,7 +241,7 @@ int init_main(void) {
 	while (1) {//重启
 		EnableRecv=1;
 		keyboard_buffer.enable_pressing=1;
-		RGB_Type=0x11;///set default on & rainbow
+		RGB_Type=0x02;//set default rgb
 		releaseAllkeyboardkeys();
 		releaseAllmousekeys();
 		ResetMatrixFormEEP();
