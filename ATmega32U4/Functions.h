@@ -25,7 +25,12 @@
 #endif
 uint8_t WS2812fix[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;
-//bit4->第1组 0 off, 1 on
+uint8_t ledmacro;
+//ledmacro和RGB_Type定义相同
+//bit7->第1组 0 off, 1 on
+//bit6->第2组 0 off, 1 on
+//bit5->第full组 0 off, 1 on
+//bit4->第RGB组 0 off, 1 on
 //bit0-3->第1组 0 fix WS2812fix[]，1 Rainbow cindex[]，print
 //////////////////////matrix/////////////////////////
 #define _delay_after 0x08

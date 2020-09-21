@@ -80,7 +80,6 @@ uint16_t delayval;
 uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing ºóÒ¡
 uint8_t delay_before=0;//windup Ç°Ò¡
-uint8_t ledmacro=0;//¼ÇÂ¼led×´Ì¬
 void init_cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
@@ -120,7 +119,7 @@ void Reset_LED(){
 		digitalWrite(ledPins[i],LOW);
 	}
 	digitalWrite(fullled,LOW);
-	ledmacro=0;if((RGB_Type&0xF0)==0x10)ledmacro=0x02;
+	ledmacro=RGB_Type;
 	WS2812Clear();
 	WS2812Send2();
 }
@@ -131,16 +130,16 @@ void LED(){
 		else{
 		digitalWrite(ledPins[i],LOW);}
 	}
-	////////////////////////////////
-	if(ledmacro & (1<<0)){
+	/////////////full led///////////////////
+	if(ledmacro & (1<<5)){
 	digitalWrite(fullled,HIGH);}
 	else{
 	digitalWrite(fullled,LOW);}
-	////////////////////////////////
+	/////////////RGB///////////////////
 	if(delayval>=Maxdelay){
-		if(ledmacro & (1<<1)){
+		if(ledmacro & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((RGB_Type&0x0F)==0x01){
+				if((ledmacro&0x0F)==0x01){
 					if(cindex[i]>=WS2812ColorCount) cindex[i]=0;
 					uint8_t r=pgm_read_byte(Rcolors+cindex[i]);
 					uint8_t g=pgm_read_byte(Gcolors+cindex[i]);
@@ -148,7 +147,7 @@ void LED(){
 					WS2812SetRGB(i,r,g,b);
 					cindex[i]++;
 				}
-				else if((RGB_Type&0x0F)==0x00){
+				else if((ledmacro&0x0F)==0x00){
 					WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);
 				}
 			}
@@ -163,14 +162,6 @@ void LED(){
 			delayval=Maxdelay;
 		}
 	}
-}
-uint8_t usb_macro_send(){
-	ledmacro^=macroreport;
-	if(macroreport&MACRO3){
-		keyPrintWordEEP(addPrint);
-		return 1;
-	}
-	return 0;
 }
 /////////////////////////////////////////////////////////////////////
 void QMKMode(){

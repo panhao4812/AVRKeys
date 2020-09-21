@@ -76,6 +76,12 @@ uint8_t usb_keyboard_send_required(){
     if(send_required_t)keyboard_buffer.Send_Required=send_required_t;
 	return send_required_t;
 }
+uint8_t usb_macro_send_required(){
+	if (macroreport!=macrobuffer){
+		macroreport=macrobuffer;
+	return 1;}
+	return 0;
+}
 uint8_t usb_mouse_send(){
 	if(mouse_buffer.Send_Required==0)return 0;
 	i1=0;
@@ -150,7 +156,49 @@ void ClearRaw(){
 	memset( &raw_report_in, 0,sizeof(raw_report_in));
 	memset(&raw_report_out, 0,sizeof(raw_report_out));
 }
+uint8_t usb_macro_send(){
+	// MACRO0 0x01//full led
+	// MACRO1 0x02//rgb led
+	// MACRO2 0x04//esc ~
+	// MACRO3 0x08//print eep
+	//ledmacro和RGB_Type定义相同
+	//bit7->第1组 0 off, 1 on
+	//bit6->第2组 0 off, 1 on
+	//bit5->第full组 0 off, 1 on
+	//bit4->第RGB组 0 off, 1 on
+	//bit0-3->第1组 0 fix WS2812fix[]，1 Rainbow cindex[]，print
+	if(macroreport&MACRO0){
+		ledmacro^=(1<<5);
+	}
+	if(macroreport&MACRO1){
+		ledmacro^=(1<<4);
+	}
+	if(macroreport&MACRO3){
+		keyPrintWordEEP(addPrint);
+		return 1;
+	}
+	#ifdef address_end
+	if(macroreport&MACRO4){
+		keyPrintWordFlash(address_end);
+		return 1;
+	}
+	#endif
+	return 0;
+}
 /////////////////////keys action//////////////////////////////////////////////////
+void pressmacrokey(uint8_t key){
+	if(key==MACRO2){
+		if(keyboard_report.modifier){
+			//不能用keyboard buffer 因为buffer是记录不稳定状态
+			//report 则记录稳定状态
+			presskey(KEY_TILDE);
+		}
+		else{
+			presskey(KEY_ESC);
+		}
+	}
+	macrobuffer|=key;
+}
 uint8_t presskey(uint8_t key){
 	uint8_t i;
 	for ( i=0; i < 6; i++) {
@@ -416,25 +464,6 @@ uint8_t digitalRead(uint8_t IO){
 }
 #endif
 ////////////////////////keyprint//////////////////////
-void pressmacrokey(uint8_t key){
-	if(key==MACRO2){
-		if(keyboard_report.modifier){
-			//不能用keyboard buffer 因为buffer是记录不稳定状态
-			//report 则记录稳定状态
-			presskey(KEY_TILDE);
-		}
-		else{
-			presskey(KEY_ESC);
-		}
-	}
-	macrobuffer|=key;
-}
-uint8_t usb_macro_send_required(){
-	if (macroreport!=macrobuffer){
-		macroreport=macrobuffer;
-	return 1;}
-	return 0;
-}
 void keyPrintChinese(uint8_t data[5]){
 memset( &print_keyboard_report, 0,sizeof(keyboard_report));
 	while(1){usbPoll();
