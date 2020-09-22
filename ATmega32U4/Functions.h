@@ -23,15 +23,16 @@
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define Maxdelay 0x0010
 #endif
-uint8_t WS2812fix[(WS2812_COUNT * 3)];
+uint8_t RGB_Rainbow[WS2812_COUNT];
+uint8_t RGB_FixColor[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;
-uint8_t ledmacro;
-//ledmacro和RGB_Type定义相同
+uint8_t RGB_State;
+//RGB_State和RGB_Type定义相同,一个是实时，一个是默认状态。
 //bit7->第1组 0 off, 1 on
 //bit6->第2组 0 off, 1 on
 //bit5->第full组 0 off, 1 on
 //bit4->第RGB组 0 off, 1 on
-//bit0-3->第1组 0 fix WS2812fix[]，1 Rainbow cindex[]，print
+//bit0-3->第1组 0 fix RGB_FixColor[]，1 Rainbow RGB_Rainbow[]，print
 //////////////////////matrix/////////////////////////
 #define _delay_after 0x08
 #define _delay_before 0x04

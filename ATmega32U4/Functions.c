@@ -144,17 +144,17 @@ uint8_t usb_macro_send(){
 	// MACRO1 0x02//rgb led
 	// MACRO2 0x04//esc ~
 	// MACRO3 0x08//print eep
-	//ledmacro和RGB_Type定义相同
+	//RGB_State和RGB_Type定义相同
 	//bit7->第1组 0 off, 1 on
 	//bit6->第2组 0 off, 1 on
 	//bit5->第full组 0 off, 1 on
 	//bit4->第RGB组 0 off, 1 on
-	//bit0-3->第1组 0 fix WS2812fix[]，1 Rainbow cindex[]，print
+	//bit0-3->第1组 0 fix RGB_FixColor[]，1 Rainbow RGB_Rainbow[]，print
 	if(macroreport&MACRO0){
-		ledmacro^=(1<<5);
+		RGB_State^=(1<<5);
 	}
 	if(macroreport&MACRO1){
-		ledmacro^=(1<<4);
+		RGB_State^=(1<<4);
 	}
 	if(macroreport&MACRO3){
 		keyPrintWordEEP(addPrint);
@@ -305,7 +305,7 @@ void ResetMatrixFormEEP(){
 	ResetMatrix(0,address_hexakeys0);
 	ResetMatrix(1,address_hexaKeys1);
 	ResetMatrix(2,address_keymask);
-	for( j=0;j<(WS2812_COUNT * 3);j++){WS2812fix[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
+	for( j=0;j<(WS2812_COUNT * 3);j++){RGB_FixColor[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
 	RGB_Type=eeprom_read_byte((uint8_t *)addPrint);
 	//RGB_Type&=0x11;
 }

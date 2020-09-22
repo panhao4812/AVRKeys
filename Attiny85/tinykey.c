@@ -7,16 +7,16 @@
 uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing
 uint8_t delay_before=0;//windup
-uint8_t ledmacro=0;
+uint8_t RGB_State=0;
 uint16_t delayval;
-uint8_t cindex[WS2812_COUNT]={0,0};
+uint8_t RGB_Rainbow[WS2812_COUNT]={0,0};
 uint8_t rowPins[ROWS]={0xFF};
 uint8_t colPins[COLS]={0,1};
 uint8_t hexaKeys0[ROWS][COLS] = {{KEY_Z,KEY_X}};
 uint8_t hexaKeys1[ROWS][COLS] ={{0,0}};
 uint8_t keymask[ROWS][COLS] = {{0x10,0x10}};
 uint8_t usb_macro_send(){
-	ledmacro^=macroreport;
+	RGB_State^=macroreport;
 	if(macroreport&MACRO3){
 		keyPrintWordEEP(addPrint);
 		//exe program upload 6 bytes once 
@@ -44,22 +44,22 @@ void init_LED(){
 	WS2812Setup();delayval=Maxdelay;
 	WS2812Clear();
 	WS2812Send2();
-	if((RGB_Type&0xF0)==0x10){ledmacro|=(1<<1);}else{ledmacro&= ~(1<<1);}
+	if((RGB_Type&0xF0)==0x10){RGB_State|=(1<<1);}else{RGB_State&= ~(1<<1);}
 }
 void LED(){
 	if(delayval>=Maxdelay){
-		if(ledmacro & (1<<1)){
+		if(RGB_State & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_Type&0x0F)==0x01){
-					if(cindex[i]>=WS2812ColorCount) cindex[i]=0;
-					uint8_t r=pgm_read_byte(Rcolors+cindex[i]);
-					uint8_t g=pgm_read_byte(Gcolors+cindex[i]);
-					uint8_t b=pgm_read_byte(Bcolors+cindex[i]);
+					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
+					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
+					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
 					WS2812SetRGB(i,r,g,b);
-					cindex[i]++;
+					RGB_Rainbow[i]++;
 				}
 				else if((RGB_Type&0x0F)==0x00){
-					WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);
+					WS2812SetRGB(i,RGB_FixColor[i*3],RGB_FixColor[i*3+1],RGB_FixColor[i*3+2]);
 				}
 			}
 		}else{WS2812Clear();}

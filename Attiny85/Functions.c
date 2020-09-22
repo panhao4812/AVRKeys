@@ -37,7 +37,7 @@ void ResetMatrixFormEEP(){
 	ResetMatrix(0,address_hexakeys0);
 	ResetMatrix(1,address_hexaKeys1);
 	ResetMatrix(2,address_keymask);
-	for( j=0;j<(WS2812_COUNT * 3);j++){WS2812fix[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
+	for( j=0;j<(WS2812_COUNT * 3);j++){RGB_FixColor[j]=eeprom_read_byte((uint8_t *)(j+addRGB));}
 	RGB_Type=eeprom_read_byte((uint8_t *)addRGBType);
 }
 void usbFunctionWriteOut(uchar *data, uchar len){

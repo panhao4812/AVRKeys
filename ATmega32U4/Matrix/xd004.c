@@ -75,13 +75,13 @@ void Reset_LED(){
 	for ( i=0; i<ledcount; i++){
 		digitalWrite(ledPins[i],HIGH);
 	}
-	ledmacro=RGB_Type;
+	RGB_State=RGB_Type;
 	WS2812Clear();
 	WS2812Send2();
 }
 void LED(){
 	//////////////////////////////full led/////////////////////
-	if(ledmacro & (1<<5)){
+	if(RGB_State & (1<<5)){
 		Open_LED();
 	}
 	else{
@@ -89,18 +89,18 @@ void LED(){
 	}
 	////////////////////////////RGB////////////////////////
 	if(delayval>=Maxdelay){
-		if(ledmacro & (1<<4)){
+		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((ledmacro&0x0F)==0x01){
-					if(cindex[i]>=WS2812ColorCount) cindex[i]=0;
-					uint8_t r=pgm_read_byte(Rcolors+cindex[i]);
-					uint8_t g=pgm_read_byte(Gcolors+cindex[i]);
-					uint8_t b=pgm_read_byte(Bcolors+cindex[i]);
+				if((RGB_State&0x0F)==0x01){
+					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
+					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
+					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
 					WS2812SetRGB(i,r,g,b);
-					cindex[i]++;
+					RGB_Rainbow[i]++;
 				}
-				else if((ledmacro&0x0F)==0x00){
-					WS2812SetRGB(i,WS2812fix[i*3],WS2812fix[i*3+1],WS2812fix[i*3+2]);
+				else if((RGB_State&0x0F)==0x00){
+					WS2812SetRGB(i,RGB_FixColor[i*3],RGB_FixColor[i*3+1],RGB_FixColor[i*3+2]);
 				}
 			}
 			}else{
