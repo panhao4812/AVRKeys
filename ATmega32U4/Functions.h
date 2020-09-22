@@ -9,58 +9,58 @@
 #define WS2812_DDR		DDRF
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MaxDelay 0x0100
+#define MAX_DELAY 0x0100
 #elif (defined xd004 )||(defined staryu )
 #define WS2812_PORT		PORTC
 #define WS2812_DDR		DDRC
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MaxDelay 0x0200
+#define MAX_DELAY 0x0200
 #elif (defined CXT64 )
 #define WS2812_PORT		PORTD
 #define WS2812_DDR		DDRD
 #define WS2812_MASK		(1<<7)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MaxDelay 0x0010
+#define MAX_DELAY 0x0010
 #endif
-uint8_t RGB_Rainbow[WS2812_COUNT];
-uint8_t RGB_FixColor[(WS2812_COUNT * 3)];
-uint8_t RGB_Type;
-uint8_t RGB_State;
-//RGB_State和RGB_Type定义相同,一个是实时，一个是默认状态。
+uint8_t rgb_rainbow[WS2812_COUNT];
+uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
+uint8_t rgb_type;
+uint8_t rgb_state;
+//rgb_state和rgb_type定义相同,一个是实时，一个是默认状态。
 //bit7->第1组 0 off, 1 on
 //bit6->第2组 0 off, 1 on
 //bit5->第full组 0 off, 1 on
 //bit4->第RGB组 0 off, 1 on
-//bit0-3->第1组 0 fix RGB_FixColor[]，1 Rainbow RGB_Rainbow[]，print
+//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，print
 //////////////////////matrix/////////////////////////
-#define _delay_after 0x08
-#define _delay_before 0x04
-extern  uint8_t hexaKeys0[ROWS][COLS] ;
-extern  uint8_t hexaKeys1[ROWS][COLS];
-extern  uint8_t keyMask[ROWS][COLS];
-extern  uint8_t rowPins[ROWS];
-extern  uint8_t colPins[COLS];
-int Init_Main(void);
-void Init_Cols();
-void Init_Rows();
-void QMK_Mode();
-void Init_LED();
-void Open_LED();
-void Close_LED();
-void Update_LED();
+#define DELAY_AFTER 0x08
+#define DELAY_BEFORE 0x04
+extern  uint8_t hexa_keys0[ROWS][COLS] ;
+extern  uint8_t hexa_keys1[ROWS][COLS];
+extern  uint8_t key_mask[ROWS][COLS];
+extern  uint8_t row_pins[ROWS];
+extern  uint8_t col_pins[COLS];
+int initMain(void);
+void initCols();
+void initRows();
+void qmkMode();
+void initLED();
+void openLED();
+void closeLED();
+void updateLED();
 void keyPrintWordEEP(uint16_t address);
 void keyPrintWordFlash(uint16_t address_t);
 //////////////////////eeprom//////////////////////////
-#define add1 10
-#define add2 add1+ROWS //15 15
-#define add3 add2+COLS //30 29
-#define add4 add3+(ROWS*COLS) //30+15*5=105 99
-#define add5 add4+(ROWS*COLS) //105+75=180 169
-#define addRGB add5+(ROWS*COLS) //180+75=255 239
-#define addRGBType addRGB+(WS2812_COUNT*3)//
-#define addPrint addRGB+(WS2812_COUNT*3)+6 //
-void ResetMatrixFormEEP();
+#define ADD_INDEX 10
+#define ADD_ROW ADD_INDEX+ROWS //15 15
+#define ADD_COL ADD_ROW+COLS //30 29
+#define ADD_KEYS1 ADD_COL+(ROWS*COLS) //30+15*5=105 99
+#define ADD_KEYS2 ADD_KEYS1+(ROWS*COLS) //105+75=180 169
+#define ADD_RGB ADD_KEYS2+(ROWS*COLS) //180+75=255 239
+#define ADD_RGBTYPE ADD_RGB+(WS2812_COUNT*3)//
+#define ADD_EEP ADD_RGB+(WS2812_COUNT*3)+6 //
+void resetMatrixFormEEP();
 //////////////////////IO////////////////////////////////
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 #define CPU_16MHz       0x00

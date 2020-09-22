@@ -230,7 +230,7 @@ section at the end of this file).
 
 /* -------------------------- Device Description --------------------------- */
 #define VENDOR_ID       0xD850
-#define PRODUCT_ID      0x0102
+#define PRODUCT_ID      0xD002
 #define DEVICE_VER      0x0001
 #define USB_CFG_VENDOR_ID (VENDOR_ID & 0xFF), ((VENDOR_ID >> 8) & 0xFF)
 /* USB vendor ID for the device, low byte first. If you have registered your

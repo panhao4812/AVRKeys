@@ -32,12 +32,12 @@ extern const PROGMEM uint8_t  RawReport[];
 #define REPORT_ID_SYSTEM    2
 #define REPORT_ID_CONSUMER  3
 ////////////////////macro////////////////////////////
-uint8_t macroreport;
-uint8_t macrobuffer;
-static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
-void pressmacrokey(uint8_t key);
-uint8_t usb_macro_send_required();
-uint8_t usb_macro_send();
+uint8_t macro_report;
+uint8_t macro_buffer;
+static inline void clearMacro(){macro_buffer=0;macro_report=0;}
+void pressMacroKey(uint8_t key);
+uint8_t usbMacroSendRequired();
+uint8_t usbMacroSend();
 ///////////////////struct//////////////////////////////
 typedef struct {
     uint8_t report_id;
@@ -95,29 +95,29 @@ report_keyboard_t print_keyboard_report;
 report_keyboard_t keyboard_report;
 buffer_keyboard_t keyboard_buffer;
 //////////////////////////usb////////////////////////////////
-void usb_init();
-void ClearKeyboard();
-void ClearMouse();
-void ClearRaw();
-void usb_update();
-uint8_t usb_keyboard_send();
-uint8_t usb_keyboard_send2();
-uint8_t usb_mouse_send();
-uint8_t usb_keyboard_send_required();
-uint8_t usb_mouse_send_required();
-void vusb_transfer_keyboard();
+void usbInit();
+void clearKeyboard();
+void clearMouse();
+void clearRaw();
+void usbUpdate();
+uint8_t usbKeyboardSend();
+uint8_t usbKeyboardSend2();
+uint8_t usbMouseSend();
+uint8_t usbKeyboardSendRequired();
+uint8_t usbMouseSendRequired();
+void vusbTransferKeyboard();
 void pressModifierKeys(uint8_t key);
-uint8_t presskey(uint8_t key);
-void pressmousekey(uint8_t key);
-void presssystemkey(uint8_t key);
-void pressconsumerkey(uint8_t key);
-void releaseAllmousekeys();
-void releaseAllkeyboardkeys();
-uint8_t IsBufferClear();
+uint8_t pressKey(uint8_t key);
+void pressMouseKey(uint8_t key);
+void pressSystemKey(uint8_t key);
+void pressConsumerKey(uint8_t key);
+void releaseAllMousekeys();
+void releaseAllKeyboardKeys();
+uint8_t isBufferClear();
 ///////////////SOF//////////////			
-uint16_t suspendedTimeCount;
+uint16_t suspended_time_count;
 uint8_t suspended;
-void init_SOF();
+void initSOF();
 void SOF();
 /////////////////ascii////////////////////
 extern const  uint8_t  ascii_to_scan_code_table[] PROGMEM;

@@ -1,12 +1,15 @@
+/*
+ 命名规则
+ 常数为大写下划线
+ 变量为小写下划线
+ 函数为首字母小写无下划线 inline 首字母大写
+ */ 
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
 #include <avr/io.h>
 #include "usbdevice.h"
 #include "Keycode.h"
-//#define ps2avrU
-//#define bface60_v2_1
-#define minila
 
 #if defined(ps2avrU)
 #define ROWS  8
@@ -30,46 +33,46 @@
 #define WS2812_DDR		DDRC
 #define WS2812_MASK		(1<<1)
 #define WS2812_SAVE		1
-#define MaxDelay 0x1000
-uint8_t RGB_Rainbow[WS2812_COUNT];
-uint8_t RGB_FixColor[(WS2812_COUNT * 3)];
-uint8_t RGB_Type;
-uint8_t RGB_State;
-//RGB_State和RGB_Type定义相同
+#define MAX_DELAY 0x1000
+uint8_t rgb_rainbow[WS2812_COUNT];
+uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
+uint8_t rgb_type;
+uint8_t rgb_state;
+//rgb_state和rgb_type定义相同
 //bit7->第1组 0 off, 1 on
 //bit6->第2组 0 off, 1 on
 //bit5->第full组 0 off, 1 on
 //bit4->第RGB组 0 off, 1 on
-//bit0-3->第1组 0 fix RGB_FixColor[]，1 Rainbow RGB_Rainbow[]，print
+//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，print
 ////////////////matrix////////////////////
-#define _delay_after 0x06
-#define _delay_before 0x03
-uint8_t keyMask[ROWS][COLS];
-uint8_t hexaKeys1[ROWS][COLS];
-uint8_t hexaKeys0[ROWS][COLS];
-uint8_t rowPins[ROWS];
-uint8_t colPins[COLS];
-int Init_Main(void);
-void Init_Rows();
-void Init_Cols();
-void Open_LED();
-void Close_LED();
-void Init_LED();
-void Reset_LED();
-void Update_LED();
-void Bface_Mod();
+#define DELAY_AFTER  0x06
+#define DELAY_BEFORE  0x03
+uint8_t key_mask[ROWS][COLS];
+uint8_t hexa_keys1[ROWS][COLS];
+uint8_t hexa_keys0[ROWS][COLS];
+uint8_t row_pins[ROWS];
+uint8_t col_pins[COLS];
+int initMain(void);
+void initRows();
+void initCols();
+void openLED();
+void closeLED();
+void initLED();
+void resetLED();
+void updateLED();
+void bfaceMod();
 void keyPrintWordEEP(uint16_t address_t);
 ///////////////////eeprom//////////////////////////
-#define add1 10
-#define add2 add1+ROWS //10+5=15
-#define add3 add2+COLS //15+15=30
-#define add4 add3+(ROWS*COLS) //30+15*5=105
-#define add5 add4+(ROWS*COLS) //105+15*5=180
-#define addRGB add5+(ROWS*COLS) //180+15*5=255
-#define addRGBType addRGB+(WS2812_COUNT*3)//255+12*3=291
-#define addPrint addRGB+(WS2812_COUNT*3)+6 //291+6=297
-void ResetMatrix(uint8_t mask,uint16_t address);
-void ResetMatrixFormEEP();
+#define ADD_INDEX 10
+#define ADD_ROW ADD_INDEX+ROWS //10+5=15
+#define ADD_COL ADD_ROW+COLS //15+15=30
+#define ADD_KEYS1 ADD_COL+(ROWS*COLS) //30+15*5=105
+#define ADD_KEYS2 ADD_KEYS1+(ROWS*COLS) //105+15*5=180
+#define ADD_RGB ADD_KEYS2+(ROWS*COLS) //180+15*5=255
+#define ADD_RGBTYPE ADD_RGB+(WS2812_COUNT*3)//255+12*3=291
+#define ADD_EEP ADD_RGB+(WS2812_COUNT*3)+6 //291+6=297
+void resetMatrix(uint8_t mask,uint16_t address);
+void resetMatrixFormEEP();
 //////////////////////////IO////////////////////////////
 #define LOW 0
 #define HIGH 1

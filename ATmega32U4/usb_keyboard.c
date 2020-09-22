@@ -276,26 +276,26 @@ const  usb_string_descriptor_struct PROGMEM string2 = {
 
 // initialize USB
 
-void usb_init(void)
+void usbInit(void)
 {
 	HW_CONFIG();
 	USB_FREEZE();	// enable USB
 	PLL_CONFIG();				// config PLL
-	while (PLL_configured()!=0);	// wait for PLL lock
+	while (PLLConfigured()!=0);	// wait for PLL lock
 	USB_CONFIG();				// start USB clock
 	UDCON = 0;				// enable attach resistor
 	usb_configuration = 0;
 	EndOfReset();
 	StartOfFrame();
 	sei();
-	ClearKeyboard();
-	ClearMouse();
-	ClearRaw();
-	ClearMacro();
+	clearKeyboard();
+	clearMouse();
+	clearRaw();
+	clearMacro();
 }
 // return 0 if the USB is not configured, or the configuration
 // number selected by the HOST
-uint8_t usb_configured(void)
+uint8_t usbConfigured(void)
 {
 	return usb_configuration;
 }
@@ -306,7 +306,7 @@ void Recv(volatile uint8_t* data, uint8_t count)
 }
 // send the contents of keyboard_keys and keyboard_modifier_keys
 
-uint8_t usb_recv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout)
+uint8_t usbRecv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout)
 {
 	uint8_t intr_state;
 	if (!usb_configuration) return 1;
@@ -328,7 +328,7 @@ uint8_t usb_recv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t ti
 	SREG = intr_state;
 	return 0;
 }
-uint8_t usb_send(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout)
+uint8_t usbSend(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout)
 {
 	uint8_t intr_state;
 	if (!usb_configuration) return 1;
@@ -359,14 +359,14 @@ uint8_t usb_send(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint
 // USB Device Interrupt - handle all device-level events
 // the transmit buffer flushing is triggered by the start of frame
 //	General interrupt
-void EVENT_USB_Device_StartOfFrame()
+void eventUSBDeviceStartOfFrame()
 {
 	static uint8_t count;
 	if (++count % 50) return;
 	count = 0;
 	if (ReadWriteAllowed()&& EnableRecv){
-		if(keyboard_buffer.enable_pressing==0)	{EnableRecv=usb_recv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,RAW_EPSIZE ,0);}
-		else { EnableRecv=usb_recv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,2, 0);}
+		if(keyboard_buffer.enable_pressing==0)	{EnableRecv=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,RAW_EPSIZE ,0);}
+		else { EnableRecv=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,2, 0);}
 	}
 }
 ISR(USB_GEN_vect)
@@ -385,7 +385,7 @@ ISR(USB_GEN_vect)
 	}
 	//////////////////////////////////////////
 	if ((intbits & (1<<SOFI)) && usb_configuration) {
-		EVENT_USB_Device_StartOfFrame();
+		eventUSBDeviceStartOfFrame();
 		if (keyboard_buffer.keyboard_idle_config && (++div4 & 3) == 0) {
 			SetEP(KEYBOARD_ENDPOINT);
 			if (ReadWriteAllowed()) {

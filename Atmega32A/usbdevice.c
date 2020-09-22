@@ -27,7 +27,7 @@ void setUsbOff(void) {
 	PORTD &= ~(1 << 5);
 	#endif
 }
-void usb_init(){
+void usbInit(){
 clearTimers();
 setUsbOn();
 uint8_t i = 0;
@@ -39,10 +39,10 @@ uint8_t i = 0;
 	  }
 	usbDeviceConnect();
 	sei();
-	ClearKeyboard();
-	ClearMouse();
-	ClearRaw();
-	ClearMacro();
+	clearKeyboard();
+	clearMouse();
+	clearRaw();
+	clearMacro();
 	#ifdef CLKPR
 	CLKPR = 0x80, CLKPR = 0;
 	#endif
@@ -80,17 +80,17 @@ uchar usbFunctionWrite(uchar *data, uchar len)
 	}
 	return -1;
 }
-void init_SOF(){
- suspendedTimeCount=0;
+void initSOF(){
+ suspended_time_count=0;
  suspended=0;
 }
 void SOF(){
 #if USB_COUNT_SOF
 if (usbSofCount != 0) {
-	suspended = 0;usbSofCount = 0;suspendedTimeCount=0;
+	suspended = 0;usbSofCount = 0;suspended_time_count=0;
 }
 else{
-	if (suspendedTimeCount>1000) {suspended = 1;}else{suspendedTimeCount++;}
+	if (suspended_time_count>1000) {suspended = 1;}else{suspended_time_count++;}
 }
 #endif
 }

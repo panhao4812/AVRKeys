@@ -5,77 +5,77 @@
 #include "ws2812.h"
 #include "Functions.h"
 uint8_t r,c,i,FN;
-uint8_t delay_after=0;//backswing
-uint8_t delay_before=0;//windup
-uint8_t RGB_State=0;
-uint16_t delayval;
-uint8_t RGB_Rainbow[WS2812_COUNT]={0,0};
-uint8_t rowPins[ROWS]={0xFF};
-uint8_t colPins[COLS]={0,1};
-uint8_t hexaKeys0[ROWS][COLS] = {{KEY_Z,KEY_X}};
-uint8_t hexaKeys1[ROWS][COLS] ={{0,0}};
-uint8_t keyMask[ROWS][COLS] = {{0x10,0x10}};
-uint8_t usb_macro_send(){
-	RGB_State^=macroreport;
-	if(macroreport&MACRO3){
-		keyPrintWordEEP(addPrint);
+uint8_t DELAY_AFTER=0;//backswing
+uint8_t DELAY_BEFORE=0;//windup
+uint8_t rgb_state=0;
+uint16_t delay_val;
+uint8_t rgb_rainbow[WS2812_COUNT]={0,0};
+uint8_t row_pins[ROWS]={0xFF};
+uint8_t col_pins[COLS]={0,1};
+uint8_t hexa_keys0[ROWS][COLS] = {{KEY_Z,KEY_X}};
+uint8_t hexa_keys1[ROWS][COLS] ={{0,0}};
+uint8_t key_mask[ROWS][COLS] = {{0x10,0x10}};
+uint8_t usbMacroSend(){
+	rgb_state^=macro_report;
+	if(macro_report&MACRO3){
+		keyPrintWordEEP(ADD_EEP);
 		//exe program upload 6 bytes once 
 		return 1;
 	}
-	if(macroreport&MACRO4){
+	if(macro_report&MACRO4){
 		keyPrintCtl(KEY_A);
 		return 1;
 	}
-	if(macroreport&MACRO5){
+	if(macro_report&MACRO5){
 		keyPrintCtl(KEY_X);
 		return 1;
 	}
-	if(macroreport&MACRO6){
+	if(macro_report&MACRO6){
 		keyPrintCtl(KEY_C);
 		return 1;
 	}
-	if(macroreport&MACRO7){
+	if(macro_report&MACRO7){
 		keyPrintCtl(KEY_V);
 		return 1;
 	}
 	return 0;
 }
-void Init_LED(){
-	WS2812Setup();delayval=MaxDelay;
-	WS2812Clear();
-	WS2812Send2();
-	if((RGB_Type&0xF0)==0x10){RGB_State|=(1<<1);}else{RGB_State&= ~(1<<1);}
+void initLED(){
+	ws2812Setup();delay_val=MAX_DELAY;
+	ws2812Clear();
+	ws2812Send2();
+	if((rgb_type&0xF0)==0x10){rgb_state|=(1<<1);}else{rgb_state&= ~(1<<1);}
 }
-void Update_LED(){
-	if(delayval>=MaxDelay){
-		if(RGB_State & (1<<1)){
+void updateLED(){
+	if(delay_val>=MAX_DELAY){
+		if(rgb_state & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((RGB_Type&0x0F)==0x01){
-					if(RGB_Rainbow[i]>=WS2812_ColorCount) RGB_Rainbow[i]=0;
-					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
-					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
-					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
-					WS2812SetRGB(i,r,g,b);
-					RGB_Rainbow[i]++;
+				if((rgb_type&0x0F)==0x01){
+					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
+					uint8_t r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
+					uint8_t g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
+					uint8_t b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
+					ws2812SetRGB(i,r,g,b);
+					rgb_rainbow[i]++;
 				}
-				else if((RGB_Type&0x0F)==0x00){
-					WS2812SetRGB(i,RGB_FixColor[i*3],RGB_FixColor[i*3+1],RGB_FixColor[i*3+2]);
+				else if((rgb_type&0x0F)==0x00){
+					ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);
 				}
 			}
-		}else{WS2812Clear();}
-		delayval--;
-		WS2812Send2();
-	}else{if(delayval){delayval--;}else {delayval=MaxDelay;}}
+		}else{ws2812Clear();}
+		delay_val--;
+		ws2812Send2();
+	}else{if(delay_val){delay_val--;}else {delay_val=MAX_DELAY;}}
 }
-void Open_LED(){
+void openLED(){
 for(uint8_t i=0;i<WS2812_COUNT;i++){
- WS2812SetRGB(i,0,0,255);
+ ws2812SetRGB(i,0,0,255);
 }
-WS2812Send2();
+ws2812Send2();
 }
-void Close_LED(){
-WS2812Clear();
-WS2812Send2();
+void closeLED(){
+ws2812Clear();
+ws2812Send2();
 }
 void init_IO(){
 	DDRB&=~(1<<0)|(1<<1);
@@ -84,90 +84,90 @@ void init_IO(){
 void TinykeyMode(){
 	FN=0xF0;
 		for (c = 0; c < COLS; c++) {
-			if (digitalRead(colPins[c])) {keyMask[0][c]&= ~0x88;}
-			else {keyMask[0][c]|= 0x88;delay_after=_delay_after;}
-			if(keyMask[0][c]==0xEE )FN=0x0F;
+			if (digitalRead(col_pins[c])) {key_mask[0][c]&= ~0x88;}
+			else {key_mask[0][c]|= 0x88;DELAY_AFTER=DELAY_AFTER;}
+			if(key_mask[0][c]==0xEE )FN=0x0F;
 		}
-	releaseAllkeyboardkeys();
+	releaseAllKeyboardKeys();
 	#if MOUSE_ENABLE
-	releaseAllmousekeys();
+	releaseAllMousekeys();
 	#endif
-	macrobuffer=0;
+	macro_buffer=0;
 		for (c = 0; c < COLS; c++) {
-			switch(keyMask[0][c]&FN){
+			switch(key_mask[0][c]&FN){
 				case 0x90:
-				presskey(hexaKeys0[0][c]);
+				pressKey(hexa_keys0[0][c]);
 				break;
 				case 0xA0:
-				pressModifierKeys(hexaKeys0[0][c]);
+				pressModifierKeys(hexa_keys0[0][c]);
 				break;
 				case 0xF0:
-				pressmacrokey(hexaKeys0[0][c]);
+				pressMacroKey(hexa_keys0[0][c]);
 				break;
 				case 0x09:
-				presskey(hexaKeys1[0][c]);
+				pressKey(hexa_keys1[0][c]);
 				break;
 				case 0x0A:
-				pressModifierKeys(hexaKeys1[0][c]);
+				pressModifierKeys(hexa_keys1[0][c]);
 				break;
 				case 0x0F:
-				pressmacrokey(hexaKeys1[0][c]);
+				pressMacroKey(hexa_keys1[0][c]);
 				break;
 				#if MOUSE_ENABLE
 				case 0xB0:
-				pressmousekey(hexaKeys0[0][c]);
+				pressMouseKey(hexa_keys0[0][c]);
 				break;
 				case 0xC0:
-				presssystemkey(hexaKeys0[0][c]);
+				pressSystemKey(hexa_keys0[0][c]);
 				break;
 				case 0xD0:
-				pressconsumerkey(hexaKeys0[0][c]);
+				pressConsumerKey(hexa_keys0[0][c]);
 				break;
 				case 0x0B:
-				pressmousekey(hexaKeys1[0][c]);
+				pressMouseKey(hexa_keys1[0][c]);
 				break;
 				case 0x0C:
-				presssystemkey(hexaKeys1[0][c]);
+				pressSystemKey(hexa_keys1[0][c]);
 				break;
 				case 0x0D:
-				pressconsumerkey(hexaKeys1[0][c]);
+				pressConsumerKey(hexa_keys1[0][c]);
 				break;
 				#endif
 			}
 	}
-	if(usb_macro_send_required())delay_before=_delay_before;
-	if(usb_keyboard_send_required())delay_before=_delay_before;
+	if(usbMacroSendRequired())DELAY_BEFORE=DELAY_BEFORE;
+	if(usbKeyboardSendRequired())DELAY_BEFORE=DELAY_BEFORE;
 	#if MOUSE_ENABLE
-	if(usb_mouse_send_required())delay_before=_delay_before;
+	if(usbMouseSendRequired())DELAY_BEFORE=DELAY_BEFORE;
 	#endif
-	if(delay_after==_delay_after && delay_before==1)
-	{usb_macro_send();usb_keyboard_send();
+	if(DELAY_AFTER==DELAY_AFTER && DELAY_BEFORE==1)
+	{usbMacroSend();usbKeyboardSend();
 		#if MOUSE_ENABLE
-		usb_mouse_send();
+		usbMouseSend();
 		#endif
 	}
-	if(delay_after==1)
-	{usb_macro_send();usb_keyboard_send();
+	if(DELAY_AFTER==1)
+	{usbMacroSend();usbKeyboardSend();
 		#if MOUSE_ENABLE
-		usb_mouse_send();
+		usbMouseSend();
 		#endif
 	}
-	if(delay_after>0)delay_after-=1;
-	if(delay_before>0)delay_before-=1;
+	if(DELAY_AFTER>0)DELAY_AFTER-=1;
+	if(DELAY_BEFORE>0)DELAY_BEFORE-=1;
 }
-int Init_Main(void) {
-	usb_init();
+int initMain(void) {
+	usbInit();
 	////////////////////////////////////////////////
 	init_IO();
 	while (1) {		
 		keyboard_buffer.enable_pressing=1;
-		releaseAllkeyboardkeys();
-		releaseAllmousekeys();
-		ClearMacro();
-		ResetMatrixFormEEP();		
+		releaseAllKeyboardKeys();
+		releaseAllMousekeys();
+		clearMacro();
+		resetMatrixFormEEP();		
 		_delay_ms(500);
-		Init_LED();
-		usb_keyboard_send();
+		initLED();
+		usbKeyboardSend();
 		while (1) {
 			usbPoll();
 			if(keyboard_buffer.enable_pressing==2){
@@ -176,7 +176,7 @@ int Init_Main(void) {
 			else if(keyboard_buffer.enable_pressing==1){
 				TinykeyMode();
 				if (usbConfiguration && usbInterruptIsReady()){
-					if(delay_before==0)Update_LED();
+					if(DELAY_BEFORE==0)updateLED();
 				}
 			}
 		}

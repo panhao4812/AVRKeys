@@ -1,5 +1,5 @@
 #include "usbdevice.h"
-uint8_t usb_keyboard_send_required(){
+uint8_t usbKeyboardSendRequired(){
 	uint8_t send_required_t=0;
 	if(keyboard_report.modifier!=keyboard_buffer.keyboard_modifier_keys)
 	{keyboard_report.modifier = keyboard_buffer.keyboard_modifier_keys;send_required_t=1;}
@@ -10,7 +10,7 @@ uint8_t usb_keyboard_send_required(){
 	if(send_required_t)keyboard_buffer.Send_Required=send_required_t;
 	return send_required_t;
 }
-uint8_t presskey(uint8_t key){
+uint8_t pressKey(uint8_t key){
 	uint8_t i;
 	for ( i=0; i < KEY_CODE_NUMBER; i++) {
 		if (keyboard_buffer.keyboard_keys[i] == key) {
@@ -25,10 +25,10 @@ uint8_t presskey(uint8_t key){
 	}
 	return 0;
 }
-void usb_update(){
+void usbUpdate(){
 	usbPoll();
 }
-void usb_init()
+void usbInit()
 {
 	usbInit();
 	/* enforce USB re-enumerate: */
@@ -38,16 +38,16 @@ void usb_init()
 	_delay_ms(300);
 	usbDeviceConnect();
 	sei();
-	ClearKeyboard();
+	clearKeyboard();
 	#if MOUSE_ENABLE
-	ClearMouse();
+	clearMouse();
 	#endif
 	#if RAW_ENABLE
-	ClearRaw();
+	clearRaw();
 	#endif
 }
 uint8_t i2=0;
-uint8_t usb_keyboard_send(){
+uint8_t usbKeyboardSend(){
 	if(keyboard_buffer.Send_Required==0)return 0;
 	i2=0;
 	while(++i2<50){
@@ -62,7 +62,7 @@ uint8_t usb_keyboard_send(){
 	}
 	return 0;
 }
-void releaseAllkeyboardkeys(){
+void releaseAllKeyboardKeys(){
 	uint8_t i;
 	for ( i=0; i < KEY_CODE_NUMBER; i++) {
 		keyboard_buffer.keyboard_keys[i] = 0;
@@ -72,21 +72,21 @@ void releaseAllkeyboardkeys(){
 void pressModifierKeys(uint8_t key){
 	keyboard_buffer.keyboard_modifier_keys|=key;
 }
-void ClearKeyboard(){
+void clearKeyboard(){
 	memset( &keyboard_report, 0,sizeof(keyboard_report));
 	memset( &keyboard_buffer, 0,sizeof(keyboard_buffer));
 	keyboard_buffer.enable_pressing=1;
 }
 #if MOUSE_ENABLE
 uint8_t i1=0;
-void ClearMouse(){
+void clearMouse(){
 	memset(&mouse_report, 0, sizeof(mouse_report));
 	memset(&mouse_buffer,0,sizeof(mouse_buffer));
 	mouse_report.mouse.report_id= REPORT_ID_MOUSE;
 	mouse_report.system_keys.report_id= REPORT_ID_SYSTEM;
 	mouse_report.consumer_keys.report_id= REPORT_ID_CONSUMER;
 }
-uint8_t usb_mouse_send(){
+uint8_t usbMouseSend(){
 	if(mouse_buffer.Send_Required==0)return 0;
 	i1=0;
 	while(++i1<50){
@@ -109,7 +109,7 @@ uint8_t usb_mouse_send(){
 	}
 	return 0;
 }
-uint8_t usb_mouse_send_required(){
+uint8_t usbMouseSendRequired(){
 	uint8_t send_required_t=0;
 	if(mouse_report.mouse.buttons!=mouse_buffer.mouse_keys)
 	{
@@ -131,18 +131,18 @@ uint8_t usb_mouse_send_required(){
 	}
 	return send_required_t;
 }
-void releaseAllmousekeys(){
+void releaseAllMousekeys(){
 	mouse_buffer.mouse_keys=0;
 	mouse_buffer.system_keys=0;
 	mouse_buffer.consumer_keys=0;
 }
-void pressmousekey(uint8_t key){
+void pressMouseKey(uint8_t key){
 	mouse_buffer.mouse_keys|=key;
 }
-void presssystemkey(uint8_t key){
+void pressSystemKey(uint8_t key){
 	mouse_buffer.system_keys=(uint16_t)key;
 }
-void pressconsumerkey(uint8_t key){
+void pressConsumerKey(uint8_t key){
 	mouse_buffer.consumer_keys=(uint16_t)key;
 }
 void MousePrintMousekey(uint8_t data)
@@ -168,7 +168,7 @@ void MousePrintMousekey(uint8_t data)
 }
 #endif
 #if RAW_ENABLE
-void ClearRaw(){
+void clearRaw(){
 	memset(&raw_report_out, 0,sizeof(raw_report_out));
 }
 #endif
@@ -209,22 +209,22 @@ uchar usbFunctionWrite(uchar *data, uchar len)
 }
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////
-void pressmacrokey(uint8_t key){
+void pressMacroKey(uint8_t key){
 	if(key==MACRO2){
 		if(keyboard_report.modifier){
 			//??????keyboard buffer ???buffer???????????
 			//report ?????????
-			presskey(KEY_TILDE);
+			pressKey(KEY_TILDE);
 		}
 		else{
-			presskey(KEY_ESC);
+			pressKey(KEY_ESC);
 		}
 	}
-	macrobuffer|=key;
+	macro_buffer|=key;
 }
-uint8_t usb_macro_send_required(){
-	if (macroreport!=macrobuffer){
-		macroreport=macrobuffer;
+uint8_t usbMacroSendRequired(){
+	if (macro_report!=macro_buffer){
+		macro_report=macro_buffer;
 	return 1;}
 	return 0;
 }
@@ -334,7 +334,7 @@ void keyPrintWordEEP(uint16_t address_t){
 	uint16_t len=eeprom_read_word((uint16_t *)address_t);
 	for(i=0;i<len;i++){
 		uint16_t address=address_t+i*2+2;
-		if(address>maxEEP-1)break;
+		if(address>MAX_EEP-1)break;
 		while(1){
 			if(usbConfiguration && usbInterruptIsReady()){
 				uint16_t data = eeprom_read_word((uint16_t *)address);

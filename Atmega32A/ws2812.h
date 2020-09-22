@@ -8,18 +8,18 @@
 
 #define nop() __asm__ __volatile__ ("nop")
 //ƒ⁄«∂ª„±‡÷∏¡Ónop —” ± 0.25us
-uint8_t WS2812Buffer[(WS2812_COUNT * 3)];
-#define WS2812_ColorCount 0x0200
+uint8_t ws2812_buffer[(WS2812_COUNT * 3)];
+#define WS2812_COLOR_COUNT 0x0200
 
-void WS2812Setup(void);
-void WS2812Clear(void);
-void WS2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue);
-void WS2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t value);
-void WS2812Send(void);
-void WS2812Send2(void);
-extern const  uint8_t Rcolors[WS2812_ColorCount] PROGMEM;
-extern const  uint8_t Gcolors[WS2812_ColorCount] PROGMEM;
-extern const  uint8_t Bcolors[WS2812_ColorCount] PROGMEM;
+void ws2812Setup(void);
+void ws2812Clear(void);
+void ws2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue);
+void ws2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t value);
+void ws2812Send(void);
+void ws2812Send2(void);
+extern const  uint8_t Rcolors[WS2812_COLOR_COUNT] PROGMEM;
+extern const  uint8_t Gcolors[WS2812_COLOR_COUNT] PROGMEM;
+extern const  uint8_t Bcolors[WS2812_COLOR_COUNT] PROGMEM;
 /////////////////////////////////////////////////////////////
 #define w_zeropulse   350
 #define w_onepulse    900

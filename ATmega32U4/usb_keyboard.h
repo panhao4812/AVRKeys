@@ -17,38 +17,38 @@
 #if defined(xd60)
 #define ROWS  5
 #define COLS  14
-#define PRODUCT_ID		0x0160
+#define PRODUCT_ID		0xD060
 #define WS2812_COUNT	12
 #elif defined(xd75)
 #define ROWS  5
 #define COLS  15
-#define PRODUCT_ID		0x0375
+#define PRODUCT_ID		0xD075
 #define WS2812_COUNT	6
 #elif defined(xd004)
 #define ROWS  1
 #define COLS  4
-#define PRODUCT_ID		0x0204
+#define PRODUCT_ID		0xD004
 #define WS2812_COUNT	2
 #elif defined(staryu)
 #define ROWS  1
 #define COLS  5
-#define PRODUCT_ID		0x0105
+#define PRODUCT_ID		0xD005
 #define WS2812_COUNT	1
 #elif defined(CXT64)
 #define ROWS  5
 #define COLS  15
-#define PRODUCT_ID		0xD064
+#define PRODUCT_ID		0xC064
 #define WS2812_COUNT	64
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
 #define VENDOR_ID		0x32C2//芯片类型
-#define address_end (uint16_t)0x7000 // 0x3800*2
-#define maxEEP (uint16_t)0x01FF // (eeprom 1k-1)
+#define FLASH_END_ADDRESS (uint16_t)0x7000 // 0x3800*2
+#define MAX_EEP (uint16_t)0x01FF // (eeprom 1k-1)
 #elif defined(__AVR_ATmega16U2__)
 #define VENDOR_ID		0x16C2
-#define address_end (uint16_t)0x3000 // 0x1800*2
-#define maxEEP (uint16_t)0x03FF // (eeprom 1k-1)
+#define FLASH_END_ADDRESS (uint16_t)0x3000 // 0x1800*2
+#define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #elif defined(__AVR_ATmega8U2__)
 #define VENDOR_ID		0x08C2
 #elif defined(__AVR_AT90USB162__)
@@ -89,12 +89,12 @@
 #define RAW_EPSIZE  8
 
 ////////////////////////macro////////////////////////
-uint8_t macroreport;
-uint8_t macrobuffer;
-static inline void ClearMacro(){macrobuffer=0;macroreport=0;}
-void pressmacrokey(uint8_t key);
-uint8_t usb_macro_send_required();
-uint8_t usb_macro_send();
+uint8_t macro_report;
+uint8_t macro_buffer;
+static inline void clearMacro(){macro_buffer=0;macro_report=0;}
+void pressMacroKey(uint8_t key);
+uint8_t usbMacroSendRequired();
+uint8_t usbMacroSend();
 ////////////////////struct////////////////////////
 typedef struct  {
 	uint8_t bLength;
@@ -163,43 +163,43 @@ typedef struct {
 report_mouse_t mouse_report;
 report_mouse_t print_mouse_report;
 buffer_mouse_t mouse_buffer;
-#define maxEEP (uint16_t)0x03FF // (eeprom 4k-1)
+#define MAX_EEP (uint16_t)0x03FF // (eeprom 4k-1)
 report_raw_t raw_report_in;
 report_raw_t raw_report_out;
 report_keyboard_t keyboard_report;
 report_keyboard_t print_keyboard_report;
 buffer_keyboard_t keyboard_buffer;
 //////////////////////////usb/////////////////////////
-void usb_init();			// initialize everything
-uint8_t usb_configured();		// is the USB port configured
-void releaseAllkeyboardkeys();
-uint8_t releasekey(uint8_t key);
-uint8_t presskey(uint8_t key);
+void usbInit();			// initialize everything
+uint8_t usbConfigured();		// is the USB port configured
+void releaseAllKeyboardKeys();
+uint8_t releaseKey(uint8_t key);
+uint8_t pressKey(uint8_t key);
 void pressModifierKeys(uint8_t key);
 void releaseModifierKeys(uint8_t key);
 volatile uint8_t EnableRecv;//eep change
-void ClearKeyboard();
-void ClearMouse();
-void ClearRaw();
-void releaseAllmousekeys();
-void releasemousekey(uint8_t key);
-void pressmousekey(uint8_t key);
-void releasesystemkey(uint8_t key);
-void presssystemkey(uint8_t key);
-void releaseconsumerkey(uint8_t key);
-void pressconsumerkey(uint8_t key);
-uint8_t usb_keyboard_send_required();		// initialize everything
-uint8_t usb_keyboard_send();
-uint8_t usb_mouse_send_required();
-uint8_t usb_mouse_send();
-uint8_t usb_recv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
-uint8_t usb_send(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
-void EVENT_USB_Device_StartOfFrame();
-void eepwrite();
-uint8_t IsBufferClear();
+void clearKeyboard();
+void clearMouse();
+void clearRaw();
+void releaseAllMousekeys();
+void releaseMouseKey(uint8_t key);
+void pressMouseKey(uint8_t key);
+void releaseSystemKey(uint8_t key);
+void pressSystemKey(uint8_t key);
+void releaseConsumerKey(uint8_t key);
+void pressConsumerKey(uint8_t key);
+uint8_t usbKeyboardSendRequired();		// initialize everything
+uint8_t usbKeyboardSend();
+uint8_t usbMouseSendRequired();
+uint8_t usbMouseSend();
+uint8_t usbRecv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
+uint8_t usbSend(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8_t timeout);
+void eventUSBDeviceStartOfFrame();
+void eepWrite();
+uint8_t isBufferClear();
 ////////////////////hardware///////////////////////////
-#define usb_debug_putchar(c)
-#define usb_debug_flush_output()
+//#define usb_debug_putchar(c)
+//#define usb_debug_flush_output()
 //supplement for Bluegiga iWRAP HID(not supported by Windows?)
 
 // Everything below this point is only intended for usb_serial.c
@@ -468,7 +468,7 @@ PLLCSR寄存器 见手册6.11.5 - - - PINDIV - - PLLE PLOCK
 *PLLE 启动倍频 到48M
 *PLOCK 倍频是否启动完成
 */
-static inline uint8_t PLL_configured()
+static inline uint8_t PLLConfigured()
 {
 	return (PLLCSR & (1<<PLOCK));
 }

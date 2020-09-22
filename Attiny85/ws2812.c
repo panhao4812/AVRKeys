@@ -1,14 +1,14 @@
 #include "ws2812.h"
 #include <avr/interrupt.h>
-void WS2812Setup()
+void ws2812Setup()
 {
 	WS2812_DDR |= WS2812_MASK;
 }
-void WS2812Clear()
+void ws2812Clear()
 {
-	for(int i = 0; i < WS2812_COUNT*3; i++) WS2812Buffer[i] = 0;
+	for(int i = 0; i < WS2812_COUNT*3; i++) ws2812_buffer[i] = 0;
 }
-void WS2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t value)
+void ws2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t value)
 {
 	if(hue < 1536 && saturation < 256 && value < 256)
 	{
@@ -17,7 +17,7 @@ void WS2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t valu
 		
 		if(saturation == 0)
 		{
-			WS2812SetRGB(led, value, value, value);
+			ws2812SetRGB(led, value, value, value);
 			return;
 		}
 		
@@ -63,24 +63,24 @@ void WS2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t valu
 			blue = dec;
 			break;
 		}
-		WS2812SetRGB(led, red, green, blue);
+		ws2812SetRGB(led, red, green, blue);
 	}
 }
-void WS2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue)
+void ws2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue)
 {
-	WS2812Buffer[led*3] = green / WS2812_SAVE;
-	WS2812Buffer[1+led*3] = red / WS2812_SAVE;
-	WS2812Buffer[2+led*3] = blue / WS2812_SAVE;
+	ws2812_buffer[led*3] = green / WS2812_SAVE;
+	ws2812_buffer[1+led*3] = red / WS2812_SAVE;
+	ws2812_buffer[2+led*3] = blue / WS2812_SAVE;
 }
 //4.2
 //11.3
-void WS2812Send(){
+void ws2812Send(){
     cli();
 	for(uint16_t c = 0; c < (WS2812_COUNT * 3); c++)
 	{
 		for(uint8_t b = 8; b; b--)
 		{			
-			if(WS2812Buffer[c] & (1<<b))
+			if(ws2812_buffer[c] & (1<<b))
 			{
 				WS2812_PORT |= WS2812_MASK;
 				nop();nop();nop();nop();nop();nop();nop();nop();nop();nop();
@@ -98,18 +98,18 @@ void WS2812Send(){
 	}
 	sei();
 }
-void WS2812Send2()
+void ws2812Send2()
 {
 	cli();
 	uint8_t masklo = ~(WS2812_MASK) & WS2812_PORT;
 	uint8_t maskhi = WS2812_MASK | WS2812_PORT;
 	for(uint16_t c = 0; c < (WS2812_COUNT * 3); c++)
 	{
-		ledcontrol_led_sendbyte(WS2812Buffer[c], masklo, maskhi);
+		ledcontrol_led_sendbyte(ws2812_buffer[c], masklo, maskhi);
 	}
 	sei();
 }
-const  uint8_t Rcolors[WS2812_ColorCount] PROGMEM=
+const  uint8_t Rcolors[WS2812_COLOR_COUNT] PROGMEM=
 {
 	243,243,243,243,242,242,241,241,240,240,239,239,238,238,237,237,236,236,236,236,236,236,235,234,233,
 	232,231,229,227,226,224,222,220,219,217,216,214,213,212,211,211,210,210,210,208,206,202,198,193,187,
@@ -123,7 +123,7 @@ const  uint8_t Rcolors[WS2812_ColorCount] PROGMEM=
 	245,246,246,247,247,247,247,247,247,247,247,246,246,246,246,246,245,245,245,245,244,244,244,244,244,
 	243,243,243,243,243
 };
-const  uint8_t Gcolors[WS2812_ColorCount] PROGMEM=
+const  uint8_t Gcolors[WS2812_COLOR_COUNT] PROGMEM=
 {
 	57,57,56,55,54,52,50,48,46,43,41,38,36,34,32,30,29,28,27,27,27,27,26,25,24,
 	23,21,20,18,16,15,13,11,9,7,6,4,3,2,1,1,0,0,0,0,0,0,0,0,0,
@@ -137,7 +137,7 @@ const  uint8_t Gcolors[WS2812_ColorCount] PROGMEM=
 	165,163,161,160,159,159,158,157,154,151,148,144,139,134,128,122,116,110,103,97,91,85,80,75,70,
 	66,63,60,59,57
 };
-const  uint8_t Bcolors[WS2812_ColorCount] PROGMEM=
+const  uint8_t Bcolors[WS2812_COLOR_COUNT] PROGMEM=
 {
 	0,0,2,4,6,10,14,18,23,27,32,37,42,46,50,54,56,58,60,60,60,61,62,64,66,
 	69,72,76,79,83,87,91,95,99,102,106,109,111,114,116,117,118,118,118,118,118,118,118,118,118,
