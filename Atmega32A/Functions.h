@@ -30,7 +30,7 @@
 #define WS2812_DDR		DDRC
 #define WS2812_MASK		(1<<1)
 #define WS2812_SAVE		1
-#define Maxdelay 0x1000
+#define MaxDelay 0x1000
 uint8_t RGB_Rainbow[WS2812_COUNT];
 uint8_t RGB_FixColor[(WS2812_COUNT * 3)];
 uint8_t RGB_Type;
@@ -44,19 +44,19 @@ uint8_t RGB_State;
 ////////////////matrix////////////////////
 #define _delay_after 0x06
 #define _delay_before 0x03
-uint8_t keymask[ROWS][COLS];
+uint8_t keyMask[ROWS][COLS];
 uint8_t hexaKeys1[ROWS][COLS];
 uint8_t hexaKeys0[ROWS][COLS];
 uint8_t rowPins[ROWS];
 uint8_t colPins[COLS];
-int init_main(void);
-void init_rows();
-void init_cols();
+int Init_Main(void);
+void Init_Rows();
+void Init_Cols();
 void Open_LED();
 void Close_LED();
-void init_LED();
+void Init_LED();
 void Reset_LED();
-void LED();
+void Update_LED();
 void BfaceMod();
 void keyPrintWordEEP(uint16_t address_t);
 ///////////////////eeprom//////////////////////////

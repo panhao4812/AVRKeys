@@ -9,19 +9,19 @@
 #define WS2812_DDR		DDRF
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define Maxdelay 0x0100
+#define MaxDelay 0x0100
 #elif (defined xd004 )||(defined staryu )
 #define WS2812_PORT		PORTC
 #define WS2812_DDR		DDRC
 #define WS2812_MASK		(1<<6)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define Maxdelay 0x0200
+#define MaxDelay 0x0200
 #elif (defined CXT64 )
 #define WS2812_PORT		PORTD
 #define WS2812_DDR		DDRD
 #define WS2812_MASK		(1<<7)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define Maxdelay 0x0010
+#define MaxDelay 0x0010
 #endif
 uint8_t RGB_Rainbow[WS2812_COUNT];
 uint8_t RGB_FixColor[(WS2812_COUNT * 3)];
@@ -38,17 +38,17 @@ uint8_t RGB_State;
 #define _delay_before 0x04
 extern  uint8_t hexaKeys0[ROWS][COLS] ;
 extern  uint8_t hexaKeys1[ROWS][COLS];
-extern  uint8_t keymask[ROWS][COLS];
+extern  uint8_t keyMask[ROWS][COLS];
 extern  uint8_t rowPins[ROWS];
 extern  uint8_t colPins[COLS];
-int init_main(void);
-void init_cols();
-void init_rows();
-void QMKMode();
-void init_LED();
+int Init_Main(void);
+void Init_Cols();
+void Init_Rows();
+void QMK_Mode();
+void Init_LED();
 void Open_LED();
 void Close_LED();
-void LED();
+void Update_LED();
 void keyPrintWordEEP(uint16_t address);
 void keyPrintWordFlash(uint16_t address_t);
 //////////////////////eeprom//////////////////////////

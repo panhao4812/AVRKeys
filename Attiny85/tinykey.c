@@ -14,7 +14,7 @@ uint8_t rowPins[ROWS]={0xFF};
 uint8_t colPins[COLS]={0,1};
 uint8_t hexaKeys0[ROWS][COLS] = {{KEY_Z,KEY_X}};
 uint8_t hexaKeys1[ROWS][COLS] ={{0,0}};
-uint8_t keymask[ROWS][COLS] = {{0x10,0x10}};
+uint8_t keyMask[ROWS][COLS] = {{0x10,0x10}};
 uint8_t usb_macro_send(){
 	RGB_State^=macroreport;
 	if(macroreport&MACRO3){
@@ -40,14 +40,14 @@ uint8_t usb_macro_send(){
 	}
 	return 0;
 }
-void init_LED(){
-	WS2812Setup();delayval=Maxdelay;
+void Init_LED(){
+	WS2812Setup();delayval=MaxDelay;
 	WS2812Clear();
 	WS2812Send2();
 	if((RGB_Type&0xF0)==0x10){RGB_State|=(1<<1);}else{RGB_State&= ~(1<<1);}
 }
-void LED(){
-	if(delayval>=Maxdelay){
+void Update_LED(){
+	if(delayval>=MaxDelay){
 		if(RGB_State & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_Type&0x0F)==0x01){
@@ -65,7 +65,7 @@ void LED(){
 		}else{WS2812Clear();}
 		delayval--;
 		WS2812Send2();
-	}else{if(delayval){delayval--;}else {delayval=Maxdelay;}}
+	}else{if(delayval){delayval--;}else {delayval=MaxDelay;}}
 }
 void Open_LED(){
 for(uint8_t i=0;i<WS2812_COUNT;i++){
@@ -84,9 +84,9 @@ void init_IO(){
 void TinykeyMode(){
 	FN=0xF0;
 		for (c = 0; c < COLS; c++) {
-			if (digitalRead(colPins[c])) {keymask[0][c]&= ~0x88;}
-			else {keymask[0][c]|= 0x88;delay_after=_delay_after;}
-			if(keymask[0][c]==0xEE )FN=0x0F;
+			if (digitalRead(colPins[c])) {keyMask[0][c]&= ~0x88;}
+			else {keyMask[0][c]|= 0x88;delay_after=_delay_after;}
+			if(keyMask[0][c]==0xEE )FN=0x0F;
 		}
 	releaseAllkeyboardkeys();
 	#if MOUSE_ENABLE
@@ -94,7 +94,7 @@ void TinykeyMode(){
 	#endif
 	macrobuffer=0;
 		for (c = 0; c < COLS; c++) {
-			switch(keymask[0][c]&FN){
+			switch(keyMask[0][c]&FN){
 				case 0x90:
 				presskey(hexaKeys0[0][c]);
 				break;
@@ -155,7 +155,7 @@ void TinykeyMode(){
 	if(delay_after>0)delay_after-=1;
 	if(delay_before>0)delay_before-=1;
 }
-int init_main(void) {
+int Init_Main(void) {
 	usb_init();
 	////////////////////////////////////////////////
 	init_IO();
@@ -166,7 +166,7 @@ int init_main(void) {
 		ClearMacro();
 		ResetMatrixFormEEP();		
 		_delay_ms(500);
-		init_LED();
+		Init_LED();
 		usb_keyboard_send();
 		while (1) {
 			usbPoll();
@@ -176,7 +176,7 @@ int init_main(void) {
 			else if(keyboard_buffer.enable_pressing==1){
 				TinykeyMode();
 				if (usbConfiguration && usbInterruptIsReady()){
-					if(delay_before==0)LED();
+					if(delay_before==0)Update_LED();
 				}
 			}
 		}

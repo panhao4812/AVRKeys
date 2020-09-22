@@ -16,9 +16,10 @@ uint8_t hexaKeys0[ROWS][COLS]={
 uint8_t hexaKeys1[ROWS][COLS]={
 	{MACRO0,MACRO1,MACRO3,KEY_FN}
 };
-uint8_t keymask[ROWS][COLS]={
+uint8_t keyMask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
+uint8_t RGB_Rainbow[WS2812_COUNT]={0,170};
 ////////////////////////////////////////////////////
 #elif defined staryu
 //SW D0 D1 D2 D3 D4
@@ -34,22 +35,23 @@ uint8_t hexaKeys0[ROWS][COLS]={
 uint8_t hexaKeys1[ROWS][COLS]={
 	{MACRO0,KEY_FN,MACRO4,MACRO5,MACRO1}
 };
-uint8_t keymask[ROWS][COLS]={
+uint8_t keyMask[ROWS][COLS]={
 	{0x17,0x66,0x17,0x17,0x17}
 };
+uint8_t RGB_Rainbow[WS2812_COUNT]={0};
 #endif
 /////////////////////////////////////////////////////////////////////////continue
 uint16_t delayval;//rgb速率
 uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing
 uint8_t delay_before=0;//windup
-void init_cols(){
+void Init_Cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
 		digitalWrite(colPins[i],HIGH);
 	}
 }
-void init_rows(){
+void Init_Rows(){
 }
 void Open_LED(){
 	for ( i=0; i<ledcount; i++){
@@ -61,7 +63,7 @@ void Close_LED(){
 		digitalWrite(ledPins[i],HIGH);
 	}
 }
-void init_LED(){
+void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
@@ -69,7 +71,7 @@ void init_LED(){
 		pinMode(ledPins[i],OUTPUT);
 		digitalWrite(ledPins[i],HIGH);
 	}
-	delayval=Maxdelay;
+	delayval=MaxDelay;
 }
 void Reset_LED(){
 	for ( i=0; i<ledcount; i++){
@@ -79,7 +81,7 @@ void Reset_LED(){
 	WS2812Clear();
 	WS2812Send2();
 }
-void LED(){
+void Update_LED(){
 	//////////////////////////////full led/////////////////////
 	if(RGB_State & (1<<5)){
 		Open_LED();
@@ -88,7 +90,7 @@ void LED(){
 		Close_LED();
 	}
 	////////////////////////////RGB////////////////////////
-	if(delayval>=Maxdelay){
+	if(delayval>=MaxDelay){
 		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_State&0x0F)==0x01){
@@ -111,25 +113,25 @@ void LED(){
 		if(delayval){
 			delayval--;
 			}else {
-			delayval=Maxdelay;
+			delayval=MaxDelay;
 		}
 	}
 }
-void QMKMode(){
+void QMK_Mode(){
 	for (r = 0; r < ROWS; r++) {
 		for (c = 0; c < COLS; c++) {
-			if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
-			else {keymask[r][c]|= 0x88;delay_after=_delay_after;}
-			if(keymask[r][c]==0xEE )FN=0x0F;
+			if (digitalRead(colPins[c])) {keyMask[r][c]&= ~0x88;}
+			else {keyMask[r][c]|= 0x88;delay_after=_delay_after;}
+			if(keyMask[r][c]==0xEE )FN=0x0F;
 		}
-		init_rows();
+		Init_Rows();
 	}
 	releaseAllkeyboardkeys();
 	releaseAllmousekeys();
 	macrobuffer=0;
 	for (r = 0; r < ROWS; r++) {
 		for (c = 0; c < COLS; c++) {
-			switch(keymask[r][c]&FN){
+			switch(keyMask[r][c]&FN){
 				case 0x90:
 				presskey(hexaKeys0[r][c]);
 				break;
@@ -180,18 +182,18 @@ void QMKMode(){
 	if(delay_after>0)delay_after-=1;
 	if(delay_before>0)delay_before-=1;
 }
-int init_main(void)
+int Init_Main(void)
 {
 	CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
 	#if defined __AVR_ATmega32U4__
 	void closeJtag();
 	#endif
-	init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+	Init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
 	_delay_ms(500);
 	usb_init();
 	while (!usb_configured()){_delay_ms(300);}
-	init_cols();
-	init_rows();
+	Init_Cols();
+	Init_Rows();
 	while (1) {//重启
 		EnableRecv=1;
 		keyboard_buffer.enable_pressing=1;
@@ -209,8 +211,8 @@ int init_main(void)
 				break;
 			}
 			else if(keyboard_buffer.enable_pressing==1){
-				QMKMode();
-				if(delay_before==0) LED();
+				QMK_Mode();
+				if(delay_before==0) Update_LED();
 			}
 		}
 	}

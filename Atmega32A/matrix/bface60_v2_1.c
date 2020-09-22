@@ -34,9 +34,9 @@ uint8_t hexaKeys1[ROWS][COLS] = {
 	{KEY_TILDE,0x00,0x00,KEY_F5,KEY_F6,KEY_F12,0x00,KEY_F11,KEY_FN,KEY_DELETE},//ROW6
 	{KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F7,KEY_F8,KEY_F9,KEY_F10,0x00,0x00},//ROW7
 };
-//keymask_bits:7-press 654-hexatype0 3-press 210-hexatype1
+//keyMask_bits:7-press 654-hexatype0 3-press 210-hexatype1
 //type: 1-key 2-modifykey 3-mousekey 4-systemkey 5-consumerkey 6-FN 7-macro
-uint8_t keymask[ROWS][COLS]={
+uint8_t keyMask[ROWS][COLS]={
 	{0x10,0x11,0x10,0x10,0x10,0x10,0x10,0x10,0x22,0x66},//ROW0
 	{0x11,0x11,0x00,0x10,0x10,0x10,0x10,0x10,0x22,0x00},//ROW1
 	{0x11,0x11,0x11,0x10,0x10,0x10,0x10,0x10,0x22,0x10},//ROW2
@@ -76,7 +76,7 @@ uint8_t hexaKeys1[ROWS][COLS] = {
 	{KEY_LEFT_SHIFT,0x00,KEY_NUM_LOCK ,KEY_SCROLL_LOCK,KEY_INSERT,KEY_PRINTSCREEN,MACRO0,MACRO1,0x00,AUDIO_VOL_DOWN,AUDIO_VOL_UP,AUDIO_MUTE,KEY_RIGHT_SHIFT,KEY_UP,KEY_RIGHT_CTRL},
 	{KEY_LEFT_CTRL,KEY_FN,KEY_LEFT_ALT,0x00,0x00,0x00,0x00,KEY_SPACE,0x00,KEY_RIGHT_ALT,KEY_FN,KEY_LEFT,KEY_DOWN,KEY_RIGHT,0x00}
 };
-uint8_t keymask[ROWS][COLS] = {
+uint8_t keyMask[ROWS][COLS] = {
 	{0x71,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x10,0x11},
 	{0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x00},
 	{0x11,0x13,0x13,0x13,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x00,0x11,0x00},
@@ -121,7 +121,7 @@ uint8_t hexaKeys1[ROWS][COLS] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},//r7
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00} //r8
 };
-uint8_t keymask[ROWS][COLS] = {
+uint8_t keyMask[ROWS][COLS] = {
 	{0x20,0x20,0x20,0x00,0x00,0x00,0x10,0x00,0x10,0x10,0x20,0x66,0x20,0x10,0x00},//r1
 	{0x20,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x00,0x10,0x20,0x00,0x10,0x00},//r2
 	{0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x00,0x10,0x10},//r3
@@ -137,13 +137,13 @@ uint16_t delayval;
 uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
-void init_cols(){
+void Init_Cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
 		digitalWrite(colPins[i],HIGH);
 	}
 }
-void init_rows(){
+void Init_Rows(){
 	for ( i=0; i<ROWS; i++){
 		pinMode(rowPins[i],INPUT);
 		digitalWrite(rowPins[i],HIGH);
@@ -159,7 +159,7 @@ void Close_LED(){
 		digitalWrite(ledPins[i],LOW);
 	}
 }
-void init_LED(){
+void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
@@ -169,7 +169,7 @@ void init_LED(){
 	}
 	pinMode(fullled,OUTPUT);
 	digitalWrite(fullled,LOW);
-	delayval=Maxdelay;
+	delayval=MaxDelay;
 }
 void Reset_LED(){
 	for ( i=0; i<ledcount; i++){
@@ -180,7 +180,7 @@ void Reset_LED(){
 	WS2812Clear();
 	WS2812Send2();
 }
-void LED(){
+void Update_LED(){
 	for ( i=0; i<ledcount; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
 		digitalWrite(ledPins[i],HIGH);}
@@ -193,7 +193,7 @@ void LED(){
 	else{
 	digitalWrite(fullled,LOW);}
 	/////////////////////////RGB///////////////////////
-	if(delayval>=Maxdelay){
+	if(delayval>=MaxDelay){
 		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_State&0x0F)==0x01){
@@ -216,7 +216,7 @@ void LED(){
 		if(delayval){
 			delayval--;
 			}else {
-			delayval=Maxdelay;
+			delayval=MaxDelay;
 		}
 	}
 }
@@ -227,18 +227,18 @@ void BfaceMod(){
 		//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
 		//_delay_us(1);
 		for (c = 0; c < COLS; c++) {
-			if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
-			else {keymask[r][c]|= 0x88;delay_after=_delay_after;}
-			if(keymask[r][c]==0xEE )FN=0x0F;
+			if (digitalRead(colPins[c])) {keyMask[r][c]&= ~0x88;}
+			else {keyMask[r][c]|= 0x88;delay_after=_delay_after;}
+			if(keyMask[r][c]==0xEE )FN=0x0F;
 		}
-		init_rows();
+		Init_Rows();
 	}
 	releaseAllkeyboardkeys();
 	releaseAllmousekeys();
 	macrobuffer=0;
 	for (r = 0; r < ROWS; r++) {
 		for (c = 0; c < COLS; c++) {
-			switch(keymask[r][c]&FN){
+			switch(keyMask[r][c]&FN){
 				case 0x90:
 				presskey(hexaKeys0[r][c]);
 				break;
@@ -289,15 +289,15 @@ void BfaceMod(){
 	if(delay_after>0)delay_after-=1;
 	if(delay_before>0)delay_before-=1;
 }
-int init_main(void) {
-	init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+int Init_Main(void) {
+	Init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
 	_delay_ms(500);
 	//供电稳定后再识别usb，hub供电不足芯片会自动休眠。按任意按键唤醒。
 	usb_init();
 	_delay_ms(500);
 	////////////////////////////////////////////////
-	init_cols();
-	init_rows();
+	Init_Cols();
+	Init_Rows();
 	while (1) {
 		keyboard_buffer.enable_pressing=1;
 		RGB_Type=0x01;
@@ -316,7 +316,7 @@ int init_main(void) {
 			else if(keyboard_buffer.enable_pressing==1){
 				BfaceMod();
 				if (usbConfiguration && usbInterruptIsReady()){
-					if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
+					if(delay_before==0)Update_LED();	//LED耗时太长，所以按键的时候LED休眠
 				}
 			}
 		}
@@ -327,13 +327,13 @@ int init_main(void) {
 
 /*
 ///////////////////测试SOF用/////////////////////////////
-int init_main(void) {
+int Init_Main(void) {
 usb_init();
-init_cols();
-init_rows();
+Init_Cols();
+Init_Rows();
 while (1) {
 init_SOF();
-init_LED();
+Init_LED();
 keyboard_buffer.enable_pressing=1;
 releaseAllkeyboardkeys();
 releaseAllmousekeys();
@@ -349,7 +349,7 @@ break;
 else if(keyboard_buffer.enable_pressing==1){
 if( suspended==0){	FaceUMode();vusb_transfer_keyboard();}
 if (usbConfiguration && usbInterruptIsReady()){
-if(delay_before==0)LED();	//LED耗时太长，所以按键的时候LED休眠
+if(delay_before==0)Update_LED();	//LED耗时太长，所以按键的时候LED休眠
 }
 }
 }

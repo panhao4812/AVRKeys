@@ -19,7 +19,7 @@ uint8_t RGB_Rainbow[WS2812_COUNT]={
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
 	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00
 };
 uint8_t RGB_FixColor[(WS2812_COUNT*3)]={
@@ -53,16 +53,16 @@ uint8_t hexaKeys1[ROWS][COLS] = {
 	{0x00,KEY_LEFT_SHIFT,KEY_NUM_LOCK,MACRO1,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,KEY_RIGHT_SHIFT,KEY_UP,KEY_RIGHT_CTRL},
 	{KEY_LEFT_CTRL,KEY_FN,0x00,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_FN,KEY_FN,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
 };
-//keymask_bits:7-press 654-hexatype0 3-press 210-hexatype1
+//keyMask_bits:7-press 654-hexatype0 3-press 210-hexatype1
 //type: 1-key 2-modifykey 3-mousekey 4-systemkey 5-consumerkey 6-FN 7-macro
-uint8_t keymask[ROWS][COLS] = {
+uint8_t keyMask[ROWS][COLS] = {
 	{0x71,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x11,0x00,0x11},
 	{0x10,0x00,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10},
 	{0x10,0x00,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x00},
 	{0x00,0x22,0x11,0x17,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x22,0x11,0x22},
 	{0x22,0x66,0x00,0x22,0x00,0x00,0x11,0x00,0x00,0x00,0x66,0x66,0x11,0x11,0x11}
 };
-uint8_t ledmask[ROWS][COLS] = {
+uint8_t ledMask[ROWS][COLS] = {
 	{0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x00,0x80},
 	{0x80,0x00,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80},
 	{0x80,0x00,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x00},
@@ -71,20 +71,19 @@ uint8_t ledmask[ROWS][COLS] = {
 };
 ///////////////////////////////////////////////////////////////////////////
 #elif defined CXT84
-
 #endif
 //////////////////////////////////////////////////////////////////////
 uint16_t delayval;
 uint8_t r,c,i,FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
-void init_cols(){
+void Init_Cols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(colPins[i],INPUT);
 		digitalWrite(colPins[i],HIGH);
 	}
 }
-void init_rows(){
+void Init_Rows(){
 	for ( i=0; i<ROWS; i++){
 		pinMode(rowPins[i],INPUT);
 		digitalWrite(rowPins[i],HIGH);
@@ -100,7 +99,7 @@ void Close_LED(){
 		digitalWrite(ledPins[i],LOW);
 	}
 }
-void init_LED(){
+void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
@@ -108,7 +107,7 @@ void init_LED(){
 		pinMode(ledPins[i],OUTPUT);
 		digitalWrite(ledPins[i],LOW);
 	}
-	delayval=Maxdelay;
+	delayval=MaxDelay*8;
 }
 void Reset_LED(){
 	for ( i=0; i<ledcount; i++){
@@ -118,12 +117,12 @@ void Reset_LED(){
 	WS2812Clear();
 	WS2812Send2();
 }
-void LED(){
-	for ( i=0; i<ledcount; i++){
-		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
-		digitalWrite(ledPins[i],HIGH);}
-		else{
-		digitalWrite(ledPins[i],LOW);}
+uint8_t r,g,b;
+void Update_LED(){
+	if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
+		digitalWrite(ledPins[0],HIGH);
+		}else{
+		digitalWrite(ledPins[0],LOW);
 	}
 	//////////////full led//////////////////
 	if(RGB_State & (1<<5)){}//full led on
@@ -131,36 +130,47 @@ void LED(){
 	////////////////rgb////////////////
 	if(RGB_State & (1<<4)){
 		/////////////////rianbow/////////////////////
-		if((RGB_State&0x0F)==0x01 && delayval>=Maxdelay*8){
+		if((RGB_State&0x0F)==0x01){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
-				uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
-				uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
-				uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
-				WS2812SetRGB(i,r,g,b);
-				RGB_Rainbow[i]++;
+				if(delayval==MaxDelay*1) r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
+				if(delayval==MaxDelay*2) g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
+				if(delayval==MaxDelay*3) b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
+				if(delayval==MaxDelay*4){
+					WS2812SetRGB(i,r,g,b);
+					RGB_Rainbow[i]++;
+				}
 			}
 		}
 		/////////////////fix/////////////////////
-		else if((RGB_State&0x0F)==0x00 && delayval>=Maxdelay*8){
-			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				WS2812SetRGB(i,RGB_FixColor[i*3],RGB_FixColor[i*3+1],RGB_FixColor[i*3+2]);//default
+		else if((RGB_State&0x0F)==0x00){
+			if(delayval==MaxDelay*5){
+				for(uint8_t i=0;i<WS2812_COUNT;i++){
+					WS2812SetRGB(i,RGB_FixColor[i*3],RGB_FixColor[i*3+1],RGB_FixColor[i*3+2]);//default
+				}
 			}
 		}
-		/////////////////print/////////////////////
+		/////////////////print led/////////////////////
 		else if((RGB_State&0x0F)==0x02){
-			uint8_t wsi=WS2812_COUNT-1;
+			uint8_t wcount=WS2812_COUNT-1;
 			//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
 			for (r = 0; r < ROWS; r++) {
 				for (c = 0; c < COLS; c++) {
-					if(wsi>=0 ){
-						if(ledmask[r][c]&0x0F){
-							WS2812SetRGB(wsi,255,255,255);
+					if(wcount>=0 ){
+						if(ledMask[r][c]){
+							WS2812SetRGB(wcount,ledMask[r][c],ledMask[r][c],ledMask[r][c]);
 						}
 						else{
-							WS2812SetRGB(wsi,0,0,0);
+							WS2812SetRGB(wcount,0,0,0);
 						}
-						if(ledmask[r][c]&0xF0)wsi--;
+						if((keyMask[r][c]&(~0x88))!=0)wcount--;
+					}
+				}
+			}
+			if(delayval==MaxDelay*6){
+				for (r = 0; r < ROWS; r++) {
+					for (c = 0; c < COLS; c++) {
+						if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
 					}
 				}
 			}
@@ -169,36 +179,37 @@ void LED(){
 		/////////////////////closed///////////////////
 		WS2812Clear();
 	}
-	///////////////////clock/////////////////
-	if(delayval>=Maxdelay*8){
+	///////////////////clock /////////////////
+	//尽可能减少每次循环的时间，将任务错开。
+	if(delayval>=MaxDelay*8){
 		delayval--;
 		WS2812Send2();
 		}else{
 		if(delayval){
 			delayval--;
 			}else {
-			delayval=Maxdelay*8;
+			delayval=MaxDelay;
 		}
 	}
 }
 /////////////////////////////////////////////////////////////////////
-void QMKMode(){
+void QMK_Mode(){
 	for (r = 0; r < ROWS; r++) {
 		pinMode(rowPins[r],OUTPUT);
 		digitalWrite(rowPins[r],LOW);
 		for (c = 0; c < COLS; c++) {
-			if (digitalRead(colPins[c])) {keymask[r][c]&= ~0x88;}
-			else {keymask[r][c]|= 0x88;delay_after=_delay_after;ledmask[r][c]=0x6C;}
-			if(keymask[r][c]==0xEE )FN=0x0F;
+			if (digitalRead(colPins[c])) {keyMask[r][c]&= ~0x88;}
+			else {keyMask[r][c]|= 0x88;delay_after=_delay_after;ledMask[r][c]=0xFF;}
+			if(keyMask[r][c]==0xEE )FN=0x0F;
 		}
-		init_rows();
+		Init_Rows();
 	}
 	releaseAllkeyboardkeys();
 	releaseAllmousekeys();
 	macrobuffer=0;
 	for (r = 0; r < ROWS; r++) {
 		for (c = 0; c < COLS; c++) {
-			switch(keymask[r][c]&FN){
+			switch(keyMask[r][c]&FN){
 				case 0x90:
 				presskey(hexaKeys0[r][c]);
 				break;
@@ -249,10 +260,10 @@ void QMKMode(){
 	if(delay_after>0)delay_after-=1;
 	if(delay_before>0)delay_before-=1;
 }
-int init_main(void) {
+int Init_Main(void) {
 	CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
 	closeJtag();
-	init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+	Init_LED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
 	_delay_ms(500);
 	usb_init();
 	while (!usb_configured()){_delay_ms(300);}
@@ -260,15 +271,15 @@ int init_main(void) {
 	//	TCCR0B =(1<<CS00);
 	//	TIMSK0 = (1<<TOIE0);
 	////////////////////////////////////////////////
-	init_cols();
-	init_rows();
+	Init_Cols();
+	Init_Rows();
 	while (1) {//重启
 		EnableRecv=1;
 		keyboard_buffer.enable_pressing=1;
 		RGB_Type=0x02;//set default rgb
 		releaseAllkeyboardkeys();
 		releaseAllmousekeys();
-	//	ResetMatrixFormEEP();
+		//	ResetMatrixFormEEP();
 		Reset_LED();
 		FN=0xF0;
 		_delay_ms(500);
@@ -279,8 +290,8 @@ int init_main(void) {
 				break;
 			}
 			else if(keyboard_buffer.enable_pressing==1){
-				QMKMode();
-				if(delay_before==0) LED();
+				QMK_Mode();
+				if(delay_before==0) Update_LED();
 			}
 		}
 	}
