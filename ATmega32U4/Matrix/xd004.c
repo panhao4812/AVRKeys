@@ -6,10 +6,10 @@
 //SW d3 d0 c4 b4
 //LED d5 d2 b7 b5
 //RGB C6
-#define ledcount 4
+#define LED_COUNT 4
 uint8_t colPins[COLS]={19,16,12,4};
 uint8_t rowPins[ROWS]={0xFF};
-uint8_t ledPins[ledcount]={21,18,7,5};
+uint8_t ledPins[LED_COUNT]={21,18,7,5};
 uint8_t hexaKeys0[ROWS][COLS]={
 	{KEY_1,KEY_2,KEY_3,KEY_FN}
 };
@@ -25,10 +25,10 @@ uint8_t RGB_Rainbow[WS2812_COUNT]={0,170};
 //SW D0 D1 D2 D3 D4
 //LED C2 C7 D5 D6 B0
 //RGB C6
-#define ledcount 5
+#define LED_COUNT 5
 uint8_t colPins[COLS]={16,17,18,19,20};
 uint8_t rowPins[ROWS]={0xFF};
-uint8_t ledPins[ledcount]={10,15,21,22,0};
+uint8_t ledPins[LED_COUNT]={10,15,21,22,0};
 uint8_t hexaKeys0[ROWS][COLS]={
 	{KEY_UP,KEY_FN,KEY_RIGHT,KEY_DOWN,KEY_LEFT}
 };
@@ -54,12 +54,12 @@ void Init_Cols(){
 void Init_Rows(){
 }
 void Open_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],LOW);
 	}
 }
 void Close_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],HIGH);
 	}
 }
@@ -67,14 +67,14 @@ void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		pinMode(ledPins[i],OUTPUT);
 		digitalWrite(ledPins[i],HIGH);
 	}
 	delayval=MaxDelay;
 }
 void Reset_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],HIGH);
 	}
 	RGB_State=RGB_Type;
@@ -94,7 +94,7 @@ void Update_LED(){
 		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_State&0x0F)==0x01){
-					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					if(RGB_Rainbow[i]>=WS2812_ColorCount) RGB_Rainbow[i]=0;
 					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
 					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
 					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);

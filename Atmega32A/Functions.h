@@ -57,7 +57,7 @@ void Close_LED();
 void Init_LED();
 void Reset_LED();
 void Update_LED();
-void BfaceMod();
+void Bface_Mod();
 void keyPrintWordEEP(uint16_t address_t);
 ///////////////////eeprom//////////////////////////
 #define add1 10

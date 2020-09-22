@@ -51,7 +51,7 @@ void Update_LED(){
 		if(RGB_State & (1<<1)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_Type&0x0F)==0x01){
-					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					if(RGB_Rainbow[i]>=WS2812_ColorCount) RGB_Rainbow[i]=0;
 					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
 					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
 					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);

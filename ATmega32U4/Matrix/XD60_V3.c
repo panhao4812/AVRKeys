@@ -9,12 +9,12 @@ uint8_t LED_caps=2;
 uint8_t rgb=17;
 uint8_t full led=18;
 */
-#define ledcount 1
+#define LED_COUNT 1
 #define fullled 18
 uint8_t rowPins[ROWS]={5,6,7,8,23};
 uint8_t colPins[COLS]={21,20,24,10,9,15,22,1,4,14,13,12,11,3};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
-uint8_t ledPins[ledcount]={0xFF,2};//È±numlockµÆ
+uint8_t ledPins[LED_COUNT]={0xFF,2};//È±numlockµÆ
 uint8_t RGB_Rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
 uint8_t hexaKeys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_BACKSPACE},
@@ -47,11 +47,11 @@ uint8_t keyMask[ROWS][COLS] = {
 //GP103_LED       F4 19
 //KEYCAPS_LED     F5 18
 //GP100_LED       F7 16
-#define ledcount 2
+#define LED_COUNT 2
 #define fullled 18
 uint8_t rowPins[ROWS]={5,6,7,8,23};
 uint8_t colPins[COLS]={21,20,24,10,9,15,22,1,4,14,13,12,11,3,0};
-uint8_t ledPins[ledcount]={2,18};uint8_t ledPins2[ledcount]={19,16};
+uint8_t ledPins[LED_COUNT]={2,18};uint8_t ledPins2[LED_COUNT]={19,16};
 uint8_t RGB_Rainbow[WS2812_COUNT]={0,34,68,102,136,170};
 uint8_t hexaKeys0[ROWS][COLS] = {
 	{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_BACKSPACE,KEY_DELETE},
@@ -93,12 +93,12 @@ void Init_Rows(){
 	}
 }
 void Open_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],HIGH);
 	}
 }
 void Close_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],LOW);
 	}
 }
@@ -106,7 +106,7 @@ void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		pinMode(ledPins[i],OUTPUT);
 		digitalWrite(ledPins[i],LOW);
 	}
@@ -115,7 +115,7 @@ void Init_LED(){
 	delayval=MaxDelay;
 }
 void Reset_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],LOW);
 	}
 	digitalWrite(fullled,LOW);
@@ -124,14 +124,14 @@ void Reset_LED(){
 	WS2812Send2();
 }
 void Update_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
 		digitalWrite(ledPins[i],HIGH);}
 		else{
 		digitalWrite(ledPins[i],LOW);}
 	}
 	#ifdef xd75
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
 		digitalWrite(ledPins2[i],HIGH);}
 		else{
@@ -148,7 +148,7 @@ void Update_LED(){
 		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_State&0x0F)==0x01){
-					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					if(RGB_Rainbow[i]>=WS2812_ColorCount) RGB_Rainbow[i]=0;
 					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
 					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
 					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);

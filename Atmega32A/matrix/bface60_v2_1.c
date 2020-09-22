@@ -9,11 +9,11 @@
 //col A0,A1,A2,A3,A4 A5 A6 A7 C7 C6 C5 C4 C3 C2 C1 C0 D7
 //row B0 B1 B2 B3 B4 B5 B6 B7
 //jump A1 B0
-#define ledcount 2
+#define LED_COUNT 2
 #define fullled 28
 uint8_t rowPins[ROWS]={8,9,10,11,12,13,14,15};
 uint8_t colPins[COLS]={1,2,3,4,5,6,7,23,22,21};
-uint8_t ledPins[ledcount]={24,25};
+uint8_t ledPins[LED_COUNT]={24,25};
 uint8_t hexaKeys0[ROWS][COLS] = {
 	{KEY_Q,KEY_W,KEY_E,KEY_R,KEY_U,KEY_I,KEY_O,KEY_P,KEY_CTRL,KEY_FN},//ROW0
 	{KEY_TAB,KEY_CAPS,0x00,KEY_T,KEY_Y,KEY_RIGHT_BRACE,KEY_TILDE,KEY_LEFT_BRACE,KEY_SHIFT,0x00},//ROW1
@@ -56,11 +56,11 @@ uint8_t keyMask[ROWS][COLS]={
 //led D0 D1 D6
 //fullled  D4
 //RGB C1
-#define ledcount 3
+#define LED_COUNT 3
 #define fullled 28
 uint8_t rowPins[ROWS]={11,12,13,14,15};
 uint8_t colPins[COLS]={0,1,2,3,4,5,6,7,23,22,21,20,19,18,31};
-uint8_t ledPins[ledcount]={24,25,30};
+uint8_t ledPins[LED_COUNT]={24,25,30};
 uint8_t RGB_Rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
 uint8_t hexaKeys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_TILDE,KEY_BACKSPACE},
@@ -94,11 +94,11 @@ uint8_t keyMask[ROWS][COLS] = {
 //RGB C1
 //hub不能识别是应为电流不足，关闭灯则可以识别。其他识别问题也可能是电流的原因。
 //用avrdude来烧录。
-#define ledcount 3
+#define LED_COUNT 3
 #define fullled 28
 uint8_t rowPins[ROWS]={8,9,10,11,12,13,14,15};
 uint8_t colPins[COLS]={0,1,2,3,4,5,6,7,23,22,21,20,19,18,31};
-uint8_t ledPins[ledcount]={24,25,30};
+uint8_t ledPins[LED_COUNT]={24,25,30};
 uint8_t RGB_Rainbow[WS2812_COUNT]=
 {25,50,75,100,125,150,175,200,225,250,225,200,175,150,125,100,75,50,25,0};
 uint8_t hexaKeys0[ROWS][COLS] = {
@@ -150,12 +150,12 @@ void Init_Rows(){
 	}
 }
 void Open_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],HIGH);
 	}
 }
 void Close_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],LOW);
 	}
 }
@@ -163,7 +163,7 @@ void Init_LED(){
 	WS2812Setup();
 	WS2812Clear();
 	WS2812Send2();
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		pinMode(ledPins[i],OUTPUT);
 		digitalWrite(ledPins[i],LOW);
 	}
@@ -172,7 +172,7 @@ void Init_LED(){
 	delayval=MaxDelay;
 }
 void Reset_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		digitalWrite(ledPins[i],LOW);
 	}
 	digitalWrite(fullled,LOW);
@@ -181,7 +181,7 @@ void Reset_LED(){
 	WS2812Send2();
 }
 void Update_LED(){
-	for ( i=0; i<ledcount; i++){
+	for ( i=0; i<LED_COUNT; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
 		digitalWrite(ledPins[i],HIGH);}
 		else{
@@ -197,7 +197,7 @@ void Update_LED(){
 		if(RGB_State & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((RGB_State&0x0F)==0x01){
-					if(RGB_Rainbow[i]>=WS2812ColorCount) RGB_Rainbow[i]=0;
+					if(RGB_Rainbow[i]>=WS2812_ColorCount) RGB_Rainbow[i]=0;
 					uint8_t r=pgm_read_byte(Rcolors+RGB_Rainbow[i]);
 					uint8_t g=pgm_read_byte(Gcolors+RGB_Rainbow[i]);
 					uint8_t b=pgm_read_byte(Bcolors+RGB_Rainbow[i]);
@@ -220,7 +220,7 @@ void Update_LED(){
 		}
 	}
 }
-void BfaceMod(){
+void Bface_Mod(){
 	for (r = 0; r < ROWS; r++) {
 		pinMode(rowPins[r],OUTPUT);
 		digitalWrite(rowPins[r],LOW);
@@ -314,7 +314,7 @@ int Init_Main(void) {
 				break;
 			}
 			else if(keyboard_buffer.enable_pressing==1){
-				BfaceMod();
+				Bface_Mod();
 				if (usbConfiguration && usbInterruptIsReady()){
 					if(delay_before==0)Update_LED();	//LED耗时太长，所以按键的时候LED休眠
 				}
