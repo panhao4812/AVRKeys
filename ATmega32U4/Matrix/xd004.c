@@ -19,7 +19,7 @@ uint8_t hexa_keys1[ROWS][COLS]={
 uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
-uint8_t rgb_rainbow[WS2812_COUNT]={0,170};
+uint16_t rgb_rainbow[WS2812_COUNT]={0,170};
 ////////////////////////////////////////////////////
 #elif defined staryu
 //SW D0 D1 D2 D3 D4
@@ -38,7 +38,7 @@ uint8_t hexa_keys1[ROWS][COLS]={
 uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x66,0x17,0x17,0x17}
 };
-uint8_t rgb_rainbow[WS2812_COUNT]={0};
+uint16_t rgb_rainbow[WS2812_COUNT]={0};
 #endif
 /////////////////////////////////////////////////////////////////////////continue
 uint16_t delay_val;//rgbËÙÂÊ
@@ -212,7 +212,7 @@ int initMain(void)
 			}
 			else if(keyboard_buffer.enable_pressing==1){
 				qmkMode();
-				if(DELAY_BEFORE==0) updateLED();
+				if(delay_before==0) updateLED();
 			}
 		}
 	}

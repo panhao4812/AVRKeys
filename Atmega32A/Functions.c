@@ -555,7 +555,7 @@ void keyPrintWordEEP(uint16_t address_t){
 	uint16_t len=eeprom_read_word((uint16_t *)address_t);
 	for(uint16_t i=0;i<len;i++){
 		uint16_t address=address_t+i*2+2;
-		if(address>MAX_EEP)break;
+		if(address>MAX_EEP-1)break;
 		uint16_t data = eeprom_read_word((uint16_t *)address);
 		keyPrintChar(data);
 	}

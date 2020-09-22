@@ -15,7 +15,7 @@ uint8_t row_pins[ROWS]={5,6,7,8,23};
 uint8_t col_pins[COLS]={21,20,24,10,9,15,22,1,4,14,13,12,11,3};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
 uint8_t led_pins[LED_COUNT]={0xFF,2};//È±numlockµÆ
-uint8_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
+uint16_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_BACKSPACE},
 	{KEY_TAB,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH},
@@ -52,7 +52,7 @@ uint8_t key_mask[ROWS][COLS] = {
 uint8_t row_pins[ROWS]={5,6,7,8,23};
 uint8_t col_pins[COLS]={21,20,24,10,9,15,22,1,4,14,13,12,11,3,0};
 uint8_t led_pins[LED_COUNT]={2,18};uint8_t ledPins2[LED_COUNT]={19,16};
-uint8_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170};
+uint16_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170};
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_BACKSPACE,KEY_DELETE},
 	{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_BACKSPACE,MACRO0},
@@ -270,7 +270,7 @@ int initMain(void) {
 			}
 			else if(keyboard_buffer.enable_pressing==1){
 				qmkMode();
-				if(DELAY_BEFORE==0) updateLED();
+				if(delay_before==0) updateLED();
 			}
 		}
 	}

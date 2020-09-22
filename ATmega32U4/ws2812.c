@@ -70,13 +70,24 @@ void ws2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t valu
 	}
 }
 
+void ws2812SetR(uint16_t led, uint8_t red)
+{
+	ws2812_buffer[1+led*3] = red / WS2812_SAVE;
+}
+void ws2812SetG(uint16_t led, uint8_t green)
+{
+	ws2812_buffer[led*3] = green / WS2812_SAVE;
+}
+void ws2812SetB(uint16_t led,  uint8_t blue)
+{
+	ws2812_buffer[2+led*3] = blue / WS2812_SAVE;
+}
 void ws2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue)
 {
 	ws2812_buffer[led*3] = green / WS2812_SAVE;
 	ws2812_buffer[1+led*3] = red / WS2812_SAVE;
 	ws2812_buffer[2+led*3] = blue / WS2812_SAVE;
 }
-
 void ws2812Send()
 {cli();
 	for(uint16_t c = 0; c < (WS2812_COUNT * 3); c++)

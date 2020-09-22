@@ -37,14 +37,14 @@
 #elif defined(CXT64)
 #define ROWS  5
 #define COLS  15
-#define PRODUCT_ID		0xC064
+#define PRODUCT_ID		0xC060
 #define WS2812_COUNT	64
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
 #define VENDOR_ID		0x32C2//–æ∆¨¿‡–Õ
 #define FLASH_END_ADDRESS (uint16_t)0x7000 // 0x3800*2
-#define MAX_EEP (uint16_t)0x01FF // (eeprom 1k-1)
+#define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #elif defined(__AVR_ATmega16U2__)
 #define VENDOR_ID		0x16C2
 #define FLASH_END_ADDRESS (uint16_t)0x3000 // 0x1800*2
@@ -57,6 +57,7 @@
 #define VENDOR_ID		0xC082
 #elif defined(__AVR_ATmega32U4__)
 #define VENDOR_ID		0x32C4
+#define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #elif defined(__AVR_ATMEGA32A__)
 #define VENDOR_ID		0x32A0
 #elif defined(__AVR_ATMEGA64A__)
@@ -163,7 +164,6 @@ typedef struct {
 report_mouse_t mouse_report;
 report_mouse_t print_mouse_report;
 buffer_mouse_t mouse_buffer;
-#define MAX_EEP (uint16_t)0x03FF // (eeprom 4k-1)
 report_raw_t raw_report_in;
 report_raw_t raw_report_out;
 report_keyboard_t keyboard_report;

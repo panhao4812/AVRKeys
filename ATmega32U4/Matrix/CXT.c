@@ -15,12 +15,12 @@ uint8_t row_pins[ROWS]={10,9,15,14,13};
 uint8_t col_pins[COLS]={16,17,18,19,20,21,24,0,1,2,3,5,6,7,8};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
 uint8_t led_pins[LED_COUNT]={23};
-uint8_t rgb_rainbow[WS2812_COUNT]={
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+uint16_t rgb_rainbow[WS2812_COUNT]={
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00,             0x00,       0x00, 0x00, 0x00, 0x00, 0x00
 };
 uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
@@ -91,12 +91,12 @@ void initRows(){
 }
 void openLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(led_pins[i],HIGH);
+		digitalWrite(led_pins[i],LOW);
 	}
 }
 void closeLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(led_pins[i],LOW);
+		digitalWrite(led_pins[i],HIGH);
 	}
 }
 void initLED(){
@@ -105,13 +105,13 @@ void initLED(){
 	ws2812Send2();
 	for ( i=0; i<LED_COUNT; i++){
 		pinMode(led_pins[i],OUTPUT);
-		digitalWrite(led_pins[i],LOW);
+		digitalWrite(led_pins[i],HIGH);
 	}
 	delay_val=MAX_DELAY*8;
 }
 void resetLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(led_pins[i],LOW);
+		digitalWrite(led_pins[i],HIGH);
 	}
 	rgb_state=rgb_type;//默认开关状态
 	ws2812Clear();
@@ -120,9 +120,9 @@ void resetLED(){
 uint8_t r,g,b;
 void updateLED(){
 	if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
-		digitalWrite(led_pins[0],HIGH);
-		}else{
 		digitalWrite(led_pins[0],LOW);
+		}else{
+		digitalWrite(led_pins[0],HIGH);
 	}
 	//////////////full led//////////////////
 	if(rgb_state & (1<<5)){}//full led on
@@ -131,14 +131,14 @@ void updateLED(){
 	if(rgb_state & (1<<4)){
 		/////////////////rianbow/////////////////////
 		if((rgb_state&0x0F)==0x01){
-			for(uint8_t i=0;i<WS2812_COUNT;i++){
+		if(delay_val==MAX_DELAY*3){
+			for(uint8_t i=0;i<WS2812_COUNT;i++){	
 				if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-				if(delay_val==MAX_DELAY*1) r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
-				if(delay_val==MAX_DELAY*2) g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
-				if(delay_val==MAX_DELAY*3) b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
-				if(delay_val==MAX_DELAY*4){
-					ws2812SetRGB(i,r,g,b);
-					rgb_rainbow[i]++;
+				 r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
+				 g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
+				b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
+				ws2812SetRGB(i,r,g,b);
+				rgb_rainbow[i]++;
 				}
 			}
 		}
@@ -167,6 +167,7 @@ void updateLED(){
 					}
 				}
 			}
+			//*
 			if(delay_val==MAX_DELAY*6){
 				for (r = 0; r < ROWS; r++) {
 					for (c = 0; c < COLS; c++) {
@@ -174,6 +175,7 @@ void updateLED(){
 					}
 				}
 			}
+			//*/
 		}
 		}else{
 		/////////////////////closed///////////////////
@@ -181,14 +183,14 @@ void updateLED(){
 	}
 	///////////////////clock /////////////////
 	//尽可能减少每次循环的时间，将任务错开。
-	if(delay_val>=MAX_DELAY*8){
+	if(delay_val==MAX_DELAY*8){
 		delay_val--;
 		ws2812Send2();
 		}else{
 		if(delay_val){
 			delay_val--;
 			}else {
-			delay_val=MAX_DELAY;
+			delay_val=MAX_DELAY*8;
 		}
 	}
 }
@@ -279,7 +281,7 @@ int initMain(void) {
 		rgb_type=0x02;//set default rgb
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
-		//	resetMatrixFormEEP();
+    	resetMatrixFormEEP();
 		resetLED();
 		FN=0xF0;
 		_delay_ms(500);
@@ -291,7 +293,7 @@ int initMain(void) {
 			}
 			else if(keyboard_buffer.enable_pressing==1){
 				qmkMode();
-				if(DELAY_BEFORE==0) updateLED();
+				if(delay_before==0) updateLED();
 			}
 		}
 	}

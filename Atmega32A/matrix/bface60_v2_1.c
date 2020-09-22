@@ -61,7 +61,7 @@ uint8_t key_mask[ROWS][COLS]={
 uint8_t row_pins[ROWS]={11,12,13,14,15};
 uint8_t col_pins[COLS]={0,1,2,3,4,5,6,7,23,22,21,20,19,18,31};
 uint8_t led_pins[LED_COUNT]={24,25,30};
-uint8_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
+uint16_t rgb_rainbow[WS2812_COUNT]={0,34,68,102,136,170,170,136,102,68,34,0};
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,KEY_TILDE,KEY_BACKSPACE},
 	{KEY_TAB,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH,0x00},
@@ -99,7 +99,7 @@ uint8_t key_mask[ROWS][COLS] = {
 uint8_t row_pins[ROWS]={8,9,10,11,12,13,14,15};
 uint8_t col_pins[COLS]={0,1,2,3,4,5,6,7,23,22,21,20,19,18,31};
 uint8_t led_pins[LED_COUNT]={24,25,30};
-uint8_t rgb_rainbow[WS2812_COUNT]=
+uint16_t rgb_rainbow[WS2812_COUNT]=
 {25,50,75,100,125,150,175,200,225,250,225,200,175,150,125,100,75,50,25,0};
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{KEY_CTRL,KEY_GUI,KEY_ALT,0x00,0x00,0x00,KEYPAD_0,0x00,KEYPAD_PERIOD,KEYPAD_ENTER,KEY_RIGHT_GUI,KEY_FN,KEY_RIGHT_CTRL,KEY_INSERT,0x00},//r1
@@ -315,7 +315,7 @@ int initMain(void) {
 			else if(keyboard_buffer.enable_pressing==1){
 				bfaceMod();
 				if (usbConfiguration && usbInterruptIsReady()){
-					if(DELAY_BEFORE==0)updateLED();	//LED耗时太长，所以按键的时候LED休眠
+					if(delay_before==0)updateLED();	//LED耗时太长，所以按键的时候LED休眠
 				}
 			}
 		}

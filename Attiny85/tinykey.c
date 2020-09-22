@@ -9,7 +9,7 @@ uint8_t delay_after=0;//backswing ∫Û“°
 uint8_t delay_before=0;//windup «∞“°
 uint8_t rgb_state=0;
 uint16_t delay_val;
-uint8_t rgb_rainbow[WS2812_COUNT]={0,0};
+uint16_t rgb_rainbow[WS2812_COUNT]={0,0};
 uint8_t row_pins[ROWS]={0xFF};
 uint8_t col_pins[COLS]={0,1};
 uint8_t hexa_keys0[ROWS][COLS] = {{KEY_Z,KEY_X}};
@@ -146,7 +146,7 @@ void TinykeyMode(){
 		usbMouseSend();
 		#endif
 	}
-	if(DELAY_AFTER==1)
+	if(delay_after==1)
 	{usbMacroSend();usbKeyboardSend();
 		#if MOUSE_ENABLE
 		usbMouseSend();
@@ -176,7 +176,7 @@ int initMain(void) {
 			else if(keyboard_buffer.enable_pressing==1){
 				TinykeyMode();
 				if (usbConfiguration && usbInterruptIsReady()){
-					if(DELAY_BEFORE==0)updateLED();
+					if(delay_before==0)updateLED();
 				}
 			}
 		}
