@@ -27,16 +27,19 @@ void setUsbOff(void) {
 	PORTD &= ~(1 << 5);
 	#endif
 }
-void usbInit(){
+void usbConnect(){
 clearTimers();
 setUsbOn();
-uint8_t i = 0;
 	usbInit();
-	usbDeviceDisconnect();  
+	usbDeviceDisconnect(); 
+	/*
+	uint8_t i = 0;
 	  while(--i){      
 		  wdt_reset();
 		  _delay_ms(1);
 	  }
+	  */
+	  _delay_ms(500);
 	usbDeviceConnect();
 	sei();
 	clearKeyboard();
@@ -46,6 +49,7 @@ uint8_t i = 0;
 	#ifdef CLKPR
 	CLKPR = 0x80, CLKPR = 0;
 	#endif
+	_delay_ms(500);
 }
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {

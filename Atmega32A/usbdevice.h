@@ -95,7 +95,7 @@ report_keyboard_t print_keyboard_report;
 report_keyboard_t keyboard_report;
 buffer_keyboard_t keyboard_buffer;
 //////////////////////////usb////////////////////////////////
-void usbInit();
+void usbConnect();
 void clearKeyboard();
 void clearMouse();
 void clearRaw();

@@ -14,7 +14,7 @@ uint8_t LED_caps=D5;
 uint8_t row_pins[ROWS]={10,9,15,14,13};
 uint8_t col_pins[COLS]={16,17,18,19,20,21,24,0,1,2,3,5,6,7,8};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
-uint8_t ledPins[LED_COUNT]={23};
+uint8_t led_pins[LED_COUNT]={23};
 uint8_t rgb_rainbow[WS2812_COUNT]={
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
 	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -75,8 +75,8 @@ uint8_t ledMask[ROWS][COLS] = {
 //////////////////////////////////////////////////////////////////////
 uint16_t delay_val;
 uint8_t r,c,i,FN;
-uint8_t DELAY_AFTER=0;//backswing 后摇
-uint8_t DELAY_BEFORE=0;//windup 前摇
+uint8_t delay_after=0;//backswing 后摇
+uint8_t delay_before=0;//windup 前摇
 void initCols(){
 	for ( i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
@@ -91,12 +91,12 @@ void initRows(){
 }
 void openLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(ledPins[i],HIGH);
+		digitalWrite(led_pins[i],HIGH);
 	}
 }
 void closeLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(ledPins[i],LOW);
+		digitalWrite(led_pins[i],LOW);
 	}
 }
 void initLED(){
@@ -104,14 +104,14 @@ void initLED(){
 	ws2812Clear();
 	ws2812Send2();
 	for ( i=0; i<LED_COUNT; i++){
-		pinMode(ledPins[i],OUTPUT);
-		digitalWrite(ledPins[i],LOW);
+		pinMode(led_pins[i],OUTPUT);
+		digitalWrite(led_pins[i],LOW);
 	}
 	delay_val=MAX_DELAY*8;
 }
 void resetLED(){
 	for ( i=0; i<LED_COUNT; i++){
-		digitalWrite(ledPins[i],LOW);
+		digitalWrite(led_pins[i],LOW);
 	}
 	rgb_state=rgb_type;//默认开关状态
 	ws2812Clear();
@@ -120,9 +120,9 @@ void resetLED(){
 uint8_t r,g,b;
 void updateLED(){
 	if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
-		digitalWrite(ledPins[0],HIGH);
+		digitalWrite(led_pins[0],HIGH);
 		}else{
-		digitalWrite(ledPins[0],LOW);
+		digitalWrite(led_pins[0],LOW);
 	}
 	//////////////full led//////////////////
 	if(rgb_state & (1<<5)){}//full led on
@@ -199,7 +199,7 @@ void qmkMode(){
 		digitalWrite(row_pins[r],LOW);
 		for (c = 0; c < COLS; c++) {
 			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
-			else {key_mask[r][c]|= 0x88;DELAY_AFTER=DELAY_AFTER;ledMask[r][c]=0xFF;}
+			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
 			if(key_mask[r][c]==0xEE )FN=0x0F;
 		}
 		initRows();
@@ -250,15 +250,15 @@ void qmkMode(){
 		}
 	}
 	if(!isBufferClear())FN=0xF0;//Fix FN key state error
-	if(usbMacroSendRequired())DELAY_BEFORE=DELAY_BEFORE;
-	if(usbKeyboardSendRequired())DELAY_BEFORE=DELAY_BEFORE;
-	if(usbMouseSendRequired())DELAY_BEFORE=DELAY_BEFORE;
-	if(DELAY_AFTER==DELAY_AFTER && DELAY_BEFORE==1)
+	if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
+	if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
+	if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
+	if(delay_after==DELAY_AFTER && delay_before==1)
 	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-	if(DELAY_AFTER==1)
+	if(delay_after==1)
 	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-	if(DELAY_AFTER>0)DELAY_AFTER-=1;
-	if(DELAY_BEFORE>0)DELAY_BEFORE-=1;
+	if(delay_after>0)delay_after-=1;
+	if(delay_before>0)delay_before-=1;
 }
 int initMain(void) {
 	CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置

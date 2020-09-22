@@ -245,7 +245,7 @@ buffer_mouse_t mouse_buffer;
 report_raw_t raw_report_out;
 #endif
 
-void usbInit();
+void usbConnect();
 void usbUpdate();
 void clearKeyboard();
 void clearMouse();

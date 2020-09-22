@@ -5,8 +5,8 @@
 #include "ws2812.h"
 #include "Functions.h"
 uint8_t r,c,i,FN;
-uint8_t DELAY_AFTER=0;//backswing
-uint8_t DELAY_BEFORE=0;//windup
+uint8_t delay_after=0;//backswing ∫Û“°
+uint8_t delay_before=0;//windup «∞“°
 uint8_t rgb_state=0;
 uint16_t delay_val;
 uint8_t rgb_rainbow[WS2812_COUNT]={0,0};
@@ -85,7 +85,7 @@ void TinykeyMode(){
 	FN=0xF0;
 		for (c = 0; c < COLS; c++) {
 			if (digitalRead(col_pins[c])) {key_mask[0][c]&= ~0x88;}
-			else {key_mask[0][c]|= 0x88;DELAY_AFTER=DELAY_AFTER;}
+			else {key_mask[0][c]|= 0x88;delay_after=DELAY_AFTER;}
 			if(key_mask[0][c]==0xEE )FN=0x0F;
 		}
 	releaseAllKeyboardKeys();
@@ -135,12 +135,12 @@ void TinykeyMode(){
 				#endif
 			}
 	}
-	if(usbMacroSendRequired())DELAY_BEFORE=DELAY_BEFORE;
-	if(usbKeyboardSendRequired())DELAY_BEFORE=DELAY_BEFORE;
+	if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
+	if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
 	#if MOUSE_ENABLE
-	if(usbMouseSendRequired())DELAY_BEFORE=DELAY_BEFORE;
+	if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
 	#endif
-	if(DELAY_AFTER==DELAY_AFTER && DELAY_BEFORE==1)
+	if(delay_after==DELAY_AFTER && delay_before==1)
 	{usbMacroSend();usbKeyboardSend();
 		#if MOUSE_ENABLE
 		usbMouseSend();
@@ -152,11 +152,11 @@ void TinykeyMode(){
 		usbMouseSend();
 		#endif
 	}
-	if(DELAY_AFTER>0)DELAY_AFTER-=1;
-	if(DELAY_BEFORE>0)DELAY_BEFORE-=1;
+	if(delay_before>0)delay_before-=1;
+	if(delay_after>0)delay_after-=1;
 }
 int initMain(void) {
-	usbInit();
+	usbConnect();
 	////////////////////////////////////////////////
 	init_IO();
 	while (1) {		

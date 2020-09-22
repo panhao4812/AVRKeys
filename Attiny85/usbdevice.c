@@ -28,7 +28,7 @@ uint8_t pressKey(uint8_t key){
 void usbUpdate(){
 	usbPoll();
 }
-void usbInit()
+void usbConnect()
 {
 	usbInit();
 	/* enforce USB re-enumerate: */
