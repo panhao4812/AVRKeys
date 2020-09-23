@@ -162,7 +162,16 @@ uint8_t usbMacroSend(){
 	}
 	#ifdef FLASH_END_ADDRESS
 	if(macro_report&MACRO4){
+	//调试用途
 		keyPrintWordFlash(FLASH_END_ADDRESS);
+		return 1;
+	}
+	#endif
+	#ifdef CXT64
+	if(macro_report&MACRO5){
+		//调试用途
+		rgb_state++;
+		if((rgb_state&0x0F)>2)rgb_state&=0xF0;
 		return 1;
 	}
 	#endif
@@ -306,7 +315,7 @@ void resetMatrixFormEEP(){
 	resetMatrix(1,address_hexaKeys1);
 	resetMatrix(2,address_keyMask);
 	for( j=0;j<(WS2812_COUNT * 3);j++){rgb_fixcolor[j]=eeprom_read_byte((uint8_t *)(j+ADD_RGB));}
-	rgb_type=eeprom_read_byte((uint8_t *)ADD_EEP);
+	rgb_type=eeprom_read_byte((uint8_t *)ADD_RGBTYPE);
 	//rgb_type&=0x11;
 }
 void eepWrite(){

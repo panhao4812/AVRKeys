@@ -70,7 +70,7 @@ void keyPrintWordEEP(uint16_t address_t);
 #define ADD_KEYS2 ADD_KEYS1+(ROWS*COLS) //105+15*5=180
 #define ADD_RGB ADD_KEYS2+(ROWS*COLS) //180+15*5=255
 #define ADD_RGBTYPE ADD_RGB+(WS2812_COUNT*3)//255+12*3=291
-#define ADD_EEP ADD_RGB+(WS2812_COUNT*3)+6 //291+6=297
+#define ADD_EEP ADD_RGBTYPE+6 //291+6=297
 void resetMatrix(uint8_t mask,uint16_t address);
 void resetMatrixFormEEP();
 //////////////////////////IO////////////////////////////

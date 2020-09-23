@@ -59,7 +59,7 @@ void keyPrintWordFlash(uint16_t address_t);
 #define ADD_KEYS2 ADD_KEYS1+(ROWS*COLS) //105+75=180 169
 #define ADD_RGB ADD_KEYS2+(ROWS*COLS) //180+75=255 239
 #define ADD_RGBTYPE ADD_RGB+(WS2812_COUNT*3)//
-#define ADD_EEP ADD_RGB+(WS2812_COUNT*3)+6 //
+#define ADD_EEP ADD_RGBTYPE+6 //
 void resetMatrixFormEEP();
 //////////////////////IO////////////////////////////////
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))

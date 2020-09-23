@@ -9,35 +9,28 @@ uint8_t LED_caps=D5;
 #define BACKLIGHT_PIN B7
 #define RGB_DI_PIN D7
 #define RGBLED_NUM 64
+键盘的灯比较多，所以启动需要等一段时间电容蓄电，不然会掉电，可以开灯加速蓄电。
+掉电包括不能开rgb，无法用上位机程序上传matrix到键盘
 */
 #define LED_COUNT 1
 uint8_t row_pins[ROWS]={10,9,15,14,13};
 uint8_t col_pins[COLS]={16,17,18,19,20,21,24,0,1,2,3,5,6,7,8};
 //                     1  2  3  4  5  6  7 8 9 10 11 12 13 14
 uint8_t led_pins[LED_COUNT]={23};
+//颜色靠上位机程序生成
 uint16_t rgb_rainbow[WS2812_COUNT]={
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00,             0x00,       0x00, 0x00, 0x00, 0x00, 0x00
+	14,31,47,64,81,98,115,132,149,166,183,200,217,234,
+	14,39,56,73,90,107,124,141,158,174,191,208,225,242,
+	14,43,60,77,94,111,128,145,162,179,196,213,230,
+	14,47,64,81,98,115,132,149,166,183,200,217,234,251,
+	14,35,56,77,183,200,217,234,251
 };
 uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00,       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00,       0x00,             0x00,                   0x00, 0x00, 0x00, 0x00, 0x00
+	237,32,50,222,13,91,198,0,118,103,0,120,77,29,136,41,70,160,19,134,196,2,191,219,17,179,98,49,182,48,90,190,10,212,234,31,234,197,26,247,151,19,
+	237,32,50,211,1,116,138,0,119,96,8,125,54,55,151,36,83,167,3,187,226,10,184,153,24,179,82,74,185,14,147,211,20,222,232,31,245,165,21,245,110,10,
+	237,32,50,210,0,118,114,0,120,87,18,130,46,64,157,28,105,180,1,192,229,14,181,121,35,180,67,79,186,8,188,226,27,227,215,29,247,159,20,
+	237,32,50,198,0,118,103,0,120,77,29,136,41,70,160,19,134,196,2,191,219,17,179,98,49,182,48,90,190,10,212,234,31,234,197,26,247,151,19,243,63,1,
+	237,32,50,216,6,106,138,0,119,87,18,130,90,190,10,212,234,31,234,197,26,247,151,19,243,63,1
 };
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE},
@@ -118,6 +111,13 @@ void resetLED(){
 	ws2812Send2();
 }
 uint8_t r,g,b;
+#define MAX_DELAY_1 MAX_DELAY*1
+#define MAX_DELAY_2 MAX_DELAY*2
+#define MAX_DELAY_3 MAX_DELAY*3
+#define MAX_DELAY_4 MAX_DELAY*4
+#define MAX_DELAY_5 MAX_DELAY*5
+#define MAX_DELAY_6 MAX_DELAY*6
+#define MAX_DELAY_7 MAX_DELAY*7
 void updateLED(){
 	if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
 		digitalWrite(led_pins[0],LOW);
@@ -131,178 +131,176 @@ void updateLED(){
 	if(rgb_state & (1<<4)){
 		/////////////////rianbow/////////////////////
 		if((rgb_state&0x0F)==0x01){
-		if(delay_val==MAX_DELAY*3){
-			for(uint8_t i=0;i<WS2812_COUNT;i++){	
-				if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-				 r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
-				 g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
-				b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
-				ws2812SetRGB(i,r,g,b);
-				rgb_rainbow[i]++;
-				}
-			}
-		}
-		/////////////////fix/////////////////////
-		else if((rgb_state&0x0F)==0x00){
-			if(delay_val==MAX_DELAY*5){
 				for(uint8_t i=0;i<WS2812_COUNT;i++){
-					ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
+					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
+					if(delay_val==MAX_DELAY_4){r=pgm_read_byte(Rcolors+rgb_rainbow[i]);ws2812SetR(WS2812_COUNT-i-1,r);}
+					if(delay_val==MAX_DELAY_3){g=pgm_read_byte(Gcolors+rgb_rainbow[i]);ws2812SetG(WS2812_COUNT-i-1,g);}
+					if(delay_val==MAX_DELAY_2){b=pgm_read_byte(Bcolors+rgb_rainbow[i]);ws2812SetB(WS2812_COUNT-i-1,b);}
+					if(delay_val==MAX_DELAY_1){rgb_rainbow[i]++;}
 				}
 			}
-		}
-		/////////////////print led/////////////////////
-		else if((rgb_state&0x0F)==0x02){
-			uint8_t wcount=WS2812_COUNT-1;
-			//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
-			for (r = 0; r < ROWS; r++) {
-				for (c = 0; c < COLS; c++) {
-					if(wcount>=0 ){
-						if(ledMask[r][c]){
-							ws2812SetRGB(wcount,ledMask[r][c],ledMask[r][c],ledMask[r][c]);
-						}
-						else{
-							ws2812SetRGB(wcount,0,0,0);
-						}
-						if((key_mask[r][c]&(~0x88))!=0)wcount--;
+			/////////////////fix/////////////////////
+			else if((rgb_state&0x0F)==0x00){
+				if(delay_val==MAX_DELAY_5){
+					for(uint8_t i=0;i<WS2812_COUNT;i++){
+						ws2812SetRGB(WS2812_COUNT-i-1,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
 					}
 				}
 			}
-			//*
-			if(delay_val==MAX_DELAY*6){
+			/////////////////print led/////////////////////
+			else if((rgb_state&0x0F)==0x02){
+				uint8_t wcount=0;
+				//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
 				for (r = 0; r < ROWS; r++) {
 					for (c = 0; c < COLS; c++) {
-						if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
+						if(wcount<WS2812_COUNT ){
+							if(ledMask[r][c]){
+								ws2812SetRGB(WS2812_COUNT-wcount-1,ledMask[r][c],ledMask[r][c],ledMask[r][c]);
+							}
+							else{
+								ws2812SetRGB(WS2812_COUNT-wcount-1,0,0,0);
+							}
+							if((key_mask[r][c]&(~0x88))!=0)wcount++;
+						}
 					}
 				}
+				//*
+				if(delay_val==MAX_DELAY_6){
+					for (r = 0; r < ROWS; r++) {
+						for (c = 0; c < COLS; c++) {
+							if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
+						}
+					}
+				}
+				//*/
 			}
-			//*/
+			
+			}else{
+			/////////////////////closed///////////////////
+			ws2812Clear();
 		}
-		}else{
-		/////////////////////closed///////////////////
-		ws2812Clear();
-	}
-	///////////////////clock /////////////////
-	//尽可能减少每次循环的时间，将任务错开。
-	if(delay_val==MAX_DELAY*8){
-		delay_val--;
-		ws2812Send2();
-		}else{
-		if(delay_val){
+		///////////////////clock /////////////////
+		//尽可能减少每次循环的时间，将任务错开。
+		if(delay_val==MAX_DELAY_7){
 			delay_val--;
-			}else {
-			delay_val=MAX_DELAY*8;
-		}
-	}
-}
-/////////////////////////////////////////////////////////////////////
-void qmkMode(){
-	for (r = 0; r < ROWS; r++) {
-		pinMode(row_pins[r],OUTPUT);
-		digitalWrite(row_pins[r],LOW);
-		for (c = 0; c < COLS; c++) {
-			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
-			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
-			if(key_mask[r][c]==0xEE )FN=0x0F;
-		}
-		initRows();
-	}
-	releaseAllKeyboardKeys();
-	releaseAllMousekeys();
-	macro_buffer=0;
-	for (r = 0; r < ROWS; r++) {
-		for (c = 0; c < COLS; c++) {
-			switch(key_mask[r][c]&FN){
-				case 0x90:
-				pressKey(hexa_keys0[r][c]);
-				break;
-				case 0xA0:
-				pressModifierKeys(hexa_keys0[r][c]);
-				break;
-				case 0xB0:
-				pressMouseKey(hexa_keys0[r][c]);
-				break;
-				case 0xC0:
-				pressSystemKey(hexa_keys0[r][c]);
-				break;
-				case 0xD0:
-				pressConsumerKey(hexa_keys0[r][c]);
-				break;
-				case 0xF0:
-				pressMacroKey(hexa_keys0[r][c]);
-				break;
-				case 0x09:
-				pressKey(hexa_keys1[r][c]);
-				break;
-				case 0x0A:
-				pressModifierKeys(hexa_keys1[r][c]);
-				break;
-				case 0x0B:
-				pressMouseKey(hexa_keys1[r][c]);
-				break;
-				case 0x0C:
-				pressSystemKey(hexa_keys1[r][c]);
-				break;
-				case 0x0D:
-				pressConsumerKey(hexa_keys1[r][c]);
-				break;
-				case 0x0F:
-				pressMacroKey(hexa_keys1[r][c]);
-				break;
+			ws2812Send2();
+			}else{
+			if(delay_val){
+				delay_val--;
+				}else {
+				delay_val=MAX_DELAY_7;
 			}
 		}
 	}
-	if(!isBufferClear())FN=0xF0;//Fix FN key state error
-	if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
-	if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
-	if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
-	if(delay_after==DELAY_AFTER && delay_before==1)
-	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-	if(delay_after==1)
-	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-	if(delay_after>0)delay_after-=1;
-	if(delay_before>0)delay_before-=1;
-}
-int initMain(void) {
-	CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
-	closeJtag();
-	initLED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
-	_delay_ms(500);
-	usbInit();
-	while (!usbConfigured()){_delay_ms(300);}
-	//  TCCR0A = 0x00;
-	//	TCCR0B =(1<<CS00);
-	//	TIMSK0 = (1<<TOIE0);
-	////////////////////////////////////////////////
-	initCols();
-	initRows();
-	while (1) {//重启
-		EnableRecv=1;
-		keyboard_buffer.enable_pressing=1;
-		rgb_type=0x02;//set default rgb
+	/////////////////////////////////////////////////////////////////////
+	void qmkMode(){
+		for (r = 0; r < ROWS; r++) {
+			pinMode(row_pins[r],OUTPUT);
+			digitalWrite(row_pins[r],LOW);
+			for (c = 0; c < COLS; c++) {
+				if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
+				else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
+				if(key_mask[r][c]==0xEE )FN=0x0F;
+			}
+			initRows();
+		}
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
-    	resetMatrixFormEEP();
-		resetLED();
-		FN=0xF0;
-		_delay_ms(500);
-		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
-		while (1) {
-			eepWrite();
-			if(keyboard_buffer.enable_pressing==2){
-				break;
-			}
-			else if(keyboard_buffer.enable_pressing==1){
-				qmkMode();
-				if(delay_before==0) updateLED();
+		macro_buffer=0;
+		for (r = 0; r < ROWS; r++) {
+			for (c = 0; c < COLS; c++) {
+				switch(key_mask[r][c]&FN){
+					case 0x90:
+					pressKey(hexa_keys0[r][c]);
+					break;
+					case 0xA0:
+					pressModifierKeys(hexa_keys0[r][c]);
+					break;
+					case 0xB0:
+					pressMouseKey(hexa_keys0[r][c]);
+					break;
+					case 0xC0:
+					pressSystemKey(hexa_keys0[r][c]);
+					break;
+					case 0xD0:
+					pressConsumerKey(hexa_keys0[r][c]);
+					break;
+					case 0xF0:
+					pressMacroKey(hexa_keys0[r][c]);
+					break;
+					case 0x09:
+					pressKey(hexa_keys1[r][c]);
+					break;
+					case 0x0A:
+					pressModifierKeys(hexa_keys1[r][c]);
+					break;
+					case 0x0B:
+					pressMouseKey(hexa_keys1[r][c]);
+					break;
+					case 0x0C:
+					pressSystemKey(hexa_keys1[r][c]);
+					break;
+					case 0x0D:
+					pressConsumerKey(hexa_keys1[r][c]);
+					break;
+					case 0x0F:
+					pressMacroKey(hexa_keys1[r][c]);
+					break;
+				}
 			}
 		}
+		if(!isBufferClear())FN=0xF0;//Fix FN key state error
+		if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
+		if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
+		if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
+		if(delay_after==DELAY_AFTER && delay_before==1)
+		{usbMacroSend();usbKeyboardSend();usbMouseSend();}
+		if(delay_after==1)
+		{usbMacroSend();usbKeyboardSend();usbMouseSend();}
+		if(delay_after>0)delay_after-=1;
+		if(delay_before>0)delay_before-=1;
 	}
-	return 0;
-}
-#endif
-/*
-ISR(TIMER0_OVF_vect)
-{
+	int initMain(void) {
+		CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
+		closeJtag();
+		initLED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+		_delay_ms(500);
+		usbInit();
+		while (!usbConfigured()){_delay_ms(300);}
+		//  TCCR0A = 0x00;
+		//	TCCR0B =(1<<CS00);
+		//	TIMSK0 = (1<<TOIE0);
+		////////////////////////////////////////////////
+		initCols();
+		initRows();
+		while (1) {//重启
+			EnableRecv=1;
+			keyboard_buffer.enable_pressing=1;
+			rgb_type=0x02;//set default rgb
+			releaseAllKeyboardKeys();
+			releaseAllMousekeys();
+			resetMatrixFormEEP();
+			resetLED();
+			FN=0xF0;
+			_delay_ms(300);
+			usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
+			while (1) {
+				if(delay_before==0&&delay_before==0)eepWrite();
+				if(keyboard_buffer.enable_pressing==2){
+					break;
+				}
+				else if(keyboard_buffer.enable_pressing==1){
+					qmkMode();
+					if(delay_before==0) updateLED();
+				}
+			}
+		}
+		return 0;
+	}
+	#endif
+	/*
+	ISR(TIMER0_OVF_vect)
+	{
 
-}
-*/
+	}
+	*/
