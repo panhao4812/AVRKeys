@@ -177,7 +177,7 @@ uint8_t releaseKey(uint8_t key);
 uint8_t pressKey(uint8_t key);
 void pressModifierKeys(uint8_t key);
 void releaseModifierKeys(uint8_t key);
-volatile uint8_t EnableRecv;//eep change
+volatile uint8_t enableReset;//eep change
 void clearKeyboard();
 void clearMouse();
 void clearRaw();

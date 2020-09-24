@@ -195,7 +195,7 @@ int initMain(void)
 	initCols();
 	initRows();
 	while (1) {//÷ÿ∆Ù
-		EnableRecv=1;
+		enableReset=1;
 		keyboard_buffer.enable_pressing=1;
 		rgb_type=0x01;///set default on & rainbow
 		releaseAllKeyboardKeys();

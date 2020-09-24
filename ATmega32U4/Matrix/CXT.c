@@ -173,8 +173,7 @@ void updateLED(){
 					}
 				}
 				//*/
-			}
-			
+			}			
 			}else{
 			/////////////////////closed///////////////////
 			ws2812Clear();
@@ -274,7 +273,7 @@ void updateLED(){
 		initCols();
 		initRows();
 		while (1) {//÷ÿ∆Ù
-			EnableRecv=1;
+			enableReset=1;
 			keyboard_buffer.enable_pressing=1;
 			rgb_type=0x02;//set default rgb
 			releaseAllKeyboardKeys();

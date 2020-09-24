@@ -364,9 +364,10 @@ void eventUSBDeviceStartOfFrame()
 	static uint8_t count;
 	if (++count % 50) return;
 	count = 0;
-	if (ReadWriteAllowed()&& EnableRecv){
-		if(keyboard_buffer.enable_pressing==0)	{EnableRecv=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,RAW_EPSIZE ,0);}
-		else { EnableRecv=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,2, 0);}
+	//闲置时只传输两个有效byte
+	if (ReadWriteAllowed()&& enableReset){
+		if(keyboard_buffer.enable_pressing==0)	{enableReset=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,RAW_EPSIZE ,0);}
+		else { enableReset=usbRecv(RAW_ENDPOINT_OUT,(uint8_t *)&raw_report_out,2, 0);}
 	}
 }
 ISR(USB_GEN_vect)

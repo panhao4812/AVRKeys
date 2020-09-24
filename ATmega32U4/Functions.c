@@ -320,7 +320,7 @@ void resetMatrixFormEEP(){
 }
 void eepWrite(){
 	//	address,word1,word2,word3
-	if (EnableRecv==0){
+	if (enableReset==0){
 		uint16_t address=raw_report_out.word[0];
 		if(address==0xF1FF && keyboard_buffer.enable_pressing==1 ){
 			keyboard_buffer.enable_pressing=0;
@@ -348,7 +348,7 @@ void eepWrite(){
 			}
 		}
 		memset(&raw_report_out, 0,sizeof(raw_report_out));
-		EnableRecv=1;
+		enableReset=1;
 	}
 }
 #ifdef FLASH_END_ADDRESS
