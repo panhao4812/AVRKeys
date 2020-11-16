@@ -45,7 +45,7 @@
 #define COLS  16
 #define PRODUCT_ID		0xB084
 #define WS2812_COUNT	84
-#elif defined(LWL84)
+#elif defined(Vem84)
 #define ROWS  6
 #define COLS  16
 #define PRODUCT_ID		0xA084
