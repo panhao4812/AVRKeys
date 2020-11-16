@@ -1,6 +1,6 @@
 #include "../Functions.h"
 #include "../ws2812.h"
-#if (defined CXT64 )||  (defined CXT84 )
+#if (defined CXT64 )||  (defined LWL84 )||(defined LILILI84 )
 #if defined CXT64
 /*
 #define MATRIX_ROW_PINS { C7, C6, B6, B5, B4 }5
@@ -63,7 +63,28 @@ uint8_t ledMask[ROWS][COLS] = {
 	{0x80,0x80,0x00,0x80,0x00,0x00,0x80,0x00,0x00,0x00,0x80,0x80,0x80,0x80,0x80}
 };
 ///////////////////////////////////////////////////////////////////////////
-#elif defined CXT84
+#elif defined LWL84
+//#define MATRIX_ROW_PINS { F0, F1, F4, F5, F6, F7}6
+//#define MATRIX_COL_PINS { B7, B6, B5, B4, B3, B2, C7, C6, D7, D6, D5, D4, D3, D2, D1, D0 }16
+//#define RGB_DI_PIN B1
+//#define RGBLED_NUM 84
+uint8_t row_pins[ROWS]={21,20,19,18,17,16};
+uint8_t col_pins[COLS]={4,15,14,13,3,2,7,6,12,11,23,22,8,7,6,5};
+#define LED_COUNT 0
+uint8_t led_pins[LED_COUNT]={};
+
+#endif
+#elif defined LILILI84
+//#define MATRIX_ROW_PINS { B0, B1, B2, B3, D0, D1}6
+//#define MATRIX_COL_PINS { F7, F6, F5, F4, F1, F0, D2, D3, D5, D4, D6, D7, B4, B5, B6, C6 }16
+//#define RGB_DI_PIN B1
+//#define RGBLED_NUM 84
+
+uint8_t row_pins[ROWS]={0,1,2,3,5,6};
+uint8_t col_pins[COLS]={16,17,18,19,20,21,7,8,23,22,11,12,13,14,15,9};
+#define LED_COUNT 0
+uint8_t led_pins[LED_COUNT]={};
+
 #endif
 //////////////////////////////////////////////////////////////////////
 uint16_t delay_val;

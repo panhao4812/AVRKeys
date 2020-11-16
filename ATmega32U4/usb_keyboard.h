@@ -39,6 +39,16 @@
 #define COLS  15
 #define PRODUCT_ID		0xC060
 #define WS2812_COUNT	64
+#elif defined(LILILI84)
+#define ROWS  6
+#define COLS  16
+#define PRODUCT_ID		0xB084
+#define WS2812_COUNT	84
+#elif defined(LWL84)
+#define ROWS  6
+#define COLS  16
+#define PRODUCT_ID		0xA084
+#define WS2812_COUNT	84
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
