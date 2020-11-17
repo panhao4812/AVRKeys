@@ -38,17 +38,17 @@
 #elif defined(CXT64)
 #define ROWS  5
 #define COLS  15
-#define PRODUCT_ID		0xC060
+#define PRODUCT_ID		0xF060
 #define WS2812_COUNT	64
 #elif defined(LILILI84)
 #define ROWS  6
 #define COLS  16
-#define PRODUCT_ID		0xB084
+#define PRODUCT_ID		0xF184
 #define WS2812_COUNT	84
 #elif defined(Vem84)
 #define ROWS  6
 #define COLS  16
-#define PRODUCT_ID		0xA084
+#define PRODUCT_ID		0xF284
 #define WS2812_COUNT	84
 #endif
 ///////////////////////////////////////////////
@@ -69,18 +69,29 @@
 #elif defined(__AVR_ATmega32U4__)
 #define VENDOR_ID		0x32C4
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
-#elif defined(__AVR_ATMEGA32A__)
-#define VENDOR_ID		0x32A0
+/*
 #elif defined(__AVR_ATMEGA64A__)
 #define VENDOR_ID		0x64A0
+#if defined _AVR_ATMEGA32A_H_INCLUDED
+#define VENDOR_ID		0x32A0
+#define USB_CFG_CLOCK_KHZ       16000
+#define MAX_EEP (uint16_t)0x0400 //1k
+#elif defined _AVR_ATmega644PA_H_
+#define VENDOR_ID		0x644A
+#define USB_CFG_CLOCK_KHZ       20000
+#define MAX_EEP (uint16_t)0x0800 //2k
 #elif defined(__AVR_ATMEGA328P__)
-#define VENDOR_ID		0x328B
+#define VENDOR_ID		0x3280
 #elif defined(__AVR_ATMEGA8A__)
 #define VENDOR_ID		0x08A0
 #elif defined(__AVR_ATMEGA48A__)
 #define VENDOR_ID		0x48A0
 #elif defined(__AVR_ATMEGA88A__)
 #define VENDOR_ID		0x88A0
+/////////////////////////////////////
+#elif defined(__AVR_ATTINY85__)
+#define VENDOR_ID       0xD850
+*/
 #endif
 //////////////////////////////////////////////////////
 #define SUPPORT_ENDPOINT_HALT // «∑Ò¡¢º¥÷–∂œep

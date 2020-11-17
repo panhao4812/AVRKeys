@@ -134,7 +134,7 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Matrix\CXT.c">
+    <Compile Include="Matrix\WS2812B_3528.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Matrix\XD004.c">
