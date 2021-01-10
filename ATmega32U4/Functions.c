@@ -167,14 +167,14 @@ uint8_t usbMacroSend(){
 		return 1;
 	}
 	#endif
-	#ifdef CXT64
+	//#ifdef CXT64
 	if(macro_report&MACRO5){
 		//µ÷ÊÔÓÃÍ¾
 		rgb_state++;
 		if((rgb_state&0x0F)>2)rgb_state&=0xF0;
 		return 1;
 	}
-	#endif
+	//#endif
 	return 0;
 }
 ///////////////keys action///////////////////
