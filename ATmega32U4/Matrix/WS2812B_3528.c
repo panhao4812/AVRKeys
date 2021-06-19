@@ -349,6 +349,8 @@ void updateLED(){
 		for (r = 0; r < ROWS; r++) {
 			pinMode(row_pins[r],OUTPUT);
 			digitalWrite(row_pins[r],LOW);
+//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
+_delay_us(1);
 			for (c = 0; c < COLS; c++) {
 				if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
 				else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
