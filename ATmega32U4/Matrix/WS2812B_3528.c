@@ -347,16 +347,20 @@ void updateLED(){
 	/////////////////////////////////////////////////////////////////////
 	void qmkMode(){
 		for (r = 0; r < ROWS; r++) {
-			initCols();
+		//	initCols();
 			pinMode(row_pins[r],OUTPUT);
 			digitalWrite(row_pins[r],LOW);
 //串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
-//_delay_us(2);
+			//_delay_us(1);
 			for (c = 0; c < COLS; c++) {
+				//如果物理引脚在内部时钟边缘附近改变值，则需要这样做以避免亚稳态.可以取消掉delay_us
+				_delay_us(1);
 				if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
 				else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
 				if(key_mask[r][c]==0xEE )FN=0x0F;
 			}
+			//串键问题 如果有按下去之后某个col的按键不立刻回弹 可能是上拉失败.可以取消掉delay_us
+			//digitalWrite(row_pins[r],HIGH);_delay_us(1);
 			initRows();
 		}
 		releaseAllKeyboardKeys();

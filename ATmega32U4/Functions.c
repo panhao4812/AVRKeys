@@ -430,31 +430,31 @@ void digitalWrite(uint8_t IO,uint8_t value){
 uint8_t digitalRead(uint8_t IO){
 	uint8_t value=0;
 	switch(IO){
-		case 0:  value= PINB & (1<<0);break;
-		case 1:  value= PINB& (1<<1) ;break;
-		case 2:  value= PINB& (1<<2) ;break;
-		case 3:  value= PINB& (1<<3) ;break;
-		case 4:  value= PINB& (1<<7) ;break;
-		case 5:  value= PIND& (1<<0) ;break;
-		case 6:  value= PIND& (1<<1) ;break;
-		case 7:  value= PIND& (1<<2) ;break;
-		case 8:  value= PIND& (1<<3) ;break;
-		case 9:  value= PINC& (1<<6) ;break;
-		case 10:  value= PINC& (1<<7);break;
-		case 11:  value= PIND& (1<<6);break;
-		case 12:  value= PIND& (1<<7);break;
-		case 13:  value= PINB& (1<<4);break;
-		case 14:  value= PINB& (1<<5);break;
-		case 15:  value= PINB& (1<<6);break;
-		case 16:  value= PINF& (1<<7);break;
-		case 17:  value= PINF& (1<<6);break;
-		case 18:  value= PINF& (1<<5);break;
-		case 19:  value= PINF& (1<<4);break;
-		case 20:  value= PINF& (1<<1);break;
-		case 21:  value= PINF& (1<<0);break;
-		case 22:  value= PIND& (1<<4);break;
-		case 23:  value= PIND& (1<<5);break;
-		case 24:  value= PINE& (1<<6);break;
+		case 0:  value= PINB & (1<<PINB0);break;
+		case 1:  value= PINB& (1<<PINB1) ;break;
+		case 2:  value= PINB& (1<<PINB2) ;break;
+		case 3:  value= PINB& (1<<PINB3) ;break;
+		case 4:  value= PINB& (1<<PINB7) ;break;
+		case 5:  value= PIND& (1<<PIND0) ;break;
+		case 6:  value= PIND& (1<<PIND1) ;break;
+		case 7:  value= PIND& (1<<PIND2) ;break;
+		case 8:  value= PIND& (1<<PIND3) ;break;
+		case 9:  value= PINC& (1<<PINC6) ;break;
+		case 10:  value= PINC& (1<<PINC7);break;
+		case 11:  value= PIND& (1<<PIND6);break;
+		case 12:  value= PIND& (1<<PIND7);break;
+		case 13:  value= PINB& (1<<PINB4);break;
+		case 14:  value= PINB& (1<<PINB5);break;
+		case 15:  value= PINB& (1<<PINB6);break;
+		case 16:  value= PINF& (1<<PINF7);break;
+		case 17:  value= PINF& (1<<PINF6);break;
+		case 18:  value= PINF& (1<<PINF5);break;
+		case 19:  value= PINF& (1<<PINF4);break;
+		case 20:  value= PINF& (1<<PINF1);break;
+		case 21:  value= PINF& (1<<PINF0);break;
+		case 22:  value= PIND& (1<<PIND4);break;
+		case 23:  value= PIND& (1<<PIND5);break;
+		case 24:  value= PINE& (1<<PINE6);break;
 	}
 	return value;
 }
