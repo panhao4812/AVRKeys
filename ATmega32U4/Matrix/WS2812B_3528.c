@@ -33,11 +33,11 @@ uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={
 	237,32,50,216,6,106,138,0,119,87,18,130,90,190,10,212,234,31,234,197,26,247,151,19,243,63,1
 };
 uint8_t rgb_pos[WS2812_COUNT]={
-		63,62,61,60,59,58,57,56,55,54,53,52,51,50,
-		49,48,47,46,45,44,43,42,41,40,39,38,37,36,
-		35,34,33,32,31,30,29,28,27,26,25,24,23,
-		22,21,20,19,18,17,16,15,14,13,12,11,10,9,
-		8,7,6,5,4,3,2,1,0
+	63,62,61,60,59,58,57,56,55,54,53,52,51,50,
+	49,48,47,46,45,44,43,42,41,40,39,38,37,36,
+	35,34,33,32,31,30,29,28,27,26,25,24,23,
+	22,21,20,19,18,17,16,15,14,13,12,11,10,9,
+	8,7,6,5,4,3,2,1,0
 };
 uint8_t hexa_keys0[ROWS][COLS] = {
 	{MACRO2,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE},
@@ -81,12 +81,12 @@ uint8_t col_pins[COLS]={16,17,18,19,20,21,7,8,23,22,11,12,13,14,15,9};
 #define LED_COUNT 0
 uint8_t led_pins[LED_COUNT]={};
 uint8_t hexa_keys0[ROWS][COLS] = {
-{KEY_ESC,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12,KEY_PRINTSCREEN,KEY_PAUSE,KEY_DELETE},
-{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE,KEY_HOME},
-{KEY_TAB,0x00,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH,KEY_PAGE_UP},
-{KEY_CAPS_LOCK,0x00,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,KEY_ENTER,0x00,KEY_PAGE_DOWN},
-{0x00,KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,0x00,KEY_RIGHT_SHIFT,KEY_UP,KEY_END},
-{KEY_LEFT_CTRL,KEY_LEFT_GUI,0x00,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_RIGHT_ALT,KEY_FN,KEY_RIGHT_CTRL,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
+	{KEY_ESC,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12,KEY_PRINTSCREEN,KEY_PAUSE,KEY_DELETE},
+	{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE,KEY_HOME},
+	{KEY_TAB,0x00,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,KEY_BACKSLASH,KEY_PAGE_UP},
+	{KEY_CAPS_LOCK,0x00,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,KEY_ENTER,0x00,KEY_PAGE_DOWN},
+	{0x00,KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,0x00,KEY_RIGHT_SHIFT,KEY_UP,KEY_END},
+	{KEY_LEFT_CTRL,KEY_LEFT_GUI,0x00,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_RIGHT_ALT,KEY_FN,KEY_RIGHT_CTRL,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
 };
 uint8_t hexa_keys1[ROWS][COLS] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
@@ -156,12 +156,12 @@ uint8_t col_pins[COLS]={21,20,19,18,17,16,10,9,12,11,23,22,8,7,6,5};
 uint8_t led_pins[LED_COUNT]={};
 
 uint8_t hexa_keys0[ROWS][COLS] = {
-{KEY_ESC,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12,KEY_PRINTSCREEN,KEY_PAUSE,KEY_DELETE},
-{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE,KEY_HOME},
-{KEY_TAB,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,0x00,KEY_BACKSLASH,KEY_PAGE_UP},
-{KEY_CAPS_LOCK,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,0x00,0x00,KEY_ENTER,KEY_PAGE_DOWN},
-{KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,0x00,0x00,KEY_RIGHT_SHIFT,KEY_UP,KEY_END},
-{KEY_LEFT_CTRL,KEY_LEFT_GUI,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_RIGHT_ALT,KEY_FN,KEY_RIGHT_CTRL,0x00,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
+	{KEY_ESC,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12,KEY_PRINTSCREEN,KEY_PAUSE,KEY_DELETE},
+	{KEY_TILDE,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9,KEY_0,KEY_MINUS,KEY_EQUAL,0x00,KEY_BACKSPACE,KEY_HOME},
+	{KEY_TAB,KEY_Q,KEY_W,KEY_E,KEY_R,KEY_T,KEY_Y,KEY_U,KEY_I,KEY_O,KEY_P,KEY_LEFT_BRACE,KEY_RIGHT_BRACE,0x00,KEY_BACKSLASH,KEY_PAGE_UP},
+	{KEY_CAPS_LOCK,KEY_A,KEY_S,KEY_D,KEY_F,KEY_G,KEY_H,KEY_J,KEY_K,KEY_L,KEY_SEMICOLON,KEY_QUOTE,0x00,0x00,KEY_ENTER,KEY_PAGE_DOWN},
+	{KEY_LEFT_SHIFT,KEY_Z,KEY_X,KEY_C,KEY_V,KEY_B,KEY_N,KEY_M,KEY_COMMA,KEY_PERIOD,KEY_SLASH,0x00,0x00,KEY_RIGHT_SHIFT,KEY_UP,KEY_END},
+	{KEY_LEFT_CTRL,KEY_LEFT_GUI,KEY_LEFT_ALT,0x00,0x00,KEY_SPACE,0x00,0x00,0x00,KEY_RIGHT_ALT,KEY_FN,KEY_RIGHT_CTRL,0x00,KEY_LEFT,KEY_DOWN,KEY_RIGHT}
 };
 uint8_t hexa_keys1[ROWS][COLS] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
@@ -189,32 +189,32 @@ uint8_t ledMask[ROWS][COLS] = {
 	{0x80,0x80,0x80,0x00,0x00,0x80,0x00,0x00,0x00,0x80,0x80,0x80,0x00,0x80,0x80,0x80},
 };
 uint16_t rgb_rainbow[WS2812_COUNT]={
-13,29,44,60,76,92,108,124,140,156,171,187,203,219,235,251,
-13,29,44,60,76,92,108,124,140,156,171,187,203,219,251,
-13,37,52,68,84,100,116,132,148,164,179,195,211,227,251,
-13,41,56,72,88,104,120,136,152,168,183,199,215,251,
-13,48,64,80,96,112,128,144,160,175,191,207,235,251,
-13,33,52,72,171,187,203,219,235,251,
+	13,29,44,60,76,92,108,124,140,156,171,187,203,219,235,251,
+	13,29,44,60,76,92,108,124,140,156,171,187,203,219,251,
+	13,37,52,68,84,100,116,132,148,164,179,195,211,227,251,
+	13,41,56,72,88,104,120,136,152,168,183,199,215,251,
+	13,48,64,80,96,112,128,144,160,175,191,207,235,251,
+	13,33,52,72,171,187,203,219,235,251,
 };
 uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={
-238,34,46,226,16,83,208,0,118,114,0,120,90,15,129,50,60,154,34,88,170,3,187,226,9,
-185,162,20,178,87,67,184,24,114,199,14,219,237,32,237,187,24,247,148,18,243,63,1,238,
-34,46,226,16,83,208,0,118,114,0,120,90,15,129,50,60,154,34,88,170,3,187,226,9,185,162,
-20,178,87,67,184,24,114,199,14,219,237,32,237,187,24,243,63,1,238,34,46,213,3,111,167,
-0,119,102,1,121,69,38,142,39,71,161,17,141,200,2,191,219,16,179,103,42,181,58,79,186,8,
-181,223,25,225,223,30,246,161,20,243,63,1,238,34,46,210,0,118,138,0,119,97,7,124,59,50,
-148,38,74,162,9,168,215,5,188,194,18,178,91,57,183,38,90,190,10,207,232,30,231,206,27,
-243,63,1,238,34,46,193,0,118,103,0,120,80,26,135,43,67,158,26,112,184,1,192,229,13,182,
-129,29,179,76,76,186,12,147,211,20,221,234,32,247,148,18,243,63,1,238,34,46,219,9,99,
-167,0,119,97,7,124,67,184,24,114,199,14,219,237,32,237,187,24,247,148,18,243,63,1
+	238,34,46,226,16,83,208,0,118,114,0,120,90,15,129,50,60,154,34,88,170,3,187,226,9,
+	185,162,20,178,87,67,184,24,114,199,14,219,237,32,237,187,24,247,148,18,243,63,1,238,
+	34,46,226,16,83,208,0,118,114,0,120,90,15,129,50,60,154,34,88,170,3,187,226,9,185,162,
+	20,178,87,67,184,24,114,199,14,219,237,32,237,187,24,243,63,1,238,34,46,213,3,111,167,
+	0,119,102,1,121,69,38,142,39,71,161,17,141,200,2,191,219,16,179,103,42,181,58,79,186,8,
+	181,223,25,225,223,30,246,161,20,243,63,1,238,34,46,210,0,118,138,0,119,97,7,124,59,50,
+	148,38,74,162,9,168,215,5,188,194,18,178,91,57,183,38,90,190,10,207,232,30,231,206,27,
+	243,63,1,238,34,46,193,0,118,103,0,120,80,26,135,43,67,158,26,112,184,1,192,229,13,182,
+	129,29,179,76,76,186,12,147,211,20,221,234,32,247,148,18,243,63,1,238,34,46,219,9,99,
+	167,0,119,97,7,124,67,184,24,114,199,14,219,237,32,237,187,24,247,148,18,243,63,1
 };
 uint8_t rgb_pos[WS2812_COUNT]={
-0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,
-31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,
-46,47,48,49,50,51,52,53,54,55,56,57,58,59,
-60,61,62,63,64,65,66,67,68,69,70,71,72,73,
-74,75,76,77,78,79,80,81,82,83
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+	16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,
+	31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,
+	46,47,48,49,50,51,52,53,54,55,56,57,58,59,
+	60,61,62,63,64,65,66,67,68,69,70,71,72,73,
+	74,75,76,77,78,79,80,81,82,83
 };
 #endif
 //////////////////////////////////////////////////////////////////////
@@ -272,11 +272,22 @@ void resetLED(){
 	ws2812Send2();
 }
 void updateLED(){
-	if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
-		digitalWrite(led_pins[0],LOW);
-		}else{
-		digitalWrite(led_pins[0],HIGH);
+	/*
+	for ( i=0; i<LED_COUNT; i++){
+	if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
+	digitalWrite(led_pins[i],HIGH);}
+	else{
+	digitalWrite(led_pins[i],LOW);}
 	}
+	*/
+	for ( i=0; i<LED_COUNT; i++){
+		//没有灯的需要for循环排除
+		if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
+			digitalWrite(led_pins[i],LOW);
+			}else{
+			digitalWrite(led_pins[i],HIGH);
+		}
+	}	
 	//////////////full led//////////////////
 	if(rgb_state & (1<<5)){}//full led on
 	else{}//full led off
@@ -284,182 +295,178 @@ void updateLED(){
 	if(rgb_state & (1<<4)){
 		/////////////////rianbow/////////////////////
 		if((rgb_state&0x0F)==0x01){
+			for(uint8_t i=0;i<WS2812_COUNT;i++){
+				if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
+				if(delay_val==MAX_DELAY_4){r=pgm_read_byte(Rcolors+rgb_rainbow[i]);ws2812SetR(rgb_pos[i],r);}
+				if(delay_val==MAX_DELAY_3){g=pgm_read_byte(Gcolors+rgb_rainbow[i]);ws2812SetG(rgb_pos[i],g);}
+				if(delay_val==MAX_DELAY_2){b=pgm_read_byte(Bcolors+rgb_rainbow[i]);ws2812SetB(rgb_pos[i],b);}
+				if(delay_val==MAX_DELAY_1){rgb_rainbow[i]++;}
+			}
+		}
+		/////////////////fix/////////////////////
+		else if((rgb_state&0x0F)==0x00){
+			if(delay_val==MAX_DELAY_5){
 				for(uint8_t i=0;i<WS2812_COUNT;i++){
-					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-					if(delay_val==MAX_DELAY_4){r=pgm_read_byte(Rcolors+rgb_rainbow[i]);ws2812SetR(rgb_pos[i],r);}
-					if(delay_val==MAX_DELAY_3){g=pgm_read_byte(Gcolors+rgb_rainbow[i]);ws2812SetG(rgb_pos[i],g);}
-					if(delay_val==MAX_DELAY_2){b=pgm_read_byte(Bcolors+rgb_rainbow[i]);ws2812SetB(rgb_pos[i],b);}
-					if(delay_val==MAX_DELAY_1){rgb_rainbow[i]++;}
+					ws2812SetRGB(rgb_pos[i],rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
 				}
 			}
-			/////////////////fix/////////////////////
-			else if((rgb_state&0x0F)==0x00){
-				if(delay_val==MAX_DELAY_5){
-					for(uint8_t i=0;i<WS2812_COUNT;i++){
-						ws2812SetRGB(rgb_pos[i],rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
+		}
+		/////////////////print led/////////////////////
+		else if((rgb_state&0x0F)==0x02){
+			uint8_t wcount=0;
+			//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
+			for (r = 0; r < ROWS; r++) {
+				for (c = 0; c < COLS; c++) {
+					if(wcount<WS2812_COUNT ){
+						if(ledMask[r][c]){
+							ws2812SetRGB(rgb_pos[wcount],ledMask[r][c],ledMask[r][c],ledMask[r][c]);
+						}
+						else{
+							ws2812SetRGB(rgb_pos[wcount],0,0,0);
+						}
+						if((key_mask[r][c]&(~0x88))!=0)wcount++;//靠key_mask识别并跳过空键位
 					}
 				}
 			}
-			/////////////////print led/////////////////////
-			else if((rgb_state&0x0F)==0x02){
-				uint8_t wcount=0;
-				//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
+			//*
+			if(delay_val==MAX_DELAY_6){
 				for (r = 0; r < ROWS; r++) {
 					for (c = 0; c < COLS; c++) {
-						if(wcount<WS2812_COUNT ){
-							if(ledMask[r][c]){
-								ws2812SetRGB(rgb_pos[wcount],ledMask[r][c],ledMask[r][c],ledMask[r][c]);
-							}
-							else{
-								ws2812SetRGB(rgb_pos[wcount],0,0,0);
-							}
-							if((key_mask[r][c]&(~0x88))!=0)wcount++;//靠key_mask识别并跳过空键位
-						}
+						if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
 					}
 				}
-				//*
-				if(delay_val==MAX_DELAY_6){
-					for (r = 0; r < ROWS; r++) {
-						for (c = 0; c < COLS; c++) {
-							if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
-						}
-					}
-				}
-				//*/
-			}			
-			}else{
-			/////////////////////closed///////////////////
-			ws2812Clear();
+			}
+			//*/
 		}
-		///////////////////clock /////////////////
-		//尽可能减少每次循环的时间，将任务错开。
-		if(delay_val==MAX_DELAY_7){
+		}else{
+		/////////////////////closed///////////////////
+		ws2812Clear();
+	}
+	///////////////////clock /////////////////
+	//尽可能减少每次循环的时间，将任务错开。
+	if(delay_val==MAX_DELAY_7){
+		delay_val--;
+		ws2812Send2();
+		}else{
+		if(delay_val){
 			delay_val--;
-			ws2812Send2();
-			}else{
-			if(delay_val){
-				delay_val--;
-				}else {
-				delay_val=MAX_DELAY_7;
+			}else {
+			delay_val=MAX_DELAY_7;
+		}
+	}
+}
+/////////////////////////////////////////////////////////////////////
+void qmkMode(){
+	for (r = 0; r < ROWS; r++) {
+		//	initCols();
+		pinMode(row_pins[r],OUTPUT);
+		digitalWrite(row_pins[r],LOW);
+		//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
+		//_delay_us(1);
+		for (c = 0; c < COLS; c++) {
+			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
+			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
+			if(key_mask[r][c]==0xEE )FN=0x0F;
+		}
+		initRows();
+	}
+	releaseAllKeyboardKeys();
+	releaseAllMousekeys();
+	macro_buffer=0;
+	for (r = 0; r < ROWS; r++) {
+		for (c = 0; c < COLS; c++) {
+			switch(key_mask[r][c]&FN){
+				case 0x90:
+				pressKey(hexa_keys0[r][c]);
+				break;
+				case 0xA0:
+				pressModifierKeys(hexa_keys0[r][c]);
+				break;
+				case 0xB0:
+				pressMouseKey(hexa_keys0[r][c]);
+				break;
+				case 0xC0:
+				pressSystemKey(hexa_keys0[r][c]);
+				break;
+				case 0xD0:
+				pressConsumerKey(hexa_keys0[r][c]);
+				break;
+				case 0xF0:
+				pressMacroKey(hexa_keys0[r][c]);
+				break;
+				case 0x09:
+				pressKey(hexa_keys1[r][c]);
+				break;
+				case 0x0A:
+				pressModifierKeys(hexa_keys1[r][c]);
+				break;
+				case 0x0B:
+				pressMouseKey(hexa_keys1[r][c]);
+				break;
+				case 0x0C:
+				pressSystemKey(hexa_keys1[r][c]);
+				break;
+				case 0x0D:
+				pressConsumerKey(hexa_keys1[r][c]);
+				break;
+				case 0x0F:
+				pressMacroKey(hexa_keys1[r][c]);
+				break;
 			}
 		}
 	}
-	/////////////////////////////////////////////////////////////////////
-	void qmkMode(){
-		for (r = 0; r < ROWS; r++) {
-		//	initCols();
-			pinMode(row_pins[r],OUTPUT);
-			digitalWrite(row_pins[r],LOW);
-//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
-			//_delay_us(1);
-			for (c = 0; c < COLS; c++) {
-				//如果物理引脚在内部时钟边缘附近改变值，则需要这样做以避免亚稳态.可以取消掉delay_us
-				_delay_us(1);
-				if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
-				else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
-				if(key_mask[r][c]==0xEE )FN=0x0F;
-			}
-			//串键问题 如果有按下去之后某个col的按键不立刻回弹 可能是上拉失败.可以取消掉delay_us
-			//digitalWrite(row_pins[r],HIGH);_delay_us(1);
-			initRows();
-		}
+	if(!isBufferClear())FN=0xF0;//Fix FN key state error
+	if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
+	if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
+	if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
+	if(delay_after==DELAY_AFTER && delay_before==1)
+	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
+	if(delay_after==1)
+	{usbMacroSend();usbKeyboardSend();usbMouseSend();}
+	if(delay_after>0)delay_after-=1;
+	if(delay_before>0)delay_before-=1;
+}
+int initMain(void) {
+	CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
+	closeJtag();
+	initLED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
+	_delay_ms(500);
+	usbInit();
+	while (!usbConfigured()){_delay_ms(300);}
+	//  TCCR0A = 0x00;
+	//	TCCR0B =(1<<CS00);
+	//	TIMSK0 = (1<<TOIE0);
+	////////////////////////////////////////////////
+	initCols();
+	initRows();
+	while (1) {//重启
+		enableReset=1;
+		keyboard_buffer.enable_pressing=1;
+		rgb_type=0x02;//set default rgb
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
-		macro_buffer=0;
-		for (r = 0; r < ROWS; r++) {
-			for (c = 0; c < COLS; c++) {
-				switch(key_mask[r][c]&FN){
-					case 0x90:
-					pressKey(hexa_keys0[r][c]);
-					break;
-					case 0xA0:
-					pressModifierKeys(hexa_keys0[r][c]);
-					break;
-					case 0xB0:
-					pressMouseKey(hexa_keys0[r][c]);
-					break;
-					case 0xC0:
-					pressSystemKey(hexa_keys0[r][c]);
-					break;
-					case 0xD0:
-					pressConsumerKey(hexa_keys0[r][c]);
-					break;
-					case 0xF0:
-					pressMacroKey(hexa_keys0[r][c]);
-					break;
-					case 0x09:
-					pressKey(hexa_keys1[r][c]);
-					break;
-					case 0x0A:
-					pressModifierKeys(hexa_keys1[r][c]);
-					break;
-					case 0x0B:
-					pressMouseKey(hexa_keys1[r][c]);
-					break;
-					case 0x0C:
-					pressSystemKey(hexa_keys1[r][c]);
-					break;
-					case 0x0D:
-					pressConsumerKey(hexa_keys1[r][c]);
-					break;
-					case 0x0F:
-					pressMacroKey(hexa_keys1[r][c]);
-					break;
-				}
+		resetMatrixFormEEP();
+		resetLED();
+		FN=0xF0;
+		_delay_ms(300);
+		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
+		while (1) {
+			if(delay_before==0&&delay_before==0)eepWrite();
+			if(keyboard_buffer.enable_pressing==2){
+				break;
+			}
+			else if(keyboard_buffer.enable_pressing==1){
+				qmkMode();
+				if(delay_before==0) updateLED();
 			}
 		}
-		if(!isBufferClear())FN=0xF0;//Fix FN key state error
-		if(usbMacroSendRequired())delay_before=DELAY_BEFORE;
-		if(usbKeyboardSendRequired())delay_before=DELAY_BEFORE;
-		if(usbMouseSendRequired())delay_before=DELAY_BEFORE;
-		if(delay_after==DELAY_AFTER && delay_before==1)
-		{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-		if(delay_after==1)
-		{usbMacroSend();usbKeyboardSend();usbMouseSend();}
-		if(delay_after>0)delay_after-=1;
-		if(delay_before>0)delay_before-=1;
 	}
-	int initMain(void) {
-		CPU_PRESCALE(CPU_16MHz);//16M晶振分频设置
-		closeJtag();
-		initLED();//插电亮灯会掉电，导致hub掉电不识别。所以要提前关灯。
-		_delay_ms(500);
-		usbInit();
-		while (!usbConfigured()){_delay_ms(300);}
-		//  TCCR0A = 0x00;
-		//	TCCR0B =(1<<CS00);
-		//	TIMSK0 = (1<<TOIE0);
-		////////////////////////////////////////////////
-		initCols();
-		initRows();
-		while (1) {//重启
-			enableReset=1;
-			keyboard_buffer.enable_pressing=1;
-			rgb_type=0x02;//set default rgb
-			releaseAllKeyboardKeys();
-			releaseAllMousekeys();
-			resetMatrixFormEEP();
-			resetLED();
-			FN=0xF0;
-			_delay_ms(300);
-			usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
-			while (1) {
-				if(delay_before==0&&delay_before==0)eepWrite();
-				if(keyboard_buffer.enable_pressing==2){
-					break;
-				}
-				else if(keyboard_buffer.enable_pressing==1){
-					qmkMode();
-					if(delay_before==0) updateLED();
-				}
-			}
-		}
-		return 0;
-	}
-	#endif
-	/*
-	ISR(TIMER0_OVF_vect)
-	{
+	return 0;
+}
+#endif
+/*
+ISR(TIMER0_OVF_vect)
+{
 
-	}
-	*/
+}
+*/
