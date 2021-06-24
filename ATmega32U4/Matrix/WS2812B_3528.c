@@ -272,22 +272,14 @@ void resetLED(){
 	ws2812Send2();
 }
 void updateLED(){
-	/*
-	for ( i=0; i<LED_COUNT; i++){
-	if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
-	digitalWrite(led_pins[i],HIGH);}
-	else{
-	digitalWrite(led_pins[i],LOW);}
-	}
-	*/
-	for ( i=0; i<LED_COUNT; i++){
+	#if defined CXT64
 		//没有灯的需要for循环排除
 		if((keyboard_buffer.keyboard_leds&(1<<1))==(1<<1)){
-			digitalWrite(led_pins[i],LOW);
+			digitalWrite(led_pins[0],LOW);
 			}else{
-			digitalWrite(led_pins[i],HIGH);
+			digitalWrite(led_pins[0   ],HIGH);
 		}
-	}	
+	#endif
 	//////////////full led//////////////////
 	if(rgb_state & (1<<5)){}//full led on
 	else{}//full led off
