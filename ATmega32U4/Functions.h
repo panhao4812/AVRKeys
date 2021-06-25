@@ -62,6 +62,10 @@ void initLED();
 void openLED();
 void closeLED();
 void updateLED();
+void LED_Timer(volatile uint16_t* delay_val_blink);
+void blink_LED(uint16_t delay_val_blink);
+void Rainbow_LED(uint16_t delay_val_blink);
+void Fix_LED(uint16_t delay_val_blink);
 void keyPrintWordEEP(uint16_t address);
 void keyPrintWordFlash(uint16_t address_t);
 //////////////////////eeprom//////////////////////////

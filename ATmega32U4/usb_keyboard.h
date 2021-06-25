@@ -9,7 +9,8 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-#define Vem84
+#define LILILI84
+//#define Vem84
 //#define CXT64
 //#define  xd60
 //#define  xd75
