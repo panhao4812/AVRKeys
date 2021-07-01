@@ -9,9 +9,10 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-//#define LILILI84
+#define PG60
+//#define KC_84
 //#define Vem84
-#define CXT64
+//#define CXT64
 //#define  xd60
 //#define  xd75
 //#define  staryu
@@ -41,7 +42,7 @@
 #define COLS  15
 #define PRODUCT_ID		0xF060
 #define WS2812_COUNT	64
-#elif defined(LILILI84)
+#elif defined(KC_84)
 #define ROWS  6
 #define COLS  16
 #define PRODUCT_ID		0xF184
@@ -51,6 +52,11 @@
 #define COLS  16
 #define PRODUCT_ID		0xF284
 #define WS2812_COUNT	84
+#elif defined(PG60)
+#define ROWS  5
+#define COLS  15
+#define PRODUCT_ID		0xF160
+#define WS2812_COUNT	15
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
@@ -468,7 +474,9 @@ static inline void EnableEndpoint(){
 #define LSB(n) (n & 255)
 #define MSB(n) ((n >> 8) & 255)
 
-#if defined (__AVR_AT90USB162__) || defined (__AVR_AT90USB82__)
+#if (defined(__AVR_AT90USB82__) || defined(__AVR_AT90USB162__) || \
+defined(__AVR_ATmega8U2__) || defined(__AVR_ATmega16U2__) || \
+defined(__AVR_ATmega32U2__))
 #   define MAX_ENDPOINT     5
 #   define UERST_MASK       0x1E
 #else
@@ -495,22 +503,24 @@ static inline uint8_t PLLConfigured()
 {
 	return (PLLCSR & (1<<PLOCK));
 }
-#if defined(__AVR_AT90USB162__)
+#if (defined(__AVR_AT90USB82__) || defined(__AVR_AT90USB162__) || \
+defined(__AVR_ATmega8U2__) || defined(__AVR_ATmega16U2__) || \
+defined(__AVR_ATmega32U2__))
 #define HW_CONFIG()
 #define PLL_CONFIG() (PLLCSR = ((1<<PLLE)|(1<<PLLP0)))
 #define USB_CONFIG() (USBCON = (1<<USBE))
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#elif defined(__AVR_ATmega32U4__)
+#elif (defined(__AVR_ATmega16U4__) || defined(__AVR_ATmega32U4__))
 #define HW_CONFIG() (UHWCON = 0x01)
 #define PLL_CONFIG() (PLLCSR = 0x12)
 #define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#elif defined(__AVR_AT90USB646__)
+#elif  (defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB647__))
 #define HW_CONFIG() (UHWCON = 0x81)
 #define PLL_CONFIG() (PLLCSR = 0x1A)
 #define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#elif defined(__AVR_AT90USB1286__)
+#elif (defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__))
 #define HW_CONFIG() (UHWCON = 0x81)
 #define PLL_CONFIG() (PLLCSR = 0x16)
 #define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))

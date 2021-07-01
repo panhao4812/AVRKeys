@@ -22,7 +22,7 @@
 #define WS2812_MASK		(1<<7)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define MAX_DELAY 0x0010
-#elif defined(LILILI84)
+#elif defined(KC_84)
 #define WS2812_PORT		PORTB
 #define WS2812_DDR		DDRB
 #define WS2812_MASK		(1<<1)
@@ -34,10 +34,15 @@
 #define WS2812_MASK		(1<<7)
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define MAX_DELAY 0x0010
+#elif defined(PG60)
+#define WS2812_PORT		PORTD
+#define WS2812_DDR		DDRD
+#define WS2812_MASK		(1<<7)
+#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define MAX_DELAY 0x0010
 #endif
-uint16_t rgb_rainbow[WS2812_COUNT];
-uint8_t rgb_pos[WS2812_COUNT];
-uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
+extern volatile uint16_t rgb_rainbow[WS2812_COUNT];
+extern uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
 uint8_t rgb_type;
 uint8_t rgb_state;
 //rgb_state和rgb_type定义相同,一个是实时，一个是默认状态。
@@ -45,7 +50,7 @@ uint8_t rgb_state;
 //bit6->第2组 0 off, 1 on
 //bit5->第full组 0 off, 1 on
 //bit4->第RGB组 0 off, 1 on
-//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，print
+//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，2 print ledMask[][]
 //////////////////////matrix/////////////////////////
 #define DELAY_AFTER 0x08
 #define DELAY_BEFORE 0x04
@@ -59,6 +64,7 @@ void initCols();
 void initRows();
 void qmkMode();
 void initLED();
+void resetLED();
 void openLED();
 void closeLED();
 void updateLED();
