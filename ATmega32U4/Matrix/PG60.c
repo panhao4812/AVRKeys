@@ -196,11 +196,14 @@ void updateLED(){
 /////////////////////////////////////////////////////////////////////
 void qmkMode(){
 	for (uint8_t r = 0; r < ROWS; r++) {
+		//	initCols();
 		pinMode(row_pins[r],OUTPUT);
 		digitalWrite(row_pins[r],LOW);
+		//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
+		//_delay_us(1);
 		for (uint8_t c = 0; c < COLS; c++) {
 			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
-			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;}
+			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;led_mask[r][c]=0xFF;}
 			if(key_mask[r][c]==0xEE )FN=0x0F;
 		}
 		initRows();
@@ -277,16 +280,16 @@ int initMain(void) {
 	while (1) {//重启
 		enableReset=1;
 		keyboard_buffer.enable_pressing=1;
-		rgb_type=0x01;///set default on & rainbow
+		rgb_type=0x02;//set default rgb
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
 		resetMatrixFormEEP();
 		resetLED();
 		FN=0xF0;
-		_delay_ms(500);
+		_delay_ms(300);
 		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
 		while (1) {
-			eepWrite();
+			if(delay_before==0&&delay_before==0)eepWrite();
 			if(keyboard_buffer.enable_pressing==2){
 				break;
 			}
