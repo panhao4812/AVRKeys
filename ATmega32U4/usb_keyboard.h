@@ -12,11 +12,11 @@
 //#define LILILI84
 //#define Vem84
 //#define CXT64
-#define  xd60
+//#define  xd60
 //#define  xd75
 //#define  staryu
 //#define  xd004
-//#define PG60
+#define PG60
 #if defined(xd60)
 #define ROWS  5
 #define COLS  14
@@ -24,6 +24,7 @@
 #define WS2812_COUNT	12
 #define WS2812_PIN_F    6
 #define MAX_DELAY 0x0100
+#define RGB_EFFECT_COUNT 2
 #elif defined(xd75)
 #define ROWS  5
 #define COLS  15
@@ -31,6 +32,7 @@
 #define WS2812_COUNT	6
 #define WS2812_PIN_F    6
 #define MAX_DELAY 0x0100
+#define RGB_EFFECT_COUNT 2
 #elif defined(xd004)
 #define ROWS  1
 #define COLS  4
@@ -38,6 +40,7 @@
 #define WS2812_COUNT	2
 #define WS2812_PIN_C    6
 #define MAX_DELAY 0x0200
+#define RGB_EFFECT_COUNT 2
 #elif defined(staryu)
 #define ROWS  1
 #define COLS  5
@@ -45,6 +48,7 @@
 #define WS2812_COUNT	1
 #define WS2812_PIN_C    6
 #define MAX_DELAY 0x0200
+#define RGB_EFFECT_COUNT 2
 #elif defined(CXT64)
 #define ROWS  5
 #define COLS  15
@@ -52,6 +56,7 @@
 #define WS2812_COUNT	64
 #define WS2812_PIN_D    7
 #define MAX_DELAY 0x0010
+#define RGB_EFFECT_COUNT 3
 #elif defined(LILILI84)
 #define ROWS  6
 #define COLS  16
@@ -59,6 +64,7 @@
 #define WS2812_COUNT	84
 #define WS2812_PIN_B    1
 #define MAX_DELAY 0x0010
+#define RGB_EFFECT_COUNT 3
 #elif defined(Vem84)
 #define ROWS  6
 #define COLS  16
@@ -66,13 +72,15 @@
 #define WS2812_COUNT	84
 #define WS2812_PIN_C    7
 #define MAX_DELAY 0x0010
+#define RGB_EFFECT_COUNT 3
 #elif defined(PG60)
 #define ROWS  5
 #define COLS  15
 #define PRODUCT_ID		0xF160
-#define WS2812_COUNT	64
+#define WS2812_COUNT	61
 #define WS2812_PIN_D    7
 #define MAX_DELAY 0x0010
+#define RGB_EFFECT_COUNT 3
 #endif
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)

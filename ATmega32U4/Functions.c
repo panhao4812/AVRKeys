@@ -200,7 +200,8 @@ uint8_t usbMacroSend(){
 	//bit6->第2组 0 off, 1 on
 	//bit5->第full组 0 off, 1 on
 	//bit4->第RGB组 0 off, 1 on
-	//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，print
+	//bit0-3->第1组 0 fix rgb_fixcolor[]，1 Rainbow rgb_rainbow[]，print led_mask[ROWS][COLS]
+	//RGB_EFFECT_COUNT<=0x0F
 	if(macro_report&MACRO0){
 		rgb_state^=(1<<5);
 	}
@@ -218,14 +219,11 @@ uint8_t usbMacroSend(){
 		return 1;
 	}
 	#endif
-	//#ifdef CXT64
 	if(macro_report&MACRO5){
-		//调试用途
 		rgb_state++;
-		if((rgb_state&0x0F)>2)rgb_state&=0xF0;
+		if((rgb_state&0x0F)>=RGB_EFFECT_COUNT)rgb_state&=0xF0;
 		return 1;
 	}
-	//#endif
 	return 0;
 }
 ///////////////keys action///////////////////
