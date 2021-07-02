@@ -1,6 +1,6 @@
 #include "../Functions.h"
 #include "../ws2812.h"
-#if (defined CXT64 )||(defined CXT84 )||(defined Vem84 )||(defined LILILI84 )
+#if (defined CXT64 )||(defined Vem84 )||(defined LILILI84 )
 #if defined CXT64
 /*
 #define MATRIX_ROW_PINS { C7, C6, B6, B5, B4 }5
@@ -69,8 +69,9 @@ volatile uint8_t led_mask[ROWS][COLS] = {
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
 	{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}
 };
+#endif
 ///////////////////////////////////////////////////////////////////////////
-#elif defined Vem84
+#if defined Vem84
 //#define MATRIX_ROW_PINS { B0, B1, B2, B3, D0, D1}6
 //#define MATRIX_COL_PINS { F7, F6, F5, F4, F1, F0, D2, D3, D5, D4, D6, D7, B4, B5, B6, C6 }16
 //#define RGB_DI_PIN C7
@@ -143,9 +144,9 @@ uint8_t rgb_pos[WS2812_COUNT]={
 	80,79,78,77,76,75,74,73,72,71,70,69,68,7,
 	81,82,83,0,1,2,3,4,5,6
 };
+#endif
 //////////////////////////////////////////////////////////////////////////////
-
-#elif defined LILILI84
+#if defined LILILI84
 //#define MATRIX_ROW_PINS {  B7, B6, B5, B4, B3, B2}6
 //#define MATRIX_COL_PINS { f0, F1,f4, f5, f6, f7, C7, C6, D7, D6, D5, D4, D3, D2, D1, D0 }16
 //#define RGB_DI_PIN B1

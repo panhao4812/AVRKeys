@@ -20,8 +20,9 @@ volatile uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
 volatile uint16_t rgb_rainbow[WS2812_COUNT]={0,170};
+#endif	
 ////////////////////////////////////////////////////
-#elif defined staryu
+#if defined staryu
 //SW D0 D1 D2 D3 D4
 //LED C2 C7 D5 D6 B0
 //RGB C6
