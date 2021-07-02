@@ -10,7 +10,28 @@
 //ƒ⁄«∂ª„±‡÷∏¡Ónop —” ± 0.25us
 uint8_t ws2812_buffer[(WS2812_COUNT * 3)];
 #define WS2812_COLOR_COUNT 0x0200
-
+#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#if defined(WS2812_PIN_F)
+#define WS2812_PORT		PORTF
+#define WS2812_DDR		DDRF
+#define WS2812_MASK		(1<<WS2812_PIN_F)
+#elif defined(WS2812_PIN_E)
+#define WS2812_PORT		PORTE
+#define WS2812_DDR		DDRE
+#define WS2812_MASK		(1<<WS2812_PIN_E)
+#elif defined(WS2812_PIN_D)
+#define WS2812_PORT		PORTD
+#define WS2812_DDR		DDRD
+#define WS2812_MASK		(1<<WS2812_PIN_D)
+#elif defined(WS2812_PIN_C)
+#define WS2812_PORT		PORTC
+#define WS2812_DDR		DDRC
+#define WS2812_MASK		(1<<WS2812_PIN_C)
+#elif defined(WS2812_PIN_B)
+#define WS2812_PORT		PORTB
+#define WS2812_DDR		DDRB
+#define WS2812_MASK		(1<<WS2812_PIN_B)
+#endif
 void ws2812Setup(void);
 void ws2812Clear(void);
 void ws2812SetRGB(uint16_t led, uint8_t red, uint8_t green, uint8_t blue);

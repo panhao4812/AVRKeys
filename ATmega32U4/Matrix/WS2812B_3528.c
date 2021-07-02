@@ -265,6 +265,10 @@ void initLED(){
 	}
 	delay_val=MAX_DELAY_8;
 }
+void LED_Timer(volatile uint16_t* delay_val_blink){
+	if((*delay_val_blink)==MAX_DELAY_7){ws2812Send2();}
+	if(*delay_val_blink){(*delay_val_blink)--;}else{(*delay_val_blink)=MAX_DELAY_8;}
+}
 void Fix_LED(uint16_t delay_val_blink){
 	if(delay_val_blink==MAX_DELAY_5){
 		for(uint8_t i=0;i<WS2812_COUNT;i++){
@@ -306,10 +310,7 @@ void blink_LED(uint16_t delay_val_blink){
 		}
 	}
 }
-void LED_Timer(volatile uint16_t* delay_val_blink){
-	if((*delay_val_blink)==MAX_DELAY_7){ws2812Send2();}
-	if(*delay_val_blink){(*delay_val_blink)--;}else{(*delay_val_blink)=MAX_DELAY_8;}
-}
+
 void resetLED(){
 	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);

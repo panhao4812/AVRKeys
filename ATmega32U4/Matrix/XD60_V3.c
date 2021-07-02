@@ -81,6 +81,15 @@ uint16_t delay_val;
 uint8_t FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
+uint8_t color_r,color_g,color_b;
+#define MAX_DELAY_1 MAX_DELAY*1
+#define MAX_DELAY_2 MAX_DELAY*2
+#define MAX_DELAY_3 MAX_DELAY*3
+#define MAX_DELAY_4 MAX_DELAY*4
+#define MAX_DELAY_5 MAX_DELAY*5
+#define MAX_DELAY_6 MAX_DELAY*6
+#define MAX_DELAY_7 MAX_DELAY*7
+#define MAX_DELAY_8 MAX_DELAY*8
 void initCols(){
 	for (uint8_t i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
@@ -113,7 +122,7 @@ void initLED(){
 	}
 	pinMode(FULL_LED,OUTPUT);
 	digitalWrite(FULL_LED,LOW);
-	delay_val=MAX_DELAY;
+	delay_val=MAX_DELAY_8;
 }
 void resetLED(){
 	for (uint8_t i=0; i<LED_COUNT; i++){
@@ -123,8 +132,30 @@ void resetLED(){
 	rgb_state=rgb_type;
 	ws2812Clear();
 	ws2812Send2();
+	delay_val=MAX_DELAY_8;
+}
+void LED_Timer(volatile uint16_t* delay_val_blink){
+	if((*delay_val_blink)==MAX_DELAY_7){ws2812Send2();}
+	if(*delay_val_blink){(*delay_val_blink)--;}else{(*delay_val_blink)=MAX_DELAY_8;}
+}
+void Fix_LED(uint16_t delay_val_blink){
+	if(delay_val_blink==MAX_DELAY_5){
+		for(uint8_t i=0;i<WS2812_COUNT;i++){
+			ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
+		}
+	}
+}
+void Rainbow_LED(uint16_t delay_val_blink){
+	for(uint8_t i=0;i<WS2812_COUNT;i++){
+		if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
+		if(delay_val_blink==MAX_DELAY_4){color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);ws2812SetR(i,color_r);}
+		if(delay_val_blink==MAX_DELAY_3){color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);ws2812SetG(i,color_g);}
+		if(delay_val_blink==MAX_DELAY_2){color_b=pgm_read_byte(Bcolors+rgb_rainbow[i]);ws2812SetB(i,color_b);}
+		if(delay_val_blink==MAX_DELAY_1){rgb_rainbow[i]++;}
+	}
 }
 void updateLED(){
+	/////////////funtional led//////////////
 	for (uint8_t i=0; i<LED_COUNT; i++){
 		if((keyboard_buffer.keyboard_leds&(1<<i))==(1<<i)){
 		digitalWrite(led_pins[i],HIGH);}
@@ -145,32 +176,22 @@ void updateLED(){
 	else{
 	digitalWrite(FULL_LED,LOW);}
 	/////////////RGB///////////////////
-	if(delay_val>=MAX_DELAY){
 		if(rgb_state & (1<<4)){
-			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((rgb_state&0x0F)==0x01){
-					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-					uint8_t color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
-					uint8_t color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
-					uint8_t color_b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
-					ws2812SetRGB(i,color_r,color_g,color_b);
-					rgb_rainbow[i]++;
-				}
-				else if((rgb_state&0x0F)==0x00){
-					ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);
-				}
+			if((rgb_state&0x0F)==0x01){
+				Rainbow_LED(delay_val);
+			}
+			else if((rgb_state&0x0F)==0x00){
+				Fix_LED(delay_val);
+			}
+			else if((rgb_state&0x0F)==0x02){
+				//blink_LED(delay_val);
 			}
 			}else{
-		ws2812Clear();}
-		delay_val--;
-		ws2812Send2();
-		}else{
-		if(delay_val){
-			delay_val--;
-			}else {
-			delay_val=MAX_DELAY;
+			ws2812Clear();//closed
 		}
-	}
+		////clock ///////////////////////////////////////////
+		//尽可能减少每次循环的时间，将任务错开。
+		LED_Timer(&delay_val);
 }
 /////////////////////////////////////////////////////////////////////
 void qmkMode(){

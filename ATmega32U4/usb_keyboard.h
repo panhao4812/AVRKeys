@@ -10,82 +10,68 @@
 #include <avr/eeprom.h>
 
 //#define LILILI84
-#define Vem84
+//#define Vem84
 //#define CXT64
-//#define  xd60
+#define  xd60
 //#define  xd75
 //#define  staryu
 //#define  xd004
-
+//#define PG60
 #if defined(xd60)
 #define ROWS  5
 #define COLS  14
 #define PRODUCT_ID		0xD060
 #define WS2812_COUNT	12
-#define WS2812_PORT		PORTF
-#define WS2812_DDR		DDRF
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_F    6
 #define MAX_DELAY 0x0100
 #elif defined(xd75)
 #define ROWS  5
 #define COLS  15
 #define PRODUCT_ID		0xD075
 #define WS2812_COUNT	6
-#define WS2812_PORT		PORTF
-#define WS2812_DDR		DDRF
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_F    6
 #define MAX_DELAY 0x0100
 #elif defined(xd004)
 #define ROWS  1
 #define COLS  4
 #define PRODUCT_ID		0xD004
 #define WS2812_COUNT	2
-#define WS2812_PORT		PORTC
-#define WS2812_DDR		DDRC
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_C    6
 #define MAX_DELAY 0x0200
 #elif defined(staryu)
 #define ROWS  1
 #define COLS  5
 #define PRODUCT_ID		0xD005
 #define WS2812_COUNT	1
-#define WS2812_PORT		PORTC
-#define WS2812_DDR		DDRC
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_C    6
 #define MAX_DELAY 0x0200
 #elif defined(CXT64)
 #define ROWS  5
 #define COLS  15
 #define PRODUCT_ID		0xF060
 #define WS2812_COUNT	64
-#define WS2812_PORT		PORTD
-#define WS2812_DDR		DDRD
-#define WS2812_MASK		(1<<7)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_D    7
 #define MAX_DELAY 0x0010
 #elif defined(LILILI84)
 #define ROWS  6
 #define COLS  16
 #define PRODUCT_ID		0xF184
 #define WS2812_COUNT	84
-#define WS2812_PORT		PORTB
-#define WS2812_DDR		DDRB
-#define WS2812_MASK		(1<<1)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_B    1
 #define MAX_DELAY 0x0010
 #elif defined(Vem84)
 #define ROWS  6
 #define COLS  16
 #define PRODUCT_ID		0xF284
 #define WS2812_COUNT	84
-#define WS2812_PORT		PORTC
-#define WS2812_DDR		DDRC
-#define WS2812_MASK		(1<<7)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
+#define WS2812_PIN_C    7
+#define MAX_DELAY 0x0010
+#elif defined(PG60)
+#define ROWS  5
+#define COLS  15
+#define PRODUCT_ID		0xF160
+#define WS2812_COUNT	64
+#define WS2812_PIN_D    7
 #define MAX_DELAY 0x0010
 #endif
 ///////////////////////////////////////////////
