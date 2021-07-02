@@ -3,38 +3,7 @@
 #include "usb_keyboard.h"
 #include "Keycode.h"
 
-///////////////////////ws2812//////////////////////////
-#if (defined xd60 )||(defined xd75 )
-#define WS2812_PORT		PORTF
-#define WS2812_DDR		DDRF
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MAX_DELAY 0x0100
-#elif (defined xd004 )||(defined staryu )
-#define WS2812_PORT		PORTC
-#define WS2812_DDR		DDRC
-#define WS2812_MASK		(1<<6)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MAX_DELAY 0x0200
-#elif (defined CXT64 )
-#define WS2812_PORT		PORTD
-#define WS2812_DDR		DDRD
-#define WS2812_MASK		(1<<7)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MAX_DELAY 0x0010
-#elif defined(LILILI84)
-#define WS2812_PORT		PORTB
-#define WS2812_DDR		DDRB
-#define WS2812_MASK		(1<<1)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MAX_DELAY 0x0010
-#elif defined(Vem84)
-#define WS2812_PORT		PORTC
-#define WS2812_DDR		DDRC
-#define WS2812_MASK		(1<<7)
-#define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
-#define MAX_DELAY 0x0010
-#endif
+
 //volatile uint16_t rgb_rainbow[WS2812_COUNT];
 //uint8_t rgb_pos[WS2812_COUNT];
 //volatile uint8_t led_mask[ROWS][COLS];

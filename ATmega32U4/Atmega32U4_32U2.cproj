@@ -139,6 +139,9 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Matrix\PG60.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Matrix\WS2812B_3528.c">
       <SubType>compile</SubType>
     </Compile>
