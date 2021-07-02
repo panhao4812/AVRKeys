@@ -1,5 +1,57 @@
 #include "Functions.h"
-
+////////////////////keyprint////////////////////
+void keyPrintChinese(uint8_t data[5]){
+	memset(print_keyboard_report.keycode,0,6);
+	print_keyboard_report.modifier = 0x40;
+	print_keyboard_report.keycode[0] =0;
+	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+	for(uint8_t i=0;i<5;i++){
+		print_keyboard_report.keycode[0]=98;
+		if(data[i]>0){print_keyboard_report.keycode[0]=data[i]+88;}
+		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+		print_keyboard_report.keycode[0] =0;
+		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+	}
+	print_keyboard_report.modifier = 0;
+	print_keyboard_report.keycode[0] =0;
+	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+}
+void keyPrintEnglish(uint8_t data)
+{
+	if(data==0)return;
+	memset(print_keyboard_report.keycode,0,6);
+	print_keyboard_report.modifier = (data >> 7) ? 0x20 : 0x00;//shift加了128
+	print_keyboard_report.keycode[0] =data & 0b01111111;//abs删除正负号
+	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+	print_keyboard_report.modifier = 0;
+	print_keyboard_report.keycode[0] =0;
+	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
+}
+void keyPrintChar(uint16_t wrapdata){
+	usbWord_t data=(usbWord_t)wrapdata;
+	if(data.bytes[1]==0x00){
+		keyPrintEnglish(data.bytes[0]);
+		}else{
+		uint16_t out=(uint16_t)data.word;
+		//out|=0x8080;//汉字内码每个byte最高位为1
+		uint8_t datachinese[5];
+		datachinese[4]=out%10;out=out/10;
+		datachinese[3]=out%10;out=out/10;
+		datachinese[2]=out%10;out=out/10;
+		datachinese[1]=out%10;out=out/10;
+		datachinese[0]=out;
+		keyPrintChinese(datachinese);
+	}
+}
+void keyPrintWordEEP(uint16_t address_t){
+	uint16_t len=eeprom_read_word((uint16_t *)address_t);
+	for(uint16_t i=0;i<len;i++){
+		uint16_t address=address_t+i*2+2;
+		if(address>MAX_EEP-1)break;
+		uint16_t data = eeprom_read_word((uint16_t *)address);
+		keyPrintChar(data);
+	}
+}
 ////////////////usb repport///////////////
 uint8_t usbKeyboardSendRequired(){
 	uint8_t send_required_t=0;
@@ -543,56 +595,3 @@ uint8_t digitalRead(uint8_t IO){
 	return value;
 }
 #endif
-////////////////////keyprint////////////////////
-void keyPrintChinese(uint8_t data[5]){
-	memset(print_keyboard_report.keycode,0,6);
-	print_keyboard_report.modifier = 0x40;
-	print_keyboard_report.keycode[0] =0;
-	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-	for(uint8_t i=0;i<5;i++){
-		print_keyboard_report.keycode[0]=98;
-		if(data[i]>0){print_keyboard_report.keycode[0]=data[i]+88;}
-		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-		print_keyboard_report.keycode[0] =0;
-		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-	}
-	print_keyboard_report.modifier = 0;
-	print_keyboard_report.keycode[0] =0;
-	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-}
-void keyPrintEnglish(uint8_t data)
-{
-	if(data==0)return;
-	memset(print_keyboard_report.keycode,0,6);
-	print_keyboard_report.modifier = (data >> 7) ? 0x20 : 0x00;//shift加了128
-	print_keyboard_report.keycode[0] =data & 0b01111111;//abs删除正负号
-	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-	print_keyboard_report.modifier = 0;
-	print_keyboard_report.keycode[0] =0;
-	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-}
-void keyPrintChar(uint16_t wrapdata){
-	usbWord_t data=(usbWord_t)wrapdata;
-	if(data.bytes[1]==0x00){
-		keyPrintEnglish(data.bytes[0]);
-		}else{
-		uint16_t out=(uint16_t)data.word;
-		//out|=0x8080;//汉字内码每个byte最高位为1
-		uint8_t datachinese[5];
-		datachinese[4]=out%10;out=out/10;
-		datachinese[3]=out%10;out=out/10;
-		datachinese[2]=out%10;out=out/10;
-		datachinese[1]=out%10;out=out/10;
-		datachinese[0]=out;
-		keyPrintChinese(datachinese);
-	}
-}
-void keyPrintWordEEP(uint16_t address_t){
-	uint16_t len=eeprom_read_word((uint16_t *)address_t);
-	for(uint16_t i=0;i<len;i++){
-		uint16_t address=address_t+i*2+2;
-		if(address>MAX_EEP-1)break;
-		uint16_t data = eeprom_read_word((uint16_t *)address);
-		keyPrintChar(data);
-	}
-}

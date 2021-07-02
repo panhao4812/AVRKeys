@@ -35,8 +35,9 @@
 #define WS2812_SAVE		1			/*Power saver, divide light level with this.*/
 #define MAX_DELAY 0x0010
 #endif
-uint16_t rgb_rainbow[WS2812_COUNT];
-uint8_t rgb_pos[WS2812_COUNT];
+//volatile uint16_t rgb_rainbow[WS2812_COUNT];
+//uint8_t rgb_pos[WS2812_COUNT];
+//volatile uint8_t led_mask[ROWS][COLS];
 uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
 uint8_t rgb_type;
 uint8_t rgb_state;
@@ -51,7 +52,7 @@ uint8_t rgb_state;
 #define DELAY_BEFORE 0x04
 extern  uint8_t hexa_keys0[ROWS][COLS] ;
 extern  uint8_t hexa_keys1[ROWS][COLS];
-extern  uint8_t key_mask[ROWS][COLS];
+extern volatile uint8_t key_mask[ROWS][COLS];
 extern  uint8_t row_pins[ROWS];
 extern  uint8_t col_pins[COLS];
 int initMain(void);

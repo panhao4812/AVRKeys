@@ -16,10 +16,10 @@ uint8_t hexa_keys0[ROWS][COLS]={
 uint8_t hexa_keys1[ROWS][COLS]={
 	{MACRO0,MACRO1,MACRO3,KEY_FN}
 };
-uint8_t key_mask[ROWS][COLS]={
+volatile uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
-uint16_t rgb_rainbow[WS2812_COUNT]={0,170};
+volatile uint16_t rgb_rainbow[WS2812_COUNT]={0,170};
 ////////////////////////////////////////////////////
 #elif defined staryu
 //SW D0 D1 D2 D3 D4
@@ -35,10 +35,10 @@ uint8_t hexa_keys0[ROWS][COLS]={
 uint8_t hexa_keys1[ROWS][COLS]={
 	{MACRO0,KEY_FN,MACRO4,MACRO5,MACRO1}
 };
-uint8_t key_mask[ROWS][COLS]={
+volatile uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x66,0x17,0x17,0x17}
 };
-uint16_t rgb_rainbow[WS2812_COUNT]={0};
+volatile uint16_t rgb_rainbow[WS2812_COUNT]={0};
 #endif
 /////////////////////////////////////////////////////////////////////////continue
 uint16_t delay_val;//rgbËÙÂÊ
