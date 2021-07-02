@@ -11,8 +11,8 @@
 
 //#define LILILI84
 //#define Vem84
-#define CXT64
-//#define  xd60
+//#define CXT64
+#define  xd60
 //#define  xd75
 //#define  staryu
 //#define  xd004

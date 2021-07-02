@@ -9,7 +9,7 @@ uint8_t LED_caps=2;
 uint8_t rgb=17;
 uint8_t full led=18;
 */
-#define LED_COUNT 1
+#define LED_COUNT 2
 #define FULL_LED 18
 uint8_t row_pins[ROWS]={5,6,7,8,23};
 uint8_t col_pins[COLS]={21,20,24,10,9,15,22,1,4,14,13,12,11,3};
@@ -149,10 +149,10 @@ void updateLED(){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
 				if((rgb_state&0x0F)==0x01){
 					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-					uint8_t r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
-					uint8_t g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
-					uint8_t b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
-					ws2812SetRGB(i,r,g,b);
+					uint8_t color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
+					uint8_t color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
+					uint8_t color_b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
+					ws2812SetRGB(i,color_r,color_g,color_b);
 					rgb_rainbow[i]++;
 				}
 				else if((rgb_state&0x0F)==0x00){
