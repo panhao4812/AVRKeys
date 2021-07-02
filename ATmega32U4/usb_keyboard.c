@@ -25,38 +25,38 @@ const uint8_t PROGMEM device_descriptor[] = {
 	1					// bNumConfigurations
 };
 const uint8_t PROGMEM KeyboardReport[] = {
-	   0x05, 0x01,          // Usage Page (Generic Desktop),
-	   0x09, 0x06,          // Usage (Keyboard),
-	   0xA1, 0x01,          // Collection (Application),
-	   0x75, 0x01,          //   Report Size (1),
-	   0x95, 0x08,          //   Report Count (8),
-	   0x05, 0x07,          //   Usage Page (Key Codes),
-	   0x19, 0xE0,          //   Usage Minimum (224),
-	   0x29, 0xE7,          //   Usage Maximum (231),
-	   0x15, 0x00,          //   Logical Minimum (0),
-	   0x25, 0x01,          //   Logical Maximum (1),
-	   0x81, 0x02,          //   Input (Data, Variable, Absolute), ;Modifier byte
-	   0x95, 0x01,          //   Report Count (1),
-	   0x75, 0x08,          //   Report Size (8),
-	   0x81, 0x03,          //   Input (Constant),                 ;Reserved byte
-	   0x95, 0x05,          //   Report Count (5),
-	   0x75, 0x01,          //   Report Size (1),
-	   0x05, 0x08,          //   Usage Page (LEDs),
-	   0x19, 0x01,          //   Usage Minimum (1),
-	   0x29, 0x05,          //   Usage Maximum (5),
-	   0x91, 0x02,          //   Output (Data, Variable, Absolute), ;LED report
-	   0x95, 0x01,          //   Report Count (1),
-	   0x75, 0x03,          //   Report Size (3),
-	   0x91, 0x03,          //   Output (Constant),                 ;LED report padding
-	   0x95, 0x06,          //   Report Count (6),
-	   0x75, 0x08,          //   Report Size (8),
-	   0x15, 0x00,          //   Logical Minimum (0),
-	   0x26, 0xFF, 0x00,    //   Logical Maximum(255),
-	   0x05, 0x07,          //   Usage Page (Key Codes),
-	   0x19, 0x00,          //   Usage Minimum (0),
-	   0x29, 0xFF,          //   Usage Maximum (255),
-	   0x81, 0x00,          //   Input (Data, Array),
-	   0xc0                 // End Collection
+	0x05, 0x01,          // Usage Page (Generic Desktop),
+	0x09, 0x06,          // Usage (Keyboard),
+	0xA1, 0x01,          // Collection (Application),
+	0x75, 0x01,          //   Report Size (1),
+	0x95, 0x08,          //   Report Count (8),
+	0x05, 0x07,          //   Usage Page (Key Codes),
+	0x19, 0xE0,          //   Usage Minimum (224),
+	0x29, 0xE7,          //   Usage Maximum (231),
+	0x15, 0x00,          //   Logical Minimum (0),
+	0x25, 0x01,          //   Logical Maximum (1),
+	0x81, 0x02,          //   Input (Data, Variable, Absolute), ;Modifier byte
+	0x95, 0x01,          //   Report Count (1),
+	0x75, 0x08,          //   Report Size (8),
+	0x81, 0x03,          //   Input (Constant),                 ;Reserved byte
+	0x95, 0x05,          //   Report Count (5),
+	0x75, 0x01,          //   Report Size (1),
+	0x05, 0x08,          //   Usage Page (LEDs),
+	0x19, 0x01,          //   Usage Minimum (1),
+	0x29, 0x05,          //   Usage Maximum (5),
+	0x91, 0x02,          //   Output (Data, Variable, Absolute), ;LED report
+	0x95, 0x01,          //   Report Count (1),
+	0x75, 0x03,          //   Report Size (3),
+	0x91, 0x03,          //   Output (Constant),                 ;LED report padding
+	0x95, 0x06,          //   Report Count (6),
+	0x75, 0x08,          //   Report Size (8),
+	0x15, 0x00,          //   Logical Minimum (0),
+	0x26, 0xFF, 0x00,    //   Logical Maximum(255),
+	0x05, 0x07,          //   Usage Page (Key Codes),
+	0x19, 0x00,          //   Usage Minimum (0),
+	0x29, 0xFF,          //   Usage Maximum (255),
+	0x81, 0x00,          //   Input (Data, Array),
+	0xc0                 // End Collection
 };
 const  PROGMEM  uint8_t MouseReport[] =
 {
@@ -323,7 +323,7 @@ uint8_t usbRecv(uint8_t endpoint,uint8_t *buffer, uint8_t buffersize,uint8_t tim
 		cli();
 		SetEP(endpoint);
 	}
-	for(int i=0;i<buffersize;i++){*buffer++ = UEDATX;}
+	for(uint8_t i=0;i<buffersize;i++){*buffer++ = UEDATX;}
 	ReleaseTX();
 	SREG = intr_state;
 	return 0;
@@ -345,7 +345,7 @@ uint8_t usbSend(uint8_t endpoint,const uint8_t *buffer, uint8_t buffersize,uint8
 		cli();
 		SetEP(endpoint);
 	}
-	for(int i=0;i<buffersize;i++){UEDATX = *buffer++;}
+	for(uint8_t i=0;i<buffersize;i++){UEDATX = *buffer++;}
 	ReleaseTX();
 	SREG = intr_state;
 	return 0;
@@ -395,7 +395,7 @@ ISR(USB_GEN_vect)
 					keyboard_buffer.keyboard_idle_count = 0;
 					UEDATX=keyboard_report.modifier;
 					UEDATX=keyboard_report.reserved;
-					for (int i=0; i<6; i++) {
+					for (uint8_t i=0; i<6; i++) {
 						UEDATX = keyboard_report.keycode[i];
 					}
 					ReleaseTX();
@@ -425,8 +425,8 @@ static const uint8_t PROGMEM endpoint_config_table[] = {
 //EPdir代表in 还是 out
 //UECFG1X寄存器相关 -,EPsize,EPsize,EPsize,EPbk,EPbk,alloc,-
 //EPsize=0 size=8 | EPsize=1 size=16 | EPsize=2 size=32 | EPsize=3 size=64
-//0 one bank 1 double bank 
-//0 Clear Endpoint 1 allocate endpoint 
+//0 one bank 1 double bank
+//0 Clear Endpoint 1 allocate endpoint
 
 ISR(USB_COM_vect)
 {
@@ -438,7 +438,7 @@ ISR(USB_COM_vect)
 
 	const uint8_t *cfg;
 	const uint8_t *desc_addr;
-	uint8_t i, n, len, en;
+	uint8_t i,n,len,en;
 	//已完成总复位 通过ep0进行枚举
 	SetEP(0);
 	if (ReceivedSetupInt()) {
@@ -453,14 +453,14 @@ ISR(USB_COM_vect)
 		ClearSetupInt();
 		//////////////////////////////////////////////////
 		if (bRequest == GET_DESCRIPTOR) {
-			     if((wValue==0x0100)&&(wIndex==0x0000)){            desc_addr=device_descriptor; len= sizeof(device_descriptor);}
+			if((wValue==0x0100)&&(wIndex==0x0000)){            desc_addr=device_descriptor; len= sizeof(device_descriptor);}
 			else if((wValue==0x0200)&&(wIndex==0x0000)){            desc_addr=config1_descriptor;len= sizeof(config1_descriptor);}
 			else if((wValue==0x2200)&&(wIndex==KEYBOARD_INTERFACE)){desc_addr=KeyboardReport;    len= sizeof(KeyboardReport);}
 			else if((wValue==0x2100)&&(wIndex==KEYBOARD_INTERFACE)){desc_addr=config1_descriptor+KEYBOARD_HID_DESC_OFFSET; len=9;}
 			else if((wValue==0x2200)&&(wIndex==RAW_INTERFACE)){     desc_addr=RawReport;         len= sizeof(RawReport);}
 			else if((wValue==0x2100)&&(wIndex==RAW_INTERFACE)){     desc_addr=config1_descriptor+RAW_HID_DESC_OFFSET; len=9;}
 			else if((wValue==0x2200)&&(wIndex==MOUSE_INTERFACE)){   desc_addr=MouseReport;       len= sizeof(MouseReport);}
-			else if((wValue==0x2100)&&(wIndex==MOUSE_INTERFACE)){   desc_addr=config1_descriptor+MOUSE_HID_DESC_OFFSET; len=9;}			
+			else if((wValue==0x2100)&&(wIndex==MOUSE_INTERFACE)){   desc_addr=config1_descriptor+MOUSE_HID_DESC_OFFSET; len=9;}
 			else if(wValue==0x0300){desc_addr=(const uint8_t *)&string0; len= 4;}
 			else if(wValue==0x0301){desc_addr=(const uint8_t *)&string1; len= 0x0C ;} //sizeof(STR_MANUFACTURER)
 			else if(wValue==0x0302){desc_addr=(const uint8_t *)&string2; len= 0x1C;}//sizeof(STR_PRODUCT)
@@ -471,7 +471,7 @@ ISR(USB_COM_vect)
 			do {
 				if(WaitForINOrOUT()){
 					n = len < ENDPOINT0_SIZE ? len : ENDPOINT0_SIZE;
-					for (i = n; i; i--) {
+					for (uint8_t ii = n; ii; ii--) {
 						UEDATX = pgm_read_byte(desc_addr++);
 					}
 					len -= n;
@@ -491,10 +491,10 @@ ISR(USB_COM_vect)
 			usb_configuration = wValue;
 			ClearIN();
 			cfg = endpoint_config_table;
-			for (i=1; i<MAX_ENDPOINT; i++) {
-				SetEP(i);
+			for (uint8_t ii=1; ii<MAX_ENDPOINT; ii++) {
+				SetEP(ii);
 				en = pgm_read_byte(cfg++);
-				UECONX = en;	
+				UECONX = en;
 				if (en) {
 					UECFG0X = pgm_read_byte(cfg++);
 					UECFG1X = pgm_read_byte(cfg++);
@@ -538,7 +538,7 @@ ISR(USB_COM_vect)
 					} else {
 					UECONX = (1<<STALLRQC)|(1<<RSTDT)|(1<<EPEN);
 					UERST = (1 << i); //UERST表示ep重置 第N位为1就表示epN重置
-					UERST = 0;				
+					UERST = 0;
 				}
 				return;
 			}
@@ -549,8 +549,8 @@ ISR(USB_COM_vect)
 				if (bRequest == HID_GET_REPORT) {
 					WaitIN();
 					UEDATX=keyboard_report.modifier;UEDATX=keyboard_report.reserved;
-					for (i=0; i<6; i++) {
-						UEDATX = keyboard_report.keycode[i];
+					for (uint8_t ii=0; ii<6; ii++) {
+						UEDATX = keyboard_report.keycode[ii];
 					}
 					ClearIN();
 					return;
@@ -601,7 +601,7 @@ ISR(USB_COM_vect)
 						if (i & (1<<RXOUTI)) return;	// abort
 						// send IN packet
 						n = len < ENDPOINT0_SIZE ? len : ENDPOINT0_SIZE;
-						for (i = n; i; i--) {
+						for (uint8_t ii = n; ii; ii--) {
 							// just send zeros
 							UEDATX = 0;
 						}

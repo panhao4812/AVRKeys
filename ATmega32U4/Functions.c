@@ -94,11 +94,10 @@ uint8_t usbMouseSend(){
 	return 0;
 }
 uint8_t isBufferClear(){
-	uint8_t i;
 	if(mouse_buffer.mouse_keys!=0)return 1;
 	if(mouse_buffer.system_keys!=0)return 1;
 	if(mouse_buffer.consumer_keys!=0)return 1;
-	for ( i=0; i < 6; i++) {
+	for (uint8_t i=0; i < 6; i++) {
 		if(keyboard_buffer.keyboard_keys[i] != 0)return 1;
 	}
 	if(keyboard_buffer.keyboard_modifier_keys!=0)return 1;
@@ -193,13 +192,12 @@ void pressMacroKey(uint8_t key){
 }
 uint8_t pressKey(uint8_t key)
 {
-	uint8_t i;
-	for ( i=0; i < 6; i++) {
+	for (uint8_t i=0; i < 6; i++) {
 		if (keyboard_buffer.keyboard_keys[i] == key) {
 			return 1;
 		}
 	}
-	for ( i=0; i < 6; i++) {
+	for (uint8_t i=0; i < 6; i++) {
 		if (keyboard_buffer.keyboard_keys[i] == 0) {
 			keyboard_buffer.keyboard_keys[i] = key;
 			return 1;
@@ -245,9 +243,8 @@ void pressConsumerKey(uint8_t key){
 }
 uint8_t releaseKey(uint8_t key)
 {
-	uint8_t i;
 	uint8_t send_required=0;
-	for ( i=0; i < 6; i++) {
+	for (uint8_t i=0; i < 6; i++) {
 		if (keyboard_buffer.keyboard_keys[i] == key) {
 			keyboard_buffer.keyboard_keys[i] = 0;
 			send_required=1;
@@ -270,8 +267,7 @@ void releaseAllMousekeys(){
 }
 void releaseAllKeyboardKeys()
 {
-	uint8_t i;
-	for ( i=0; i < 6; i++) {
+	for (uint8_t i=0; i < 6; i++) {
 		keyboard_buffer.keyboard_keys[i] = 0;
 	}
 	keyboard_buffer.keyboard_modifier_keys=0;
@@ -279,8 +275,8 @@ void releaseAllKeyboardKeys()
 ////////////////////HID report///////////////////
 void resetMatrix(uint8_t mask,uint16_t address){
 	uint8_t j=0;
-	for (int r = 0; r < ROWS; r++) {
-		for (int c = 0; c < COLS; c++) {
+	for (uint8_t r = 0; r < ROWS; r++) {
+		for (uint8_t c = 0; c < COLS; c++) {
 			switch (mask){
 				case 0:
 				hexa_keys0[r][c]=eeprom_read_byte((uint8_t *)((uint16_t)j+address));
@@ -302,19 +298,18 @@ void resetMatrixFormEEP(){
 	uint16_t address_hexakeys0=eeprom_read_word((uint16_t *)4);
 	uint16_t address_hexaKeys1=eeprom_read_word((uint16_t *)6);
 	uint16_t address_keyMask=eeprom_read_word((uint16_t *)8);
-	uint16_t j;
 	///////////////////////////////////
 	if(address_row!=ADD_INDEX){return;}
 	if(address_col!=ADD_ROW){return;}
 	if(address_hexakeys0!=ADD_COL){return;}
 	if(address_hexaKeys1!=ADD_KEYS1){return;}
 	if(address_keyMask!=ADD_KEYS2){return;}
-	for( j=0;j<ROWS;j++){row_pins[j]=eeprom_read_byte((uint8_t *)(j+address_row));}
-	for( j=0;j<COLS;j++){col_pins[j]=eeprom_read_byte((uint8_t *)(j+address_col));}
+	for(uint16_t j=0;j<ROWS;j++){row_pins[j]=eeprom_read_byte((uint8_t *)(j+address_row));}
+	for(uint16_t j=0;j<COLS;j++){col_pins[j]=eeprom_read_byte((uint8_t *)(j+address_col));}
 	resetMatrix(0,address_hexakeys0);
 	resetMatrix(1,address_hexaKeys1);
 	resetMatrix(2,address_keyMask);
-	for( j=0;j<(WS2812_COUNT * 3);j++){rgb_fixcolor[j]=eeprom_read_byte((uint8_t *)(j+ADD_RGB));}
+	for(uint16_t j=0;j<(WS2812_COUNT * 3);j++){rgb_fixcolor[j]=eeprom_read_byte((uint8_t *)(j+ADD_RGB));}
 	rgb_type=eeprom_read_byte((uint8_t *)ADD_RGBTYPE);
 	//rgb_type&=0x11;
 }
@@ -554,8 +549,7 @@ void keyPrintChinese(uint8_t data[5]){
 	print_keyboard_report.modifier = 0x40;
 	print_keyboard_report.keycode[0] =0;
 	usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);
-	uint8_t i=0;
-	for( i=0;i<5;i++){
+	for(uint8_t i=0;i<5;i++){
 		print_keyboard_report.keycode[0]=98;
 		if(data[i]>0){print_keyboard_report.keycode[0]=data[i]+88;}
 		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&print_keyboard_report,8,50);

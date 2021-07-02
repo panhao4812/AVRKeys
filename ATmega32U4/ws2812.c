@@ -8,7 +8,7 @@ void ws2812Setup()
 
 void ws2812Clear()
 {
-	for(int i = 0; i < WS2812_COUNT*3; i++) ws2812_buffer[i] = 0;
+	for(uint16_t i = 0; i < WS2812_COUNT*3; i++) ws2812_buffer[i] = 0;
 }
 
 void ws2812SetHSV(uint16_t led, uint16_t hue, uint16_t saturation, uint16_t value)

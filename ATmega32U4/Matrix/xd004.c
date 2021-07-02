@@ -42,11 +42,11 @@ uint16_t rgb_rainbow[WS2812_COUNT]={0};
 #endif
 /////////////////////////////////////////////////////////////////////////continue
 uint16_t delay_val;//rgb速率
-uint8_t r,c,i,FN;
+uint8_t FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
 void initCols(){
-	for ( i=0; i<COLS; i++){
+	for (uint8_t i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
 		digitalWrite(col_pins[i],HIGH);
 	}
@@ -54,12 +54,12 @@ void initCols(){
 void initRows(){
 }
 void openLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],LOW);
 	}
 }
 void closeLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);
 	}
 }
@@ -67,14 +67,14 @@ void initLED(){
 	ws2812Setup();
 	ws2812Clear();
 	ws2812Send2();
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		pinMode(led_pins[i],OUTPUT);
 		digitalWrite(led_pins[i],HIGH);
 	}
 	delay_val=MAX_DELAY;
 }
 void resetLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);
 	}
 	rgb_state=rgb_type;
@@ -118,8 +118,8 @@ void updateLED(){
 	}
 }
 void qmkMode(){
-	for (r = 0; r < ROWS; r++) {
-		for (c = 0; c < COLS; c++) {
+	for (uint8_t r = 0; r < ROWS; r++) {
+		for (uint8_t c = 0; c < COLS; c++) {
 			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
 			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;}
 			if(key_mask[r][c]==0xEE )FN=0x0F;
@@ -129,8 +129,8 @@ void qmkMode(){
 	releaseAllKeyboardKeys();
 	releaseAllMousekeys();
 	macro_buffer=0;
-	for (r = 0; r < ROWS; r++) {
-		for (c = 0; c < COLS; c++) {
+	for (uint8_t r = 0; r < ROWS; r++) {
+		for (uint8_t c = 0; c < COLS; c++) {
 			switch(key_mask[r][c]&FN){
 				case 0x90:
 				pressKey(hexa_keys0[r][c]);

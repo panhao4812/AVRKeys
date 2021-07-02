@@ -219,7 +219,7 @@ uint8_t rgb_pos[WS2812_COUNT]={
 #endif
 //////////////////////////////////////////////////////////////////////
 uint16_t delay_val;
-uint8_t r,c,i,FN;
+uint8_t FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
 uint8_t r,g,b;
@@ -233,24 +233,24 @@ uint8_t r,g,b;
 #define MAX_DELAY_8 MAX_DELAY*8
 ///////////////////////////////
 void initCols(){
-	for ( i=0; i<COLS; i++){
+	for (uint8_t i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
 		digitalWrite(col_pins[i],HIGH);
 	}
 }
 void initRows(){
-	for ( i=0; i<ROWS; i++){
+	for (uint8_t i=0; i<ROWS; i++){
 		pinMode(row_pins[i],INPUT);
 		digitalWrite(row_pins[i],HIGH);
 	}
 }
 void openLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],LOW);
 	}
 }
 void closeLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);
 	}
 }
@@ -258,7 +258,7 @@ void initLED(){
 	ws2812Setup();
 	ws2812Clear();
 	ws2812Send2();
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		pinMode(led_pins[i],OUTPUT);
 		digitalWrite(led_pins[i],HIGH);
 	}
@@ -284,8 +284,8 @@ void blink_LED(uint16_t delay_val_blink){
 	if(delay_val_blink==MAX_DELAY_6){
 		uint8_t wcount=0;
 		//ws2812，1.2us一个bit，一个灯28.8us，100灯2.88ms 6灯17.28us。
-		for (r = 0; r < ROWS; r++) {
-			for (c = 0; c < COLS; c++) {
+		for (uint8_t r = 0; r < ROWS; r++) {
+			for (uint8_t c = 0; c < COLS; c++) {
 				if(wcount<WS2812_COUNT ){
 					if(ledMask[r][c]){
 						ws2812SetRGB(rgb_pos[wcount],ledMask[r][c],ledMask[r][c],ledMask[r][c]);
@@ -298,8 +298,8 @@ void blink_LED(uint16_t delay_val_blink){
 			}
 		}
 		//shading
-		for (r = 0; r < ROWS; r++) {
-			for (c = 0; c < COLS; c++) {
+		for (uint8_t r = 0; r < ROWS; r++) {
+			for (uint8_t c = 0; c < COLS; c++) {
 				if(ledMask[r][c]){ledMask[r][c]=ledMask[r][c]>>1;}
 			}
 		}
@@ -310,7 +310,7 @@ void LED_Timer(volatile uint16_t* delay_val_blink){
 	if(*delay_val_blink){(*delay_val_blink)--;}else{(*delay_val_blink)=MAX_DELAY_8;}
 }
 void resetLED(){
-	for ( i=0; i<LED_COUNT; i++){
+	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);
 	}
 	rgb_state=rgb_type;//默认开关状态
@@ -376,13 +376,13 @@ void updateLED(){
 }
 /////////////////////////////////////////////////////////////////////
 void qmkMode(){
-	for (r = 0; r < ROWS; r++) {
+	for (uint8_t r = 0; r < ROWS; r++) {
 		//	initCols();
 		pinMode(row_pins[r],OUTPUT);
 		digitalWrite(row_pins[r],LOW);
 		//串键问题，如果没有delay_us会导致col1或者col2串键，不一定每个板子都会串键，不串键可以取消掉delay_us
 		//_delay_us(1);
-		for (c = 0; c < COLS; c++) {
+		for (uint8_t c = 0; c < COLS; c++) {
 			if (digitalRead(col_pins[c])) {key_mask[r][c]&= ~0x88;}
 			else {key_mask[r][c]|= 0x88;delay_after=DELAY_AFTER;ledMask[r][c]=0xFF;}
 			if(key_mask[r][c]==0xEE )FN=0x0F;
@@ -392,8 +392,8 @@ void qmkMode(){
 	releaseAllKeyboardKeys();
 	releaseAllMousekeys();
 	macro_buffer=0;
-	for (r = 0; r < ROWS; r++) {
-		for (c = 0; c < COLS; c++) {
+	for (uint8_t r = 0; r < ROWS; r++) {
+		for (uint8_t c = 0; c < COLS; c++) {
 			switch(key_mask[r][c]&FN){
 				case 0x90:
 				pressKey(hexa_keys0[r][c]);
