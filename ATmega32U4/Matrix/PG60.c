@@ -140,7 +140,7 @@ void blink_LED(uint16_t delay_val_blink){
 	}
 }
 void resetLED(){
-	rgb_state=rgb_type;//默认开关状态
+	RGB_STATE=RGB_TYPE;//默认开关状态
 	ws2812Clear();
 	ws2812Send2();
 	///*
@@ -175,14 +175,14 @@ void updateLED(){
 	////full led//////////////////////////////////////////
 	
 	///rgb////////////////////////////////////////////////
-	if(rgb_state & (1<<4)){
-		if((rgb_state&0x0F)==0x01){
+	if(RGB_STATE & (1<<4)){
+		if((RGB_STATE&0x0F)==0x01){
 			Rainbow_LED(delay_val);
 		}
-		else if((rgb_state&0x0F)==0x00){
+		else if((RGB_STATE&0x0F)==0x00){
 			Fix_LED(delay_val);
 		}
-		else if((rgb_state&0x0F)==0x02){
+		else if((RGB_STATE&0x0F)==0x02){
 			blink_LED(delay_val);
 		}
 		}else{
@@ -280,7 +280,7 @@ int initMain(void) {
 	while (1) {//重启
 		enableReset=1;
 		keyboard_buffer.enable_pressing=1;
-		rgb_type=0x02;//set default rgb
+		RGB_TYPE=0x02;//set default rgb
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
 		resetMatrixFormEEP();

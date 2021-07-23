@@ -78,13 +78,13 @@ void resetLED(){
 	for (uint8_t i=0; i<LED_COUNT; i++){
 		digitalWrite(led_pins[i],HIGH);
 	}
-	rgb_state=rgb_type;
+	RGB_STATE=RGB_TYPE;
 	ws2812Clear();
 	ws2812Send2();
 }
 void updateLED(){
 	//////////////////////////////full led/////////////////////
-	if(rgb_state & (1<<5)){
+	if(RGB_STATE & (1<<5)){
 		openLED();
 	}
 	else{
@@ -92,9 +92,9 @@ void updateLED(){
 	}
 	////////////////////////////RGB////////////////////////
 	if(delay_val>=MAX_DELAY){
-		if(rgb_state & (1<<4)){
+		if(RGB_STATE & (1<<4)){
 			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((rgb_state&0x0F)==0x01){
+				if((RGB_STATE&0x0F)==0x01){
 					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
 					uint8_t color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
 					uint8_t color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
@@ -102,7 +102,7 @@ void updateLED(){
 					ws2812SetRGB(i,color_r,color_g,color_b);
 					rgb_rainbow[i]++;
 				}
-				else if((rgb_state&0x0F)==0x00){
+				else if((RGB_STATE&0x0F)==0x00){
 					ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);
 				}
 			}
@@ -198,7 +198,7 @@ int initMain(void)
 	while (1) {//÷ÿ∆Ù
 		enableReset=1;
 		keyboard_buffer.enable_pressing=1;
-		rgb_type=0x01;///set default on & rainbow
+		RGB_TYPE=0x01;///set default on & rainbow
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
 		resetMatrixFormEEP();

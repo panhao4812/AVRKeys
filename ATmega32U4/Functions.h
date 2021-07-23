@@ -8,8 +8,8 @@
 //uint8_t rgb_pos[WS2812_COUNT];
 //volatile uint8_t led_mask[ROWS][COLS];
 uint8_t rgb_fixcolor[(WS2812_COUNT * 3)];
-uint8_t rgb_type;
-uint8_t rgb_state;
+uint8_t RGB_TYPE;
+uint8_t RGB_STATE;
 //rgb_state和rgb_type定义相同,一个是实时，一个是默认状态。
 //bit7->第1组 0 off, 1 on
 //bit6->第2组 0 off, 1 on

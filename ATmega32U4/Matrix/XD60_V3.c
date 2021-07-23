@@ -129,7 +129,7 @@ void resetLED(){
 		digitalWrite(led_pins[i],LOW);
 	}
 	digitalWrite(FULL_LED,LOW);
-	rgb_state=rgb_type;
+	RGB_STATE=RGB_TYPE;
 	ws2812Clear();
 	ws2812Send2();
 	delay_val=MAX_DELAY_8;
@@ -171,19 +171,19 @@ void updateLED(){
 	}
 	#endif
 	/////////////full led///////////////////
-	if(rgb_state & (1<<5)){
+	if(RGB_STATE & (1<<5)){
 	digitalWrite(FULL_LED,HIGH);}
 	else{
 	digitalWrite(FULL_LED,LOW);}
 	/////////////RGB///////////////////
-		if(rgb_state & (1<<4)){
-			if((rgb_state&0x0F)==0x01){
+		if(RGB_STATE & (1<<4)){
+			if((RGB_STATE&0x0F)==0x01){
 				Rainbow_LED(delay_val);
 			}
-			else if((rgb_state&0x0F)==0x00){
+			else if((RGB_STATE&0x0F)==0x00){
 				Fix_LED(delay_val);
 			}
-			else if((rgb_state&0x0F)==0x02){
+			else if((RGB_STATE&0x0F)==0x02){
 				//blink_LED(delay_val);
 			}
 			}else{
@@ -277,7 +277,7 @@ int initMain(void) {
 	while (1) {//ÖØÆô
 		enableReset=1;
 		keyboard_buffer.enable_pressing=1;
-		rgb_type=0x01;///set default on & rainbow
+		RGB_TYPE=0x01;///set default on & rainbow
 		releaseAllKeyboardKeys();
 		releaseAllMousekeys();
 		resetMatrixFormEEP();

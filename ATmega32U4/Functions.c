@@ -203,10 +203,10 @@ uint8_t usbMacroSend(){
 	//bit0-3->µÚ1×é 0 fix rgb_fixcolor[]£¬1 Rainbow rgb_rainbow[]£¬print led_mask[ROWS][COLS]
 	//RGB_EFFECT_COUNT<=0x0F
 	if(macro_report&MACRO0){
-		rgb_state^=(1<<5);
+		RGB_STATE^=(1<<5);
 	}
 	if(macro_report&MACRO1){
-		rgb_state^=(1<<4);
+		RGB_STATE^=(1<<4);
 	}
 	if(macro_report&MACRO3){
 		keyPrintWordEEP(ADD_EEP);
@@ -220,8 +220,8 @@ uint8_t usbMacroSend(){
 	}
 	#endif
 	if(macro_report&MACRO5){
-		rgb_state++;
-		if((rgb_state&0x0F)>=RGB_EFFECT_COUNT)rgb_state&=0xF0;
+		RGB_STATE++;
+		if((RGB_STATE&0x0F)>=RGB_EFFECT_COUNT)RGB_STATE&=0xF0;
 		return 1;
 	}
 	return 0;
@@ -360,7 +360,7 @@ void resetMatrixFormEEP(){
 	resetMatrix(1,address_hexaKeys1);
 	resetMatrix(2,address_keyMask);
 	for(uint16_t j=0;j<(WS2812_COUNT * 3);j++){rgb_fixcolor[j]=eeprom_read_byte((uint8_t *)(j+ADD_RGB));}
-	rgb_type=eeprom_read_byte((uint8_t *)ADD_RGBTYPE);
+	RGB_TYPE=eeprom_read_byte((uint8_t *)ADD_RGBTYPE);
 	//rgb_type&=0x11;
 }
 void eepWrite(){
