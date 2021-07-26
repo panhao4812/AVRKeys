@@ -6,6 +6,8 @@ Functions.c
 
 main.c
 
+Matrix\PG64.c
+
 Matrix\PG60.c
 
 Matrix\WS2812B_3528.c

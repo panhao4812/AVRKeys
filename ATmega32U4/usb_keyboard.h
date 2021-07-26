@@ -14,9 +14,10 @@
 //#define CXT64
 //#define  xd60
 //#define  xd75
-#define  staryu
+//#define  staryu
 //#define  xd004
 //#define PG60
+#define WS64
 #if defined(xd60)
 #define ROWS  5
 #define COLS  14
@@ -72,6 +73,13 @@
 #define PRODUCT_ID		0xF160
 #define WS2812_COUNT	61
 #define WS2812_PIN_D    7
+#define RGB_EFFECT_COUNT 3
+#elif defined(WS64)
+#define ROWS  5
+#define COLS  14
+#define PRODUCT_ID		0xF164
+#define WS2812_COUNT	64
+#define WS2812_PIN_F    6
 #define RGB_EFFECT_COUNT 3
 #endif
 ///////////////////////////////////////////////
