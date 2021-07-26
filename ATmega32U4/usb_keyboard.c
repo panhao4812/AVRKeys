@@ -153,10 +153,10 @@ const PROGMEM uint8_t  RawReport[] =
 	0x91 ,0x02, //Output (Data,Var,Abs,NWrp,Lin,Pref,NNul,NVol,Bit)
 	0xC0 //End Collection
 };
-#define CONFIG1_DESC_SIZE        (9+9+9+7+9+9+7+9+9+7+7)
 #define KEYBOARD_HID_DESC_OFFSET (9+9)
 #define MOUSE_HID_DESC_OFFSET    (9+9+9+7+9)
 #define RAW_HID_DESC_OFFSET      (9+9+9+7+9+9+7+9)
+#define CONFIG1_DESC_SIZE        (9+9+9+7+9+9+7+9+9+7+7)
 const uint8_t PROGMEM config1_descriptor[] = {
 	9,
 	0x02,
@@ -251,8 +251,8 @@ const uint8_t PROGMEM config1_descriptor[] = {
 	0x01 /* in ms */
 };
 const  usb_string_descriptor_struct PROGMEM string0 = {
-	4,
-	3,
+	4,//string0 length(u8)
+	3,//type
 	{0x0409} // language index (0x0409 = US-English)
 };
 const  usb_string_descriptor_struct PROGMEM string1 = {
@@ -260,14 +260,27 @@ const  usb_string_descriptor_struct PROGMEM string1 = {
 	3,
 	{0x007A,0x0069,0x0061,0x006E,0x0031}//zian1
 };
+#if defined (staryu)
+const  usb_string_descriptor_struct PROGMEM string2 = {
+	0x0E,
+	3,
+	{0x0073,0x0074,0x0061,0x0072,0x0079,0x0075}  //staryu
+};
+#elif (defined (xd004)||defined (xd60)||defined (xd75))
+const  usb_string_descriptor_struct PROGMEM string2 = {
+	0x18,
+	3,
+	{0x0078,0x0069,0x005F,
+		0x006B,0x0065,0x0079,0x0062,0x006F,0x0061,0x0072,0x0064}  //xd_keyboard
+};
+#else
 const  usb_string_descriptor_struct PROGMEM string2 = {
 	0x1C,
 	3,
 	{0x007A,0x0069,0x0061,0x006E,0x005F,
-		0x006B,0x0065,0x0079,0x0062,0x006F,
-	0x0061,0x0072,0x0064}  //zian_keyboard
+		0x006B,0x0065,0x0079,0x0062,0x006F,0x0061,0x0072,0x0064}  //zian_keyboard
 };
-
+#endif
 /**************************************************************************
 *
 *  Public Functions - these are the API intended for the user
@@ -409,6 +422,7 @@ ISR(USB_GEN_vect)
 // other endpoints are manipulated by the user-callable
 // functions, and the start-of-frame interrupt.
 //	Endpoint 0 interrupt
+#if (defined(__AVR_ATmega16U4__) || defined(__AVR_ATmega32U4__))
 static const uint8_t PROGMEM endpoint_config_table[] = {
 	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(KEYBOARD_SIZE) | EP_DOUBLE_BUFFER,
 	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(MOUSE_SIZE) | EP_DOUBLE_BUFFER,
@@ -417,6 +431,16 @@ static const uint8_t PROGMEM endpoint_config_table[] = {
 	0,
 	0
 };
+#elif (defined(__AVR_AT90USB82__) || defined(__AVR_AT90USB162__) || \
+defined(__AVR_ATmega8U2__) || defined(__AVR_ATmega16U2__) || \
+defined(__AVR_ATmega32U2__))
+static const uint8_t PROGMEM endpoint_config_table[] = {
+	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(KEYBOARD_SIZE) | EP_SINGLE_BUFFER,
+	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(MOUSE_SIZE) | EP_SINGLE_BUFFER,
+	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(RAW_EPSIZE) | EP_DOUBLE_BUFFER,
+	1, EP_TYPE_INTERRUPT_OUT, EP_SIZE(RAW_EPSIZE) | EP_DOUBLE_BUFFER
+};
+#endif
 //{UECONX,UECFG0X,UECFG1X}
 //UECONX寄存器相关 -，-，stallRQ，stallRQC，RSTDT，-，-，EPen
 //EPen代表是否启用ep

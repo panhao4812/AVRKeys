@@ -14,16 +14,15 @@
 //#define CXT64
 //#define  xd60
 //#define  xd75
-//#define  staryu
+#define  staryu
 //#define  xd004
-#define PG60
+//#define PG60
 #if defined(xd60)
 #define ROWS  5
 #define COLS  14
 #define PRODUCT_ID		0xD060
 #define WS2812_COUNT	12
 #define WS2812_PIN_F    6
-#define MAX_DELAY 0x0100
 #define RGB_EFFECT_COUNT 2
 #elif defined(xd75)
 #define ROWS  5
@@ -31,7 +30,6 @@
 #define PRODUCT_ID		0xD075
 #define WS2812_COUNT	6
 #define WS2812_PIN_F    6
-#define MAX_DELAY 0x0100
 #define RGB_EFFECT_COUNT 2
 #elif defined(xd004)
 #define ROWS  1
@@ -39,7 +37,6 @@
 #define PRODUCT_ID		0xD004
 #define WS2812_COUNT	2
 #define WS2812_PIN_C    6
-#define MAX_DELAY 0x0200
 #define RGB_EFFECT_COUNT 2
 #elif defined(staryu)
 #define ROWS  1
@@ -47,7 +44,6 @@
 #define PRODUCT_ID		0xD005
 #define WS2812_COUNT	1
 #define WS2812_PIN_C    6
-#define MAX_DELAY 0x0200
 #define RGB_EFFECT_COUNT 2
 #elif defined(CXT64)
 #define ROWS  5
@@ -55,7 +51,6 @@
 #define PRODUCT_ID		0xF060
 #define WS2812_COUNT	64
 #define WS2812_PIN_D    7
-#define MAX_DELAY 0x0010
 #define RGB_EFFECT_COUNT 3
 #elif defined(LILILI84)
 #define ROWS  6
@@ -63,7 +58,6 @@
 #define PRODUCT_ID		0xF184
 #define WS2812_COUNT	84
 #define WS2812_PIN_B    1
-#define MAX_DELAY 0x0010
 #define RGB_EFFECT_COUNT 3
 #elif defined(Vem84)
 #define ROWS  6
@@ -71,7 +65,6 @@
 #define PRODUCT_ID		0xF284
 #define WS2812_COUNT	84
 #define WS2812_PIN_C    7
-#define MAX_DELAY 0x0010
 #define RGB_EFFECT_COUNT 3
 #elif defined(PG60)
 #define ROWS  5
@@ -79,7 +72,6 @@
 #define PRODUCT_ID		0xF160
 #define WS2812_COUNT	61
 #define WS2812_PIN_D    7
-#define MAX_DELAY 0x0010
 #define RGB_EFFECT_COUNT 3
 #endif
 ///////////////////////////////////////////////
@@ -87,19 +79,26 @@
 #define VENDOR_ID		0x32C2//–æ∆¨¿‡–Õ
 #define FLASH_END_ADDRESS (uint16_t)0x7000 // 0x3800*2
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
+#define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega16U2__)
 #define VENDOR_ID		0x16C2
 #define FLASH_END_ADDRESS (uint16_t)0x3000 // 0x1800*2
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
-#elif defined(__AVR_ATmega8U2__)
-#define VENDOR_ID		0x08C2
-#elif defined(__AVR_AT90USB162__)
-#define VENDOR_ID		0xC162
-#elif defined(__AVR_AT90USB82__)
-#define VENDOR_ID		0xC082
+#define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega32U4__)
 #define VENDOR_ID		0x32C4
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
+#define MAX_DELAY 0x0010
+/////////////////not use///////////////////
+#elif defined(__AVR_ATmega8U2__)
+#define VENDOR_ID		0x08C2
+#define MAX_DELAY 0x0020
+#elif defined(__AVR_AT90USB162__)
+#define VENDOR_ID		0xC162
+#define MAX_DELAY 0x0020
+#elif defined(__AVR_AT90USB82__)
+#define VENDOR_ID		0xC082
+#define MAX_DELAY 0x0020
 /*
 #elif defined(__AVR_ATMEGA64A__)
 #define VENDOR_ID		0x64A0

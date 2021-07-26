@@ -20,6 +20,7 @@ volatile uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x17,0x17,0x66}
 };
 volatile uint16_t rgb_rainbow[WS2812_COUNT]={0,170};
+uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={200,200,200,200,200,200};
 #endif	
 ////////////////////////////////////////////////////
 #if defined staryu
@@ -39,6 +40,7 @@ uint8_t hexa_keys1[ROWS][COLS]={
 volatile uint8_t key_mask[ROWS][COLS]={
 	{0x17,0x66,0x17,0x17,0x17}
 };
+uint8_t rgb_fixcolor[(WS2812_COUNT*3)]={200,200,200};
 volatile uint16_t rgb_rainbow[WS2812_COUNT]={0};
 #endif
 /////////////////////////////////////////////////////////////////////////continue
@@ -46,6 +48,15 @@ uint16_t delay_val;//rgb速率
 uint8_t FN;
 uint8_t delay_after=0;//backswing 后摇
 uint8_t delay_before=0;//windup 前摇
+uint8_t color_r,color_g,color_b;
+#define MAX_DELAY_1 MAX_DELAY*1
+#define MAX_DELAY_2 MAX_DELAY*2
+#define MAX_DELAY_3 MAX_DELAY*3
+#define MAX_DELAY_4 MAX_DELAY*4
+#define MAX_DELAY_5 MAX_DELAY*5
+#define MAX_DELAY_6 MAX_DELAY*6
+#define MAX_DELAY_7 MAX_DELAY*7
+#define MAX_DELAY_8 MAX_DELAY*8
 void initCols(){
 	for (uint8_t i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
@@ -82,41 +93,52 @@ void resetLED(){
 	ws2812Clear();
 	ws2812Send2();
 }
-void updateLED(){
-	//////////////////////////////full led/////////////////////
-	if(RGB_STATE & (1<<5)){
-		openLED();
-	}
-	else{
-		closeLED();
-	}
-	////////////////////////////RGB////////////////////////
-	if(delay_val>=MAX_DELAY){
-		if(RGB_STATE & (1<<4)){
-			for(uint8_t i=0;i<WS2812_COUNT;i++){
-				if((RGB_STATE&0x0F)==0x01){
-					if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
-					uint8_t color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);
-					uint8_t color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);
-					uint8_t color_b=pgm_read_byte(Bcolors+rgb_rainbow[i]);
-					ws2812SetRGB(i,color_r,color_g,color_b);
-					rgb_rainbow[i]++;
-				}
-				else if((RGB_STATE&0x0F)==0x00){
-					ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);
-				}
-			}
-			}else{
-		ws2812Clear();}
-		delay_val--;
-		ws2812Send2();
-		}else{
-		if(delay_val){
-			delay_val--;
-			}else {
-			delay_val=MAX_DELAY;
+void LED_Timer(volatile uint16_t* delay_val_blink){
+	if((*delay_val_blink)==MAX_DELAY_7){ws2812Send2();}
+	if(*delay_val_blink){(*delay_val_blink)--;}else{(*delay_val_blink)=MAX_DELAY_8;}
+}
+void Fix_LED(uint16_t delay_val_blink){
+	if(delay_val_blink==MAX_DELAY_5){
+		for(uint8_t i=0;i<WS2812_COUNT;i++){
+			ws2812SetRGB(i,rgb_fixcolor[i*3],rgb_fixcolor[i*3+1],rgb_fixcolor[i*3+2]);//default
 		}
 	}
+}
+void Rainbow_LED(uint16_t delay_val_blink){
+	for(uint8_t i=0;i<WS2812_COUNT;i++){
+		if(rgb_rainbow[i]>=WS2812_COLOR_COUNT) rgb_rainbow[i]=0;
+		if(delay_val_blink==MAX_DELAY_4){color_r=pgm_read_byte(Rcolors+rgb_rainbow[i]);ws2812SetR(i,color_r);}
+		if(delay_val_blink==MAX_DELAY_3){color_g=pgm_read_byte(Gcolors+rgb_rainbow[i]);ws2812SetG(i,color_g);}
+		if(delay_val_blink==MAX_DELAY_2){color_b=pgm_read_byte(Bcolors+rgb_rainbow[i]);ws2812SetB(i,color_b);}
+		if(delay_val_blink==MAX_DELAY_1){rgb_rainbow[i]++;}
+	}
+}
+void updateLED(){
+	/////////////funtional led//////////////
+	/////////////full led///////////////////
+if(RGB_STATE & (1<<5)){
+	openLED();
+}
+else{
+	closeLED();
+}
+	/////////////RGB///////////////////
+	if(RGB_STATE & (1<<4)){
+		if((RGB_STATE&0x0F)==0x01){
+			Rainbow_LED(delay_val);
+		}
+		else if((RGB_STATE&0x0F)==0x00){
+			Fix_LED(delay_val);
+		}
+		else if((RGB_STATE&0x0F)==0x02){
+			//blink_LED(delay_val);
+		}
+		}else{
+		ws2812Clear();//closed
+	}
+	////clock ///////////////////////////////////////////
+	//尽可能减少每次循环的时间，将任务错开。
+	LED_Timer(&delay_val);
 }
 void qmkMode(){
 	for (uint8_t r = 0; r < ROWS; r++) {
