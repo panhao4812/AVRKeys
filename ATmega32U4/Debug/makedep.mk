@@ -6,7 +6,7 @@ Functions.c
 
 main.c
 
-Matrix\PG64.c
+Matrix\WS64.c
 
 Matrix\PG60.c
 

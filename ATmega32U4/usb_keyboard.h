@@ -85,16 +85,17 @@
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
 #define VENDOR_ID		0x32C2//芯片类型
-#define FLASH_END_ADDRESS (uint16_t)0x7000 // 0x3800*2
+#define FLASH_END_ADDRESS (uint16_t)(0x8000 - 0x0800 - 1) // 32K-2K-1
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega16U2__)
 #define VENDOR_ID		0x16C2
-#define FLASH_END_ADDRESS (uint16_t)0x3000 // 0x1800*2
-#define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
+#define FLASH_END_ADDRESS (uint16_t)(0x4000 - 0x0400 - 1) // 16K-1K-1
+#define MAX_EEP (uint16_t)0x01FF // (eeprom 512-1)
 #define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega32U4__)
 #define VENDOR_ID		0x32C4
+#define FLASH_END_ADDRESS (uint16_t)0x77FF // 32K-2K-1
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #define MAX_DELAY 0x0010
 /////////////////not use///////////////////
@@ -423,7 +424,7 @@ static inline void ReleaseRX()
 }
 static inline void ReleaseTX()
 {
-	UEINTX = ((1<<RWAL) | (1<<NAKOUTI) | (1<<RXSTPI)| (1<<STALLEDI));//0x3A;// 
+	UEINTX = ((1<<RWAL) | (1<<NAKOUTI) | (1<<RXSTPI)| (1<<STALLEDI));//0x3A;//
 }
 
 /*
@@ -441,7 +442,7 @@ UECFG0X寄存器 EPTYPE1:0 - - - - - EPDIR
 *EPDIR Endpoint Direction  1：in 0：out
 
 UECFG1X寄存器 - EPSIZE2:0 EPBK1:0 ALLOC -
-*EPBK   Endpoint Bank 
+*EPBK   Endpoint Bank
 *ALLOC allocate the endpoint memory 分配存储空间
 */
 static inline uint8_t Recv8()
@@ -500,7 +501,7 @@ static inline void EnableEndpoint(){
 ((s) == 32 ? 0x20 :	\
 ((s) == 16 ? 0x10 :	\
 0x00)))
-//size只能为8 16 32 64 
+//size只能为8 16 32 64
 
 #define LSB(n) (n & 255)
 #define MSB(n) ((n >> 8) & 255)
