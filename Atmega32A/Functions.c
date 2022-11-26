@@ -177,7 +177,7 @@ uint8_t usbMacroSend(){
 		keyPrintWordEEP(ADD_EEP);
 		return 1;
 	}
-	#ifdef ADD_FLASH
+	#ifdef MAX_FLASH
 	if(macro_report&MACRO4){
 		keyPrintWordFlash(ADD_FLASH);
 		return 1;

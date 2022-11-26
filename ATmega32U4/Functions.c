@@ -212,7 +212,7 @@ uint8_t usbMacroSend(){
 		keyPrintWordEEP(ADD_EEP);
 		return 1;
 	}
-	#ifdef ADD_FLASH
+	#ifdef MAX_FLASH
 	if(macro_report&MACRO4){
 	//µ˜ ‘”√Õæ
 		keyPrintWordFlash(ADD_FLASH);
@@ -396,7 +396,7 @@ void eepWrite(){
 		enableReset=1;
 	}
 }
-#ifdef ADD_FLASH
+#ifdef MAX_FLASH
 void keyPrintWordFlash(uint16_t address_t){
 	uint16_t len=pgm_read_word_near((uint16_t *)address_t);
 	if(len<1)return;
