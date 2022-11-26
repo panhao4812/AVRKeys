@@ -471,7 +471,7 @@ int initMain(void) {
 		_delay_ms(300);
 		usbSend(KEYBOARD_ENDPOINT,(uint8_t *)&keyboard_report,8,50);
 		while (1) {
-			if(delay_before==0&&delay_before==0)eepWrite();
+			if(delay_before==0&&delay_after==0)eepWrite();
 			if(keyboard_buffer.enable_pressing==2){
 				break;
 			}
