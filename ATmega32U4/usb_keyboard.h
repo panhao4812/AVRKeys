@@ -85,20 +85,20 @@
 ///////////////////////////////////////////////
 #if defined(__AVR_ATmega32U2__)
 #define VENDOR_ID		0x32C2//–æ∆¨¿‡–Õ
-#define FLASH_MAX_ADDRESS (uint16_t)0x8000
-#define FLASH_END_ADDRESS (uint16_t)(0x8000 - 0x0800 - 1) // 32K-2K-1
+#define MAX_FLASH (uint16_t)0x8000
+#define ADD_FLASH (uint16_t)(0x8000 - 0x0800 - 1) // 32K-2K-1
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega16U2__)
 #define VENDOR_ID		0x16C2
-#define FLASH_MAX_ADDRESS (uint16_t)0x4000
-#define FLASH_END_ADDRESS (uint16_t)(0x4000 - 0x0400 - 1) // 16K-1K-1
+#define MAX_FLASH (uint16_t)0x4000
+#define ADD_FLASH (uint16_t)(0x4000 - 0x0400 - 1) // 16K-1K-1
 #define MAX_EEP (uint16_t)0x01FF // (eeprom 512-1)
 #define MAX_DELAY 0x0010
 #elif defined(__AVR_ATmega32U4__)
 #define VENDOR_ID		0x32C4
-#define FLASH_MAX_ADDRESS (uint16_t)0x8000
-#define FLASH_END_ADDRESS (uint16_t)(0x8000 - 0x0800 - 1) // 32K-2K-1
+#define MAX_FLASH (uint16_t)0x8000
+#define ADD_FLASH (uint16_t)(0x8000 - 0x0800 - 1) // 32K-2K-1
 #define MAX_EEP (uint16_t)0x03FF // (eeprom 1k-1)
 #define MAX_DELAY 0x0010
 /////////////////not use///////////////////
