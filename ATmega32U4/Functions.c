@@ -402,7 +402,7 @@ void keyPrintWordFlash(uint16_t address_t){
 	if(len<1)return;
 	for(uint16_t i=0;i<len;i++){
 		uint16_t address=address_t+i*2+2;
-		if(address>FLASH_END_ADDRESS)break;
+		if(address>FLASH_MAX_ADDRESS)break;
 		uint16_t data = pgm_read_word_near((uint16_t*)address);
 		keyPrintChar(data);
 	}
