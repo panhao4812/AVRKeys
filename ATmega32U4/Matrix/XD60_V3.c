@@ -82,14 +82,14 @@ uint8_t FN;
 uint8_t delay_after=0;//backswing ∫Û“°
 uint8_t delay_before=0;//windup «∞“°
 uint8_t color_r,color_g,color_b;
-#define MAX_DELAY_1 MAX_DELAY*1
-#define MAX_DELAY_2 MAX_DELAY*2
-#define MAX_DELAY_3 MAX_DELAY*3
-#define MAX_DELAY_4 MAX_DELAY*4
-#define MAX_DELAY_5 MAX_DELAY*5
-#define MAX_DELAY_6 MAX_DELAY*6
-#define MAX_DELAY_7 MAX_DELAY*7
-#define MAX_DELAY_8 MAX_DELAY*8
+#define MAX_DELAY_1 (MAX_DELAY*1)
+#define MAX_DELAY_2 (MAX_DELAY*2)
+#define MAX_DELAY_3 (MAX_DELAY*3)
+#define MAX_DELAY_4 (MAX_DELAY*4)
+#define MAX_DELAY_5 (MAX_DELAY*5)
+#define MAX_DELAY_6 (MAX_DELAY*6)
+#define MAX_DELAY_7 (MAX_DELAY*7)
+#define MAX_DELAY_8 (MAX_DELAY*8)
 void initCols(){
 	for (uint8_t i=0; i<COLS; i++){
 		pinMode(col_pins[i],INPUT);
